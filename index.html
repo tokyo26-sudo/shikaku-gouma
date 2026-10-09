@@ -19,21 +19,23 @@
   --accent-soft: #dbe7ea;
   --hit: #b4492b;
   --fu: #7a5a9e;
+  --part: #8a6a3a;
   --f-display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
   --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
   --f-mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #12191d; --panel: #1a2328; --ink: #e3eae9; --muted: #93a3a6; --line: #2f3d43;
-  --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --fu: #c3a5e6; color-scheme: dark } }
+  --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --fu: #c3a5e6; --part: #d9bd8c; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #12191d; --panel: #1a2328; --ink: #e3eae9; --muted: #93a3a6; --line: #2f3d43;
-  --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --fu: #c3a5e6; color-scheme: dark }
+  --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --fu: #c3a5e6; --part: #d9bd8c; color-scheme: dark }
 
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.6; }
 .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; display: grid; gap: 20px; }
 header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
 h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(28px, 5vw, 40px); margin: 0; letter-spacing: .04em; }
+.ver { font-family: var(--f-mono); font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; vertical-align: middle; margin-left: 4px; }
 .sub { color: var(--muted); margin: 0; font-size: 13px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--muted); }
 .legend span { border: 1px solid var(--line); border-radius: 4px; padding: 1px 7px; background: var(--panel); }
@@ -80,6 +82,32 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
 .codebtn sub { color: var(--fu); font-size: 11px; letter-spacing: 0; }
 .tag { font-size: 11px; color: var(--muted); }
 .card.miss .k { color: var(--muted); }
+.mode { display: inline-flex; justify-self: start; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mode button { font: inherit; font-size: 13px; padding: 5px 16px; background: var(--bg); color: var(--muted); border: none; cursor: pointer; }
+.mode button[aria-pressed="true"] { background: var(--accent); color: var(--panel); font-weight: 700; }
+.pad { display: grid; gap: 12px; }
+.pad-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cornerbox { display: grid; grid-template-columns: repeat(2, 30px) 22px; grid-template-rows: repeat(2, 30px); gap: 3px; }
+.cornerbox span { border: 1px solid var(--line); border-radius: 4px; display: grid; place-items: center; font-family: var(--f-mono); font-size: 14px; font-weight: 600; color: var(--hit); background: var(--bg); }
+.cornerbox .c1 { grid-column: 2; grid-row: 1; } .cornerbox .c2 { grid-column: 1; grid-row: 2; } .cornerbox .c3 { grid-column: 2; grid-row: 2; }
+.cornerbox .c4 { grid-column: 3; grid-row: 2; width: 22px; height: 18px; align-self: start; font-size: 11px; color: var(--fu); }
+.cornerbox span.now { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px var(--accent); }
+.nowlabel { font-size: 14px; margin: 0; }
+.nowlabel b { color: var(--accent); font-size: 17px; }
+.parts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.parts button { display: grid; justify-items: center; gap: 1px; padding: 8px 2px 6px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); cursor: pointer; font: inherit; }
+.parts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.parts button:disabled { opacity: .3; cursor: default; }
+.parts .n { font-family: var(--f-mono); font-weight: 600; font-size: 15px; line-height: 1.1; }
+.parts svg { width: 38px; height: 38px; }
+.parts svg path { stroke: var(--part); fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.parts .nm { font-size: 11px; color: var(--muted); line-height: 1.3; }
+.parts .cnt { font-size: 11px; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.3; }
+.padctl { display: flex; gap: 8px; flex-wrap: wrap; }
+.padctl button { font: inherit; font-size: 13px; padding: 5px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); cursor: pointer; }
+.padctl button:disabled { opacity: .4; cursor: default; }
+.padctl .q { font-family: var(--f-mono); font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) { .parts button, .cornerbox span { transition: background .15s, border-color .15s, opacity .15s; } }
 .empty { color: var(--muted); font-size: 13px; }
 footer { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
 footer a { color: var(--accent); }
@@ -89,7 +117,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき</h1>
+    <h1>四角号碼じびき <span class="ver">v0.3</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
   </header>
   <div class="legend" aria-label="角の形と数字">
@@ -100,8 +128,24 @@ footer a { color: var(--accent); }
   <div class="panels">
     <section aria-labelledby="h-code">
       <h2 id="h-code"><em>号碼</em> → 漢字</h2>
+      <div class="mode" role="group" aria-label="入れ方">
+        <button type="button" id="modePict" aria-pressed="true">絵で押す</button>
+        <button type="button" id="modeNum" aria-pressed="false">数字で打つ</button>
+      </div>
       <input type="text" id="code" inputmode="numeric" autocomplete="off" maxlength="5" value="1043" aria-label="四角号碼（4桁、附角つきなら5桁）">
-      <p class="hint">4桁、附角まで入れるなら5桁。わからない桁は ? で。短いと前方一致。字の右下の小さい数字が附角</p>
+      <div class="pad" id="pad">
+        <div class="pad-head">
+          <div class="cornerbox" aria-hidden="true"><span class="c0"></span><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span></div>
+          <p class="nowlabel" id="nowLabel"></p>
+        </div>
+        <div class="parts" id="parts"></div>
+        <div class="padctl">
+          <button type="button" class="q" id="padQ">? 飛ばす</button>
+          <button type="button" id="padBack">← ひとつ戻る</button>
+          <button type="button" id="padClear">最初から</button>
+        </div>
+      </div>
+      <p class="hint" id="numHint" hidden>4桁、附角まで入れるなら5桁。わからない桁は ? で。短いと前方一致。字の右下の小さい数字が附角</p>
       <label class="toggle"><input type="checkbox" id="useFb">予備辞書の字も出す（流儀がちがうので点線で表示）</label>
       <div class="status" id="codeStatus"></div>
       <div id="codeResult"></div>
@@ -153,18 +197,23 @@ function normCode(v) {
           .replace(/[？＊*.．]/g, "?").replace(/[^0-9?]/g, "").slice(0, 5);
 }
 
+function filterEntries(q) {
+  const re4 = new RegExp("^" + q.slice(0, 4).replace(/\?/g, "[0-9]"));
+  const q5 = q.length === 5 ? q[4] : null;
+  return entries.filter(e =>
+    (useFb.checked || !e.fb) && re4.test(e.c4) &&
+    (q5 === null || q5 === "?" || e.fu === q5));
+}
+
 function searchCode(resetLimit = true) {
   const q = normCode(codeIn.value);
   if (q !== codeIn.value) codeIn.value = q;
   if (resetLimit) shown = LIMIT;
   const out = $("codeResult"), st = $("codeStatus");
   out.textContent = "";
-  if (!q) { st.textContent = "数字を入れてネ"; return; }
-  const re4 = new RegExp("^" + q.slice(0, 4).replace(/\?/g, "[0-9]"));
-  const q5 = q.length === 5 ? q[4] : null;
-  const hits = entries.filter(e =>
-    (useFb.checked || !e.fb) && re4.test(e.c4) &&
-    (q5 === null || q5 === "?" || e.fu === q5));
+  renderPad(q);
+  if (!q) { st.innerHTML = `ぜんぶで <b>${filterEntries("").length}</b> 字。左上の部品から押してネ`; return; }
+  const hits = filterEntries(q);
   // group by 4-digit code, main dictionary first, then by 附角
   const groups = new Map();
   hits.sort((a, b) => a.c4.localeCompare(b.c4) || (a.fb - b.fb) || (a.fu ?? "z").localeCompare(b.fu ?? "z"));
@@ -246,6 +295,73 @@ function addKanji(ch) {
   kanjiIn.value = kanjiIn.value + ch;
   renderKanji();
 }
+
+// ---- 絵で押す ----
+const PARTS = [
+  ["頭", "M18 8 L21 14 M8 21 H32"],
+  ["横", "M7 20 H33"],
+  ["垂", "M20 6 V34"],
+  ["点", "M15 10 L25 28"],
+  ["叉", "M20 7 V33 M7 20 H33"],
+  ["插", "M20 6 V34 M9 14 H31 M9 25 H31"],
+  ["方", "M9 9 H31 V31 H9 Z"],
+  ["角", "M10 33 V9 H31"],
+  ["八", "M16 9 Q14 22 8 31 M24 9 Q26 22 32 31"],
+  ["小", "M20 6 V30 M12 16 L8 26 M28 16 L32 26"],
+];
+const POS = ["左上", "右上", "左下", "右下", "附角"];
+const partsEl = $("parts");
+const partBtns = PARTS.map(([nm, d], i) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.innerHTML = `<span class="n">${i}</span><svg viewBox="0 0 40 40" aria-hidden="true"><path d="${d}"/></svg><span class="nm">${nm}</span><span class="cnt"></span>`;
+  b.addEventListener("click", () => pushDigit(String(i)));
+  partsEl.append(b);
+  return b;
+});
+function pushDigit(d) {
+  const q = normCode(codeIn.value);
+  if (q.length >= 5) return;
+  codeIn.value = q + d;
+  searchCode();
+}
+$("padQ").addEventListener("click", () => pushDigit("?"));
+$("padBack").addEventListener("click", () => { codeIn.value = normCode(codeIn.value).slice(0, -1); searchCode(); });
+$("padClear").addEventListener("click", () => { codeIn.value = ""; searchCode(); });
+
+function renderPad(q) {
+  const pos = q.length;
+  document.querySelectorAll(".cornerbox span").forEach((s, i) => {
+    s.textContent = q[i] ?? "";
+    s.classList.toggle("now", i === pos);
+  });
+  $("nowLabel").innerHTML = pos < 5
+    ? `いまは <b>${POS[pos]}</b> の角` + (pos === 4 ? "（右下の角のすぐ上の筆画）" : "")
+    : "5桁ぜんぶ入った";
+  partBtns.forEach((b, i) => {
+    const n = pos < 5 ? filterEntries(q + i).length : 0;
+    b.disabled = n === 0;
+    b.querySelector(".cnt").textContent = pos < 5 ? `${n}字` : "";
+    b.setAttribute("aria-label", `${i} ${PARTS[i][0]}、押すと${n}字`);
+  });
+  $("padQ").disabled = pos >= 5;
+  $("padBack").disabled = pos === 0;
+  $("padClear").disabled = pos === 0;
+}
+
+function setMode(m) {
+  const pict = m !== "num";
+  $("modePict").setAttribute("aria-pressed", String(pict));
+  $("modeNum").setAttribute("aria-pressed", String(!pict));
+  $("pad").hidden = !pict;
+  $("numHint").hidden = pict;
+  try { localStorage.setItem("sjMode", pict ? "pict" : "num"); } catch (e) {}
+}
+$("modePict").addEventListener("click", () => setMode("pict"));
+$("modeNum").addEventListener("click", () => { setMode("num"); codeIn.focus(); });
+let savedMode = "pict";
+try { savedMode = localStorage.getItem("sjMode") || "pict"; } catch (e) {}
+setMode(savedMode);
 
 codeIn.addEventListener("input", () => searchCode());
 useFb.addEventListener("change", () => searchCode());
