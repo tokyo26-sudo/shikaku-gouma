@@ -205,6 +205,48 @@ header .gear svg { width: 20px; height: 20px; }
 .opt .sw i { flex: 1; }
 .set-card { grid-template-rows: auto auto auto auto; }
 
+/* 号碼→漢字 */
+.dirseg { justify-self: stretch; display: grid; grid-template-columns: 1fr 1fr; }
+.dirseg button { padding: 7px 10px; font-size: 14px; }
+.pr-srcch { display: inline-flex; gap: 8px; align-items: center; }
+.pr-foot { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px; }
+.pr-foot .score { margin-left: auto; }
+.qbox.rq .k { color: var(--muted); font-size: 72px; }
+.qbox.rq .k.ans { color: var(--ink); font-size: 104px; }
+.qbox.rq .slot { color: var(--hit); font-size: 20px; }
+.rvparts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.rvcard { position: relative; display: grid; justify-items: center; gap: 1px; padding: 6px 2px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.rvcard .pos { font-size: 11px; color: var(--muted); }
+.rvcard .n { font-family: var(--f-mono); font-weight: 600; font-size: 15px; }
+.rvcard svg { width: 30px; height: 30px; }
+.rvcard .nm { font-size: 11px; color: var(--muted); }
+.rvparts .qmark { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--accent); font: 700 12px/1 var(--f-body); cursor: pointer; display: grid; place-items: center; padding: 0; }
+.rvparts .qmark:hover, .rvparts .qmark[aria-expanded="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.rvparts.plain { display: none; }
+.rvwrite { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.rvwrite label { font-size: 12px; color: var(--muted); }
+#rvIn { width: calc(1em + 18px); font-family: var(--f-kanji); font-size: 32px; text-align: center; padding: 4px 6px; }
+.choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.choices button { display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); cursor: pointer; font: inherit; }
+.choices button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.choices button:disabled { cursor: default; }
+.choices .ck { font-family: var(--f-kanji); font-size: 40px; line-height: 1.2; }
+.choices .cc { font-family: var(--f-mono); font-size: 12px; color: var(--muted); min-height: 1.4em; }
+.choices button.ok { border-color: var(--ok); background: var(--ok-soft); }
+.choices button.ng { border-color: var(--hit); background: var(--ng-soft); }
+.choices button.dim { opacity: .55; }
+.cc .x { color: var(--hit); font-weight: 700; }
+.rv-all { display: grid; gap: 6px; }
+.rv-all h5 { margin: 0; font-size: 12px; color: var(--muted); font-weight: 700; }
+.rv-all .lst { font-family: var(--f-kanji); font-size: 22px; letter-spacing: .12em; line-height: 1.6; word-break: break-all; }
+.rv-all .lst b { color: var(--accent); font-weight: inherit; }
+.rv-all .more-n { font-size: 12px; color: var(--muted); font-family: var(--f-body); letter-spacing: 0; }
+.hist .q { font-family: var(--f-mono); font-weight: 600; font-size: 15px; letter-spacing: .08em; background: none; border: 1px solid transparent; border-radius: 6px; padding: 0 6px; color: var(--accent); cursor: pointer; }
+.hist .q:hover { border-color: var(--accent); background: var(--accent-soft); }
+.hist .mk { font-family: var(--f-kanji); font-size: 22px; margin-right: 6px; vertical-align: middle; }
+.hist .exs { font-family: var(--f-kanji); font-size: 18px; letter-spacing: .1em; }
+.hist .exs small { font-family: var(--f-body); font-size: 11px; color: var(--muted); letter-spacing: 0; }
+
 /* history modal */
 .histbtn { margin-left: auto; }
 .modal { position: fixed; inset: 0; z-index: 30; background: rgba(10, 20, 25, .45); display: grid; place-items: center; padding: 16px; box-sizing: border-box; }
@@ -243,7 +285,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.11</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.12</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </header>
@@ -287,9 +329,13 @@ footer a { color: var(--accent); }
       </div>
 
       <div class="view" id="viewPractice" role="tabpanel" aria-labelledby="tabPractice" hidden>
+        <div class="seg dirseg" role="group" aria-label="問題の向き">
+          <button type="button" id="dirFwd" aria-pressed="true">漢字 → 号碼</button>
+          <button type="button" id="dirRev" aria-pressed="false">号碼 → 漢字</button>
+        </div>
         <div class="pr-src">
-          <label for="prIn">出す字</label>
-          <input type="text" id="prIn" autocomplete="off" maxlength="2" aria-label="練習する漢字を1字入力">
+          <span id="prSrcCh" class="pr-srcch"><label for="prIn">出す字</label>
+          <input type="text" id="prIn" autocomplete="off" maxlength="2" aria-label="練習する漢字を1字入力"></span>
           <select id="prLv" aria-label="ランダムで出す範囲">
             <option value="intro">入門 107字</option>
             <option value="g1">小学1年</option>
@@ -300,6 +346,11 @@ footer a { color: var(--accent); }
           </select>
           <button type="button" class="btn" id="prRand">ランダム</button>
         </div>
+        <div class="pr-opts">
+          <label class="toggle"><input type="checkbox" id="prPlain">形を隠す（数字だけ）</label>
+          <span class="hint">? を押すと、その数字の決まりが出る</span>
+        </div>
+        <div class="view" id="fwdArea">
         <div class="stage">
           <div class="qbox">
             <div class="k" id="prK"></div>
@@ -308,10 +359,6 @@ footer a { color: var(--accent); }
         </div>
         <input type="text" id="prAns" inputmode="numeric" autocomplete="off" maxlength="5" aria-label="自分で考えた四角号碼">
         <p class="nowlabel" id="prNow"></p>
-        <div class="pr-opts">
-          <label class="toggle"><input type="checkbox" id="prPlain">形を隠す（数字だけ）</label>
-          <span class="hint">? を押すと、その数字の決まりが出る</span>
-        </div>
         <div class="parts" id="prParts"></div>
         <div class="toast" id="prHint" role="status" hidden><span id="prHintText"></span><button type="button" class="toast-x" id="prHintX" aria-label="ヒントを閉じる">✕</button></div>
         <div class="padctl">
@@ -322,11 +369,42 @@ footer a { color: var(--accent); }
           <button type="button" class="btn primary" id="prCheck">答え合わせ</button>
           <button type="button" class="btn" id="prShow">答えを見る</button>
           <button type="button" class="btn" id="prNext">次の字 →</button>
+        </div>
+        <p class="verdict" id="prVerdict"></p>
+        <p class="hint">4桁入れたら答え合わせ（Enter でも）。附角は5桁目に入れたときだけ判定。号碼が2つある字は、どちらでも正解。ランダムには号碼が1つに決まる字だけ出る</p>
+        </div>
+
+        <div class="view" id="revArea" hidden>
+          <div class="seg" role="group" aria-label="答え方">
+            <button type="button" id="rvWriteBtn" aria-pressed="true">書く</button>
+            <button type="button" id="rvChooseBtn" aria-pressed="false">選ぶ</button>
+          </div>
+          <div class="stage">
+            <div class="qbox rq">
+              <div class="k" id="rvK">？</div>
+              <span class="slot s0"></span><span class="slot s1"></span><span class="slot s2"></span><span class="slot s3"></span>
+            </div>
+          </div>
+          <div class="rvparts" id="rvParts"></div>
+          <div class="rvwrite" id="rvWrite">
+            <label for="rvIn">この号碼の漢字</label>
+            <input type="text" id="rvIn" autocomplete="off" maxlength="2" aria-label="この号碼になる漢字を1字">
+            <button type="button" class="btn primary" id="rvCheck">答え合わせ</button>
+          </div>
+          <div class="choices" id="rvChoices" hidden></div>
+          <div class="pr-act">
+            <button type="button" class="btn" id="rvShow">答えを見る</button>
+            <button type="button" class="btn" id="rvNext">次の問題 →</button>
+          </div>
+          <p class="verdict" id="rvVerdict"></p>
+          <div class="rv-all" id="rvAll"></div>
+          <p class="hint">書く：その号碼になる字なら どれでも正解（Enter で答え合わせ）。選ぶ：6つの中から1つ。号碼は4桁だけで判定</p>
+        </div>
+
+        <div class="pr-foot">
           <span class="score" id="prScore"></span>
           <button type="button" class="btn" id="histOpen">成績一覧</button>
         </div>
-        <p class="verdict" id="prVerdict"></p>
-        <p class="hint">成績は この端末の ぶらうざ に残る。4桁入れたら答え合わせ（Enter でも）。附角は5桁目に入れたときだけ判定。号碼が2つある字は、どちらでも正解。ランダムには号碼が1つに決まる字だけ出る</p>
       </div>
     </section>
 
@@ -675,8 +753,9 @@ function prRender(result) {
   $("prNow").innerHTML = pr.done ? "" : (a.length < 5 ? `いまは <b>${POS[a.length]}</b> の角` + (a.length === 4 ? "（入れなくてもいい）" : "") : "5桁ぜんぶ入った");
   $("prCheck").disabled = pr.done || a.length < 4 || !pr.list.length;
   $("prShow").disabled = pr.done || !pr.list.length;
-  $("prScore").innerHTML = `せいせき <b>${hist.filter(h => h.ok).length}</b> / ${hist.length}`;
+  renderScore();
 }
+function renderScore() { $("prScore").innerHTML = `せいせき <b>${hist.filter(h => h.ok).length}</b> / ${hist.length}`; }
 const fmt = e => `<span class="code">${e.c4}${e.fu !== null ? "<sub>" + e.fu + "</sub>" : ""}</span>`;
 function prJudge() {
   const a = normCode(prAns.value).replace(/\?/g, "");
@@ -727,12 +806,20 @@ function renderHist() {
   if (!rows.length) {
     body.innerHTML = `<p class="hist-empty">${hist.length ? "まちがいは無い。すごいダカラ！" : "まだ問題を解いてない。れんしゅうで答え合わせすると、ここに1問ずつたまる"}</p>`;
   } else {
-    body.innerHTML = `<table class="hist"><thead><tr><th>合否</th><th>漢字</th><th>自分の答え</th><th>正解</th></tr></thead><tbody>${rows.map(({ h }) => {
+    body.innerHTML = `<table class="hist"><thead><tr><th>合否</th><th>問題</th><th>自分の答え</th><th>正解</th></tr></thead><tbody>${rows.map(({ h }) => {
+      if (h.dir === "rev") {
+        const res = `<td class="res ${h.ok ? "ok" : "ng"}">${h.ok ? "○" : "×"}</td>`;
+        const q = `<td><button type="button" class="q" data-code="${h.code}" title="この号碼をもう一回">${h.code}</button></td>`;
+        const mine = h.seen ? `<span class="seen">答えを見た</span>` :
+          `<span class="mk">${h.ans}</span><span class="code">${h.ansCode ? [...h.ansCode].map((d, k) => d === h.code[k] ? d : `<span class="x">${d}</span>`).join("") : "?"}</span>`;
+        return `<tr>${res}${q}<td>${mine}</td><td class="exs">${h.answers}${h.more ? ` <small>ほか${h.more}字</small>` : ""}</td></tr>`;
+      }
       const mine = h.seen ? `<span class="seen">答えを見た</span>` :
         `<span class="code">${[...h.ans].map((d, k) => k === 4 ? `<sub${h.marks && h.marks[4] === "ng" ? ' class="x"' : ""}>${d}</sub>` : (h.marks && h.marks[k] === "ng" ? `<span class="x">${d}</span>` : d)).join("")}</span>`;
       return `<tr><td class="res ${h.ok ? "ok" : "ng"}">${h.ok ? "○" : "×"}</td><td class="kj"><button type="button" data-ch="${h.ch}" title="この字をもう一回">${h.ch}</button></td><td>${mine}</td><td class="code">${h.codes.map(codeHTML).join(" ／ ")}</td></tr>`;
     }).join("")}</tbody></table>`;
-    body.querySelectorAll("button[data-ch]").forEach(b => b.addEventListener("click", () => { closeHist(); showTab("practice"); prSet(b.dataset.ch); }));
+    body.querySelectorAll("button[data-ch]").forEach(b => b.addEventListener("click", () => { closeHist(); showTab("practice"); setDir("fwd"); prSet(b.dataset.ch); }));
+    body.querySelectorAll("button[data-code]").forEach(b => b.addEventListener("click", () => { closeHist(); showTab("practice"); setDir("rev"); rvSet(b.dataset.code); }));
   }
   const foot = $("histFoot");
   if (!hist.length) { foot.innerHTML = ""; return; }
@@ -740,7 +827,7 @@ function renderHist() {
     ? `<span>成績と一覧を ぜんぶ消す？</span><button type="button" class="btn danger solid" id="histDo">消す</button><button type="button" class="btn" id="histCancel">やめる</button>`
     : `<button type="button" class="btn danger" id="histReset">リセット</button>`;
   if (resetArm) {
-    $("histDo").addEventListener("click", () => { hist = []; saveHist(); resetArm = false; renderHist(); prRender(); });
+    $("histDo").addEventListener("click", () => { hist = []; saveHist(); resetArm = false; renderHist(); prRender(); renderScore(); });
     $("histCancel").addEventListener("click", () => { resetArm = false; renderHist(); });
   } else $("histReset").addEventListener("click", () => { resetArm = true; renderHist(); });
 }
@@ -776,24 +863,26 @@ let hintOpen = -1;
 const prHint = $("prHint");
 function closeHint() {
   hintOpen = -1; prHint.hidden = true;
-  document.querySelectorAll("#prParts .qmark").forEach(x => x.setAttribute("aria-expanded", "false"));
+  document.querySelectorAll(".qmark").forEach(x => x.setAttribute("aria-expanded", "false"));
 }
+function openHint(i, q) {
+  document.querySelectorAll(".qmark").forEach(x => x.setAttribute("aria-expanded", "false"));
+  if (hintOpen === i && q.dataset.k === String(hintKey)) { closeHint(); return; }
+  hintOpen = i; hintKey = q.dataset.k;
+  q.setAttribute("aria-expanded", "true");
+  $("prHintText").innerHTML = `<b>${i}</b>${RULES[i]}`;
+  prHint.hidden = false;
+}
+let hintKey = "";
 $("prHintX").addEventListener("click", closeHint);
 makeParts($("prParts"), d => {
   if (pr.done) return;
   const a = normCode(prAns.value).replace(/\?/g, "");
   if (a.length >= 5) return;
   prAns.value = a + d; prRender();
-}, (i, q) => {
-  document.querySelectorAll("#prParts .qmark").forEach(x => x.setAttribute("aria-expanded", "false"));
-  if (hintOpen === i) { closeHint(); return; }
-  hintOpen = i;
-  q.setAttribute("aria-expanded", "true");
-  $("prHintText").innerHTML = `<b>${i}</b>${RULES[i]}`;
-  prHint.hidden = false;
-});
+}, (i, q) => { q.dataset.k = "p" + i; openHint(i, q); });
 const prPlain = $("prPlain");
-function setPlain(on) { $("prParts").classList.toggle("plain", on); store.set("sjPlain", on ? "1" : ""); }
+function setPlain(on) { $("prParts").classList.toggle("plain", on); $("rvParts").classList.toggle("plain", on); store.set("sjPlain", on ? "1" : ""); }
 prPlain.checked = store.get("sjPlain", "") === "1";
 setPlain(prPlain.checked);
 prPlain.addEventListener("change", () => setPlain(prPlain.checked));
@@ -811,13 +900,134 @@ prIn.addEventListener("input", () => {
 });
 prLv.value = store.get("sjLv", "intro");
 if (!prLv.value) prLv.value = "sho";
-prLv.addEventListener("change", () => { store.set("sjLv", prLv.value); prRandom(); });
+prLv.addEventListener("change", () => { store.set("sjLv", prLv.value); dir === "rev" ? rvNew() : prRandom(); });
+
+// ---- 号碼 → 漢字 ----
+const rv = { code: "", src: "", done: false, style: store.get("sjRvStyle", "write") === "choose" ? "choose" : "write" };
+const rvSlots = [...document.querySelectorAll(".qbox.rq .slot")];
+const mainC4 = ch => [...new Set((byChar.get(ch) || []).filter(e => !e.fb).map(e => e.c4))];
+const anyC4 = ch => [...new Set((byChar.get(ch) || []).map(e => e.c4))];
+function charsWith(code) { return [...new Set(entries.filter(e => !e.fb && e.c4 === code).map(e => e.ch))]; }
+function levelPool() { return Array.from(DATA.levels[prLv.value] || DATA.levels.sho); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const diffN = (a, b) => [...a].filter((d, i) => d !== b[i]).length;
+
+function rvNew() {
+  const pool = levelPool();
+  let ch, code, guard = 0;
+  do { ch = pool[Math.floor(Math.random() * pool.length)]; code = mainC4(ch)[0]; guard++; }
+  while ((!code || code === rv.code) && guard < 50);
+  rvSet(code, ch);
+}
+function rvSet(code, src) {
+  rv.code = code; rv.done = false;
+  const pool = levelPool();
+  rv.src = src || charsWith(code).find(c => pool.includes(c)) || charsWith(code)[0] || "";
+  $("rvK").textContent = "？"; $("rvK").className = "k";
+  rvSlots.forEach((s, i) => { s.className = "slot s" + i; s.textContent = code[i]; });
+  $("rvParts").innerHTML = [...code].map((d, i) => `<div class="rvcard"><span class="pos">${POS[i]}</span><span class="n">${d}</span>${svg(PARTS[d].forms[0])}<span class="nm">${PARTS[d].nm}</span><button type="button" class="qmark" data-k="r${i}" aria-label="${d} の決まりを見る" aria-expanded="false">?</button></div>`).join("");
+  $("rvParts").querySelectorAll(".qmark").forEach((q, i) => q.addEventListener("click", () => openHint(Number(code[i]), q)));
+  $("rvIn").value = ""; $("rvVerdict").innerHTML = ""; $("rvAll").innerHTML = "";
+  $("rvCheck").disabled = false; $("rvShow").disabled = false; $("rvIn").disabled = false;
+  if (rv.style === "choose") rvBuildChoices();
+  rvStyleUI();
+}
+function rvBuildChoices() {
+  const pool = levelPool();
+  const near = n => shuffle(pool.filter(c => { const cs = mainC4(c); return cs.length && !cs.includes(rv.code) && Math.min(...cs.map(x => diffN(x, rv.code))) === n; }));
+  let wrong = [];
+  for (const n of [1, 2, 3, 4]) { for (const c of near(n)) { if (wrong.length >= 5) break; if (!wrong.includes(c)) wrong.push(c); } if (wrong.length >= 5) break; }
+  if (wrong.length < 5) {
+    const all = shuffle(Array.from(DATA.levels.all).filter(c => !mainC4(c).includes(rv.code)));
+    for (const c of all) { if (wrong.length >= 5) break; if (!wrong.includes(c)) wrong.push(c); }
+  }
+  const opts = shuffle([rv.src, ...wrong]);
+  const box = $("rvChoices"); box.innerHTML = "";
+  for (const c of opts) {
+    const b = document.createElement("button"); b.type = "button";
+    b.innerHTML = `<span class="ck">${c}</span><span class="cc"></span>`;
+    b.dataset.ch = c;
+    b.addEventListener("click", () => rvAnswer(c, b));
+    box.append(b);
+  }
+}
+function rvStyleUI() {
+  const ch = rv.style === "choose";
+  $("rvWriteBtn").setAttribute("aria-pressed", String(!ch));
+  $("rvChooseBtn").setAttribute("aria-pressed", String(ch));
+  $("rvWrite").hidden = ch; $("rvChoices").hidden = !ch;
+}
+function rvMarkSlots(code) {
+  rvSlots.forEach((s, i) => { s.className = "slot s" + i + (code ? (code[i] === rv.code[i] ? " ok" : " ng") : ""); });
+}
+function rvFinish(ok, ans, ansCode, seen) {
+  rv.done = true;
+  const pool = levelPool();
+  const all = charsWith(rv.code);
+  const fam = all.filter(c => pool.includes(c)), rest = all.filter(c => !pool.includes(c));
+  const answers = (fam.length ? fam : all).slice(0, 6).join("");
+  hist.push({ dir: "rev", code: rv.code, ok, seen: !!seen, ans: ans || "", ansCode: ansCode || "", answers, more: Math.max(0, all.length - Math.min(6, (fam.length ? fam : all).length)) });
+  saveHist(); renderScore();
+  $("rvK").textContent = ans && ok ? ans : rv.src; $("rvK").className = "k ans";
+  const LIM = 120;
+  $("rvAll").innerHTML = `<h5>${rv.code} の字（${all.length}字）</h5><div class="lst">${fam.map(c => `<b>${c}</b>`).join("")}${rest.slice(0, Math.max(0, LIM - fam.length)).join("")}${all.length > LIM ? `<span class="more-n"> …ほか${all.length - LIM}字</span>` : ""}</div>` +
+    `<button type="button" class="linkbtn" id="rvGo">さがすで見る</button>`;
+  $("rvGo").addEventListener("click", () => { showTab("search"); codeIn.value = rv.code; searchCode(); });
+  $("rvCheck").disabled = true; $("rvShow").disabled = true; $("rvIn").disabled = true;
+}
+function rvAnswer(ch, btn) {
+  if (rv.done) return;
+  const codes = mainC4(ch).length ? mainC4(ch) : anyC4(ch);
+  if (!codes.length) { $("rvVerdict").innerHTML = `<b class="ng">${ch}</b> は辞書に無い字。別の字で答えてネ`; return; }
+  const ok = codes.includes(rv.code);
+  const near = ok ? rv.code : codes.slice().sort((a, b) => diffN(a, rv.code) - diffN(b, rv.code))[0];
+  rvMarkSlots(near);
+  if (rv.style === "choose") {
+    $("rvChoices").querySelectorAll("button").forEach(b => {
+      const cs = mainC4(b.dataset.ch); const c = cs.includes(rv.code) ? rv.code : cs[0];
+      b.querySelector(".cc").innerHTML = c ? [...c].map((d, k) => d === rv.code[k] ? d : `<span class="x">${d}</span>`).join("") : "";
+      if (cs.includes(rv.code)) b.classList.add("ok"); else if (b === btn) b.classList.add("ng"); else b.classList.add("dim");
+      b.disabled = true;
+    });
+  }
+  const cHTML = [...near].map((d, k) => d === rv.code[k] ? d : `<span style="color:var(--hit)">${d}</span>`).join("");
+  $("rvVerdict").innerHTML = ok ? `<b class="ok">正解！</b> ${ch} は <span class="code">${rv.code}</span>` : `<b class="ng">ざんねん</b> ${ch} は <span class="code">${cHTML}</span>`;
+  rvFinish(ok, ch, near, false);
+}
+function rvShowAns() {
+  if (rv.done) return;
+  if (rv.style === "choose") $("rvChoices").querySelectorAll("button").forEach(b => { const cs = mainC4(b.dataset.ch); if (cs.includes(rv.code)) b.classList.add("ok"); else b.classList.add("dim"); b.disabled = true; });
+  $("rvVerdict").innerHTML = `答えの例は ${rv.src}`;
+  rvFinish(false, "", "", true);
+}
+$("rvCheck").addEventListener("click", () => { const hans = Array.from($("rvIn").value).filter(c => /\p{Script=Han}/u.test(c)); if (hans.length) rvAnswer(hans[hans.length - 1]); });
+$("rvIn").addEventListener("keydown", e => { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); rv.done ? rvNew() : $("rvCheck").click(); } });
+$("rvShow").addEventListener("click", rvShowAns);
+$("rvNext").addEventListener("click", rvNew);
+$("rvWriteBtn").addEventListener("click", () => { rv.style = "write"; store.set("sjRvStyle", "write"); if (!rv.done) rvSet(rv.code, rv.src); else rvStyleUI(); });
+$("rvChooseBtn").addEventListener("click", () => { rv.style = "choose"; store.set("sjRvStyle", "choose"); if (!rv.done) rvSet(rv.code, rv.src); else { rvBuildChoices(); rvStyleUI(); } });
+
+let dir = "fwd";
+function setDir(d) {
+  dir = d === "rev" ? "rev" : "fwd";
+  const r = dir === "rev";
+  $("dirFwd").setAttribute("aria-pressed", String(!r));
+  $("dirRev").setAttribute("aria-pressed", String(r));
+  $("fwdArea").hidden = r; $("revArea").hidden = !r; $("prSrcCh").hidden = r;
+  closeHint();
+  store.set("sjDir", dir);
+  if (r && !rv.code) rvNew();
+}
+$("dirFwd").addEventListener("click", () => setDir("fwd"));
+$("dirRev").addEventListener("click", () => setDir("rev"));
+$("prRand").addEventListener("click", () => { if (dir === "rev") rvNew(); });
 
 // ---- 起動 ----
 codeIn.addEventListener("input", () => searchCode());
 useFb.addEventListener("change", () => searchCode());
 kanjiIn.addEventListener("input", renderKanji);
-searchCode(); renderKanji(); prRandom();
+searchCode(); renderKanji(); prRandom(); renderScore();
+setDir(store.get("sjDir", "fwd"));
 showTab(store.get("sjTab", "search") === "practice" ? "practice" : "search");
 </script>
 
