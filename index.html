@@ -202,7 +202,7 @@ header .gear svg { width: 20px; height: 20px; }
 .opt[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
 .opt .sample { font-size: 30px; line-height: 1.2; }
 .opt .sw { display: flex; width: 100%; max-width: 72px; height: 26px; border-radius: 5px; overflow: hidden; border: 1px solid var(--line); }
-.opt .sw i { flex: 1; }
+.opt .sw i { flex: 1; display: block; }
 .set-card { grid-template-rows: auto auto auto auto; }
 
 /* 号碼→漢字 */
@@ -256,7 +256,7 @@ header .gear svg { width: 20px; height: 20px; }
 .pr-area { gap: 10px; }
 .parts-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .parts-head .nowlabel { font-size: 13px; color: var(--muted); }
-.sw { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; }
+.swl { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; }
 .switch { appearance: none; -webkit-appearance: none; width: 42px; height: 24px; border-radius: 12px; background: var(--line); position: relative; margin: 0; cursor: pointer; transition: background .15s; flex: none; }
 .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--panel); box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .15s; }
 .switch:checked { background: var(--accent); }
@@ -350,7 +350,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.14</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.15</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -427,7 +427,7 @@ footer a { color: var(--accent); }
           <input type="text" id="prAns" hidden aria-hidden="true" tabindex="-1">
           <div class="parts-head">
             <p class="nowlabel" id="prNow"></p>
-            <label class="sw"><span>形を隠す</span><input type="checkbox" role="switch" class="switch" id="prPlain"></label>
+            <label class="swl"><span>形を隠す</span><input type="checkbox" role="switch" class="switch" id="prPlain"></label>
           </div>
           <div class="parts" id="prParts"></div>
         </div>
@@ -447,7 +447,7 @@ footer a { color: var(--accent); }
           <div class="choices" id="rvChoices" hidden></div>
           <div class="parts-head">
             <p class="nowlabel">四隅の部品</p>
-            <label class="sw"><span>形を隠す</span><input type="checkbox" role="switch" class="switch" id="rvPlain"></label>
+            <label class="swl"><span>形を隠す</span><input type="checkbox" role="switch" class="switch" id="rvPlain"></label>
           </div>
           <div class="rvparts" id="rvParts"></div>
           <div class="rv-all" id="rvAll"></div>
