@@ -285,7 +285,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.12</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.13</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </header>
@@ -360,7 +360,6 @@ footer a { color: var(--accent); }
         <input type="text" id="prAns" inputmode="numeric" autocomplete="off" maxlength="5" aria-label="自分で考えた四角号碼">
         <p class="nowlabel" id="prNow"></p>
         <div class="parts" id="prParts"></div>
-        <div class="toast" id="prHint" role="status" hidden><span id="prHintText"></span><button type="button" class="toast-x" id="prHintX" aria-label="ヒントを閉じる">✕</button></div>
         <div class="padctl">
           <button type="button" id="prBack">← ひとつ戻る</button>
           <button type="button" id="prClear">消す</button>
@@ -405,6 +404,7 @@ footer a { color: var(--accent); }
           <span class="score" id="prScore"></span>
           <button type="button" class="btn" id="histOpen">成績一覧</button>
         </div>
+        <div class="toast" id="prHint" role="status" hidden><span id="prHintText"></span><button type="button" class="toast-x" id="prHintX" aria-label="ヒントを閉じる">✕</button></div>
       </div>
     </section>
 
