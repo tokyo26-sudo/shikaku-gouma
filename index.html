@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;800&family=Zen+Kaku+Gothic+New:wght@400;700&family=Martian+Mono:wght@400;600&family=Klee+One:wght@600&family=Yuji+Syuku&display=swap">
 <style>
-/* Layout: stroke-form chart (collapsible) on top; 2 panels side by side (left: さがす/れんしゅう tabs, right: 漢字→号碼), stacked on phones */
+/* Layout: じびき/れんしゅう switch on top, stroke-form chart below; じびき = 2 panels (号碼で引く / 漢字で引く), れんしゅう = one centered panel; stacked on phones */
 :root {
   --bg: #eef1ef;
   --panel: #fbfcfb;
@@ -314,6 +314,13 @@ header .gear.help + .gear { margin-left: 0; }
   .rvcard .nm { display: none; }
 }
 
+/* v0.17 じびき／れんしゅう */
+.modes { margin: 0; gap: 2px; }
+.modes > button { font-size: 16px; padding: 8px 18px 10px; }
+.practice-sec { width: 100%; max-width: 720px; justify-self: center; box-sizing: border-box; }
+#practiceSec[hidden], #jibiki[hidden] { display: none !important; }
+@media (max-width: 760px) { .modes > button { font-size: 15px; padding: 6px 14px 8px; } header { align-items: center; } header .sub { order: 5; flex-basis: 100%; } }
+
 /* history modal */
 .histbtn { margin-left: auto; }
 .modal { position: fixed; inset: 0; z-index: 30; background: rgba(10, 20, 25, .45); display: grid; place-items: center; padding: 16px; box-sizing: border-box; }
@@ -352,11 +359,17 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.16</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.17</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </header>
+
+  <div class="tabs modes" role="tablist" aria-label="じびき と れんしゅう">
+    <button type="button" role="tab" id="tabSearch" aria-selected="true" aria-controls="jibiki">じびき</button>
+    <button type="button" role="tab" id="tabPractice" aria-selected="false" aria-controls="practiceSec">れんしゅう</button>
+    <span class="tab-extra" id="tabExtra" hidden><span class="score" id="prScore"></span><button type="button" class="btn small" id="histOpen">成績一覧</button></span>
+  </div>
 
   <details class="chart" id="chart">
     <summary><span id="chips"></span><span class="chart-open">部品の早見表</span></summary>
@@ -369,15 +382,10 @@ footer a { color: var(--accent); }
     </div>
   </details>
 
-  <div class="panels">
-    <section aria-label="号碼から漢字、れんしゅう">
-      <div class="tabs" role="tablist">
-        <button type="button" role="tab" id="tabSearch" aria-selected="true" aria-controls="viewSearch"><em>号碼</em> → 漢字</button>
-        <button type="button" role="tab" id="tabPractice" aria-selected="false" aria-controls="viewPractice">れんしゅう</button>
-        <span class="tab-extra" id="tabExtra" hidden><span class="score" id="prScore"></span><button type="button" class="btn small" id="histOpen">成績一覧</button></span>
-      </div>
-
-      <div class="view" id="viewSearch" role="tabpanel" aria-labelledby="tabSearch">
+  <div class="panels" id="jibiki" role="tabpanel" aria-labelledby="tabSearch">
+    <section aria-labelledby="h-code">
+      <h2 id="h-code"><em>号碼</em>で引く</h2>
+      <div class="view" id="viewSearch">
         <input type="text" id="code" inputmode="numeric" autocomplete="off" maxlength="5" value="1043" aria-label="四角号碼（4桁、附角つきなら5桁）">
         <div class="pad">
           <div class="pad-head">
@@ -397,11 +405,22 @@ footer a { color: var(--accent); }
         <div id="codeResult"></div>
       </div>
 
-      <div class="view" id="viewPractice" role="tabpanel" aria-labelledby="tabPractice" hidden>
+    </section>
+
+    <section aria-labelledby="h-kanji">
+      <h2 id="h-kanji"><em>漢字</em>で引く</h2>
+      <textarea id="kanji" aria-label="漢字を入力">西村天曜戸</textarea>
+      <p class="hint">漢字以外は無視。号碼を押すと「号碼で引く」でその番号の仲間が出る</p>
+      <div class="cards" id="kanjiResult"></div>
+    </section>
+  </div>
+
+  <section class="practice-sec" id="practiceSec" role="tabpanel" aria-labelledby="tabPractice" hidden>
+      <div class="view" id="viewPractice">
         <div class="pr-top">
           <div class="seg dirseg" role="group" aria-label="問題の向き">
-            <button type="button" id="dirFwd" aria-pressed="true">漢字→号碼</button>
-            <button type="button" id="dirRev" aria-pressed="false">号碼→漢字</button>
+            <button type="button" id="dirFwd" aria-pressed="true">号碼を答える</button>
+            <button type="button" id="dirRev" aria-pressed="false">漢字を答える</button>
           </div>
           <select id="prLv" aria-label="出す範囲">
             <option value="intro">入門 107字</option>
@@ -465,15 +484,7 @@ footer a { color: var(--accent); }
         </div>
         <div class="toast" id="prHint" role="status" hidden><span id="prHintText"></span><button type="button" class="toast-x" id="prHintX" aria-label="ヒントを閉じる">✕</button></div>
       </div>
-    </section>
-
-    <section aria-labelledby="h-kanji">
-      <h2 id="h-kanji"><em>漢字</em> → 号碼</h2>
-      <textarea id="kanji" aria-label="漢字を入力">西村天曜戸</textarea>
-      <p class="hint">漢字以外は無視。号碼を押すと左でその番号の仲間が出る</p>
-      <div class="cards" id="kanjiResult"></div>
-    </section>
-  </div>
+  </section>
 
   <div class="modal" id="helpModal" hidden>
     <div class="modal-card help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
@@ -492,12 +503,16 @@ footer a { color: var(--accent); }
         <p class="help-ex"><span class="ek">品</span><span>は <b>6066</b>。左上は口で 6、右上は同じ口をもう数えたので 0、左下と右下は下の二つの口で 6 と 6。</span></p>
         <h4>このつーるの使い方</h4>
         <ul>
-          <li><b>号碼 → 漢字</b>：部品の ぼたん を左上から順に押すと、候補の漢字が しぼられていきます。数字を直接打っても、わからない隅を「?」で飛ばしてもかまいません</li>
-          <li><b>漢字 → 号碼</b>：右の欄に漢字を入れると、四隅に数字をそえて号碼を出します</li>
+          <li><b>じびき</b>
+            <ul>
+              <li><b>号碼で引く</b>：部品の ぼたん を左上から順に押すと、候補の漢字が しぼられていきます。数字を直接打っても、わからない隅を「?」で飛ばしてもかまいません</li>
+              <li><b>漢字で引く</b>：漢字を入れると、四隅に数字をそえて号碼を出します</li>
+            </ul>
+          </li>
           <li><b>れんしゅう</b>
             <ul>
-              <li>漢字 → 号碼：出た字の号碼を答えます。隅ごとに ○× がつきます。ぱそこん では数字きーでも入れられます</li>
-              <li>号碼 → 漢字：番号に合う字を、書くか 6つから選んで答えます</li>
+              <li>号碼を答える：出た字の号碼を答えます。隅ごとに ○× がつきます。ぱそこん では数字きーでも入れられます</li>
+              <li>漢字を答える：番号に合う字を、書くか 6つから選んで答えます</li>
               <li>範囲は「入門 107字」から「辞書ぜんぶ」まで。「形を隠す」で絵を消し、「?」で各数字の決まりを見られます</li>
               <li>結果は「成績一覧」に たまります。この端末の ぶらうざ に保存されます</li>
             </ul>
@@ -805,8 +820,8 @@ function showTab(t) {
   if (!pr && typeof closeHint === "function") closeHint();
   $("tabSearch").setAttribute("aria-selected", String(!pr));
   $("tabPractice").setAttribute("aria-selected", String(pr));
-  $("viewSearch").hidden = pr;
-  $("viewPractice").hidden = !pr;
+  $("jibiki").hidden = pr;
+  $("practiceSec").hidden = !pr;
   $("tabExtra").hidden = !pr;
   document.body.classList.toggle("practicing", pr);
   if (pr && typeof ensureQuestion === "function") ensureQuestion();
@@ -881,7 +896,7 @@ function prCheck() {
   hist.push({ ch: pr.ch, ok, ans: a, marks: r.marks, codes: pr.list.map(e => e.c4 + (e.fu ?? "")) }); saveHist();
   const all = pr.list.map(fmt).join(" ／ ");
   $("prVerdict").innerHTML = (ok ? `<b class="ok">正解！</b> ` : `<b class="ng">ざんねん</b> 正解は `) + all +
-    ` <button type="button" class="linkbtn" id="prGo">さがすで見る</button>`;
+    ` <button type="button" class="linkbtn" id="prGo">じびきで見る</button>`;
   $("prGo").addEventListener("click", goSearch);
   prRender(r);
 }
@@ -891,7 +906,7 @@ function prShow() {
   hist.push({ ch: pr.ch, ok: false, seen: true, codes: pr.list.map(e => e.c4 + (e.fu ?? "")) }); saveHist();
   const e = pr.list[0];
   prAns.value = e.c4 + (e.fu ?? "");
-  $("prVerdict").innerHTML = `答えは ${pr.list.map(fmt).join(" ／ ")} <button type="button" class="linkbtn" id="prGo">さがすで見る</button>`;
+  $("prVerdict").innerHTML = `答えは ${pr.list.map(fmt).join(" ／ ")} <button type="button" class="linkbtn" id="prGo">じびきで見る</button>`;
   $("prGo").addEventListener("click", goSearch);
   prRender({ marks: ["", "", "", "", ""], best: "" });
 }
@@ -1067,7 +1082,7 @@ function rvFinish(ok, ans, ansCode, seen) {
   $("rvK").textContent = ans && ok ? ans : rv.src; $("rvK").className = "k ans";
   const LIM = 120;
   $("rvAll").innerHTML = `<h5>${rv.code} の字（${all.length}字）</h5><div class="lst">${fam.map(c => `<b>${c}</b>`).join("")}${rest.slice(0, Math.max(0, LIM - fam.length)).join("")}${all.length > LIM ? `<span class="more-n"> …ほか${all.length - LIM}字</span>` : ""}</div>` +
-    `<button type="button" class="linkbtn" id="rvGo">さがすで見る</button>`;
+    `<button type="button" class="linkbtn" id="rvGo">じびきで見る</button>`;
   $("rvGo").addEventListener("click", () => { showTab("search"); codeIn.value = rv.code; searchCode(); });
   $("rvIn").disabled = true;
   updateBar();
@@ -1155,7 +1170,7 @@ $("barMain").addEventListener("click", () => {
   else { pr.done ? prRandom() : prCheck(); }
 });
 document.addEventListener("keydown", e => {
-  if ($("viewPractice").hidden || dir !== "fwd" || !$("histModal").hidden || !$("setModal").hidden || !$("helpModal").hidden) return;
+  if ($("practiceSec").hidden || dir !== "fwd" || !$("histModal").hidden || !$("setModal").hidden || !$("helpModal").hidden) return;
   const t = e.target;
   if (t && (t.tagName === "INPUT" && t.type === "text" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
   if (e.metaKey || e.ctrlKey || e.altKey) return;
