@@ -98,6 +98,13 @@ h2 em { font-style: normal; color: var(--accent); }
 input[type="text"], textarea, select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; box-sizing: border-box; }
 input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 #code, #prAns { font-family: var(--f-mono); font-size: 30px; letter-spacing: .3em; text-align: center; font-weight: 600; }
+/* v0.18 号碼の窓のすぐ下に字の一覧（高さ固定で中だけスクロール） */
+.live { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); padding: 8px 10px; margin-top: -6px; min-width: 0; }
+.live-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.live-tg { font: inherit; font-size: 12px; color: var(--accent); background: none; border: 0; padding: 2px 4px; cursor: pointer; white-space: nowrap; }
+.live-body { height: 190px; overflow-y: auto; overscroll-behavior: contain; }
+.live.open .live-body { height: auto; overflow: visible; }
+@media (max-width: 600px) { .live-body { height: 150px; } }
 /* v0.18 附角を小さく表示 */
 .codewrap { position: relative; }
 .codewrap #code { color: transparent; caret-color: var(--ink); }
@@ -367,7 +374,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.18</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.19</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -395,6 +402,10 @@ footer a { color: var(--accent); }
       <h2 id="h-code"><em>号碼</em>で引く</h2>
       <div class="view" id="viewSearch">
         <div class="codewrap" id="codeWrap"><input type="text" id="code" inputmode="numeric" autocomplete="off" maxlength="5" value="1043" aria-label="四角号碼（4桁、附角つきなら5桁）"><div class="codeshow" id="codeShow" aria-hidden="true"></div></div>
+        <div class="live" id="liveBox">
+          <div class="live-h"><div class="status" id="codeStatus"></div><button type="button" class="live-tg" id="liveTg" aria-expanded="false">ひろげる ▾</button></div>
+          <div class="live-body" id="codeResult"></div>
+        </div>
         <div class="pad">
           <div class="pad-head">
             <div class="cornerbox" aria-hidden="true"><span class="c0"></span><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span></div>
@@ -409,8 +420,6 @@ footer a { color: var(--accent); }
         </div>
         <p class="hint">数字を直接打ってもいい。わからない桁は ?。短いと前方一致。字の右下の小さい数字が附角</p>
         <label class="toggle"><input type="checkbox" id="useFb">予備辞書の字も出す（流儀がちがうので点線で表示）</label>
-        <div class="status" id="codeStatus"></div>
-        <div id="codeResult"></div>
       </div>
 
     </section>
@@ -739,6 +748,11 @@ function renderPad(q) {
   $("padClear").disabled = pos === 0;
 }
 
+$("liveTg").addEventListener("click", () => {
+  const open = $("liveBox").classList.toggle("open");
+  $("liveTg").textContent = open ? "ちぢめる ▴" : "ひろげる ▾";
+  $("liveTg").setAttribute("aria-expanded", open);
+});
 function showCode(q) {
   const box = $("codeShow");
   const t = document.createElement("span");
@@ -753,7 +767,7 @@ function searchCode(resetLimit = true) {
   showCode(q);
   if (resetLimit) shown = LIMIT;
   const out = $("codeResult"), st = $("codeStatus");
-  out.textContent = "";
+  out.textContent = ""; out.scrollTop = 0;
   renderPad(q);
   if (!q) { st.innerHTML = `ぜんぶで <b>${filterEntries("").length}</b> 字。左上の部品から押してネ`; return; }
   const hits = filterEntries(q);
