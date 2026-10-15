@@ -48,11 +48,38 @@ h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(26px, 5vw
 .back:hover { border-color: var(--accent); background: var(--accent-soft); }
 section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
 h2 { margin: 0 0 10px; font-size: 14px; color: var(--accent); font-weight: 700; letter-spacing: .06em; }
-.top { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 18px; align-items: start; }
-@media (max-width: 760px) { .top { grid-template-columns: 1fr; } .bests { grid-template-columns: repeat(2, auto); } }
+
+/* レイアウト（v0.04）：左＝ダイヤル（スクロールしても付いてくる）、右＝見る字・かたより・設定 */
+.main { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 18px; align-items: start; }
+.dialpane { position: sticky; top: 10px; z-index: 5; }
+.dialsec { padding: 12px 14px; }
+.dialgrid { display: grid; gap: 10px; }
+.rightpane { display: grid; gap: 18px; min-width: 0; }
+.dialgrid .bests { grid-template-columns: repeat(2, auto); }
+@media (max-width: 760px) {
+  .wrap { padding-top: 14px; gap: 12px; }
+  .main { grid-template-columns: 1fr; gap: 12px; }
+  .dialpane { top: 0; margin: 0 -16px; }
+  .dialsec { border-radius: 0 0 12px 12px; border-top: 0; padding: 6px 12px 8px; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+  .dialsec h2, .pc-only { display: none; }
+  .dialgrid { grid-template-columns: minmax(0, 60%) minmax(0, 1fr); align-items: center; gap: 6px; }
+  .dialgrid .chip .cn { display: none; }
+  .dialgrid .chips { gap: 4px; }
+  .dialgrid .ctl { gap: 6px; }
+  .dialgrid .chip { font-size: 11px; padding: 3px 8px; }
+  .dialgrid .btn.big { font-size: 15px; padding: 2px 14px; }
+  .dialgrid .bests { font-size: 11px; grid-template-columns: 1fr; gap: 0; }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; gap: 6px !important; }
+  .rc { padding: 4px 6px 6px; min-width: 0; overflow: hidden; }
+  .rc-h { flex-wrap: wrap; gap: 0 6px; }
+  .rc-code { order: 3; width: 100%; margin-top: -2px; }
+  .rc-k { font-size: 24px; }
+  .rc-code { font-size: 10px; letter-spacing: .05em; }
+  .rc-tot { font-size: 14px; }
+}
 
 /* ダイヤル */
-.dial { width: 100%; max-width: 380px; display: block; margin: 0 auto; touch-action: manipulation; }
+.dial { width: 100%; max-width: 330px; display: block; margin: 0 auto; touch-action: manipulation; }
 .dial .slot { cursor: pointer; }
 .dial .slot circle { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; transition: fill .15s; }
 .dial .slot:hover circle { stroke: var(--accent); }
@@ -132,26 +159,65 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>強さダイヤル <span class="ver">v0.03</span></h1>
+    <h1>強さダイヤル <span class="ver">v0.04</span></h1>
     <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・運 を決める実験</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
 
-  <section>
-    <h2>ダイヤル</h2>
-    <div class="top">
-      <svg class="dial" id="dial" viewBox="0 0 360 360" role="img" aria-label="強さのダイヤル"></svg>
-      <div class="ctl">
-        <div>
-          <div class="lbl">回すもの</div>
-          <div class="chips" id="statChips"></div>
+  <div class="main">
+    <aside class="dialpane">
+      <section class="dialsec">
+        <h2>ダイヤル</h2>
+        <div class="dialgrid">
+          <svg class="dial" id="dial" viewBox="0 0 360 360" role="img" aria-label="強さのダイヤル"></svg>
+          <div class="ctl">
+            <div class="chips" id="statChips"></div>
+            <div class="row">
+              <button type="button" class="btn big" id="rotL" aria-label="左に回す">◀</button>
+              <button type="button" class="btn big" id="rotR" aria-label="右に回す">▶</button>
+            </div>
+            <div class="bests" id="bests"></div>
+          </div>
         </div>
-        <div class="row">
-          <button type="button" class="btn big" id="rotL" aria-label="左に回す">◀</button>
-          <button type="button" class="btn big" id="rotR" aria-label="右に回す">▶</button>
-          <span class="note">色の丸をつかんで輪っかにそってドラッグすると回せる。輪っかの記号を押すと、選んだ能力の最強をそこに置く。←→キーでも回せる</span>
+        <p class="note pc-only">色の丸をつかんで輪っかにそってドラッグすると回せる。輪っかの記号を押すと、選んだ能力の最強をそこに置く。←→キーでも回せる</p>
+      </section>
+    </aside>
+
+    <div class="rightpane">
+      <section>
+        <h2>見る字</h2>
+        <input type="text" id="watchIn" aria-label="見る漢字" autocomplete="off">
+        <p class="note">漢字を入れるとレーダーチャートが出る。点線のひし形は、範囲の字の平均。号碼が2つある字は1つ目を使う。</p>
+        <div class="cards" id="cards"></div>
+      </section>
+
+      <section>
+        <div class="row" style="margin-bottom:10px">
+          <h2 style="margin:0">全体のかたより</h2>
+          <select id="range" aria-label="数える範囲">
+            <option value="joyo">常用漢字</option>
+            <option value="sho">小学校で習う字</option>
+            <option value="all">辞書ぜんぶ</option>
+          </select>
+          <span class="note" id="rangeN"></span>
         </div>
-        <div class="bests" id="bests"></div>
+        <div class="stats">
+          <div>
+            <table class="st" id="stTable"></table>
+            <div class="lbl" style="margin-top:14px">合計点の分布（0〜48点）</div>
+            <svg class="hist" id="hist" viewBox="0 0 450 150" preserveAspectRatio="none" role="img" aria-label="合計点の分布"></svg>
+          </div>
+          <div>
+            <div class="lbl">強い字 トップ20（押すと「見る字」に足す）</div>
+            <div class="kl" id="topList"></div>
+            <div class="lbl" style="margin-top:12px">弱い字 トップ20</div>
+            <div class="kl" id="botList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ctl">
+        <h2 style="margin:0">設定</h2>
         <div>
           <div class="lbl">点のつけ方</div>
           <div class="chips" id="modeChips"></div>
@@ -166,42 +232,11 @@ footer a { color: var(--accent); }
         </div>
         <p class="note">点のつけ方：最強の記号が 12点。がけなし＝どっち回りでも1つ離れるごとに2点ずつ下がり、真反対が 0点。がけあり＝時計回りに1点ずつ下がり、最強のすぐ左どなりが 1点。<br>
         記号：右上の 0 → <b>X</b>（亠か もう使った か不明）、左下・右下の 0 → <b>Y</b>（もう使った）。左上の 0 はそのまま（必ず頭の形）。<br>
-        輪っかの小さい数字は、選んだ能力の隅でその記号が出る割合（下の「範囲」の字で数える）。点線の記号はその隅には出てこない。</p>
-      </div>
+        ダイヤルの小さい％は、選んだ能力の隅でその記号が出る割合（「全体のかたより」の範囲の字で数える）。点線の記号はその隅には出てこない。<br>
+        ダイヤルは、色の丸をつかんでドラッグ・記号を押す・◀▶・←→キー で回せる。</p>
+      </section>
     </div>
-  </section>
-
-  <section>
-    <h2>見る字</h2>
-    <input type="text" id="watchIn" aria-label="見る漢字" autocomplete="off">
-    <p class="note">漢字を入れるとレーダーチャートが出る。点線のひし形は、範囲の字の平均。号碼が2つある字は1つ目を使う。</p>
-    <div class="cards" id="cards"></div>
-  </section>
-
-  <section>
-    <div class="row" style="margin-bottom:10px">
-      <h2 style="margin:0">全体のかたより</h2>
-      <select id="range" aria-label="数える範囲">
-        <option value="joyo">常用漢字</option>
-        <option value="sho">小学校で習う字</option>
-        <option value="all">辞書ぜんぶ</option>
-      </select>
-      <span class="note" id="rangeN"></span>
-    </div>
-    <div class="stats">
-      <div>
-        <table class="st" id="stTable"></table>
-        <div class="lbl" style="margin-top:14px">合計点の分布（0〜48点）</div>
-        <svg class="hist" id="hist" viewBox="0 0 450 150" preserveAspectRatio="none" role="img" aria-label="合計点の分布"></svg>
-      </div>
-      <div>
-        <div class="lbl">強い字 トップ20（押すと「見る字」に足す）</div>
-        <div class="kl" id="topList"></div>
-        <div class="lbl" style="margin-top:12px">弱い字 トップ20</div>
-        <div class="kl" id="botList"></div>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <footer>号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a></footer>
 </div>
@@ -358,10 +393,12 @@ document.addEventListener("keydown", e => {
 
 function drawChips() {
   const box = $("statChips"); box.textContent = "";
-  [...STATS.map((s, j) => ({ label: `${s.name}（${s.corner}）`, j, color: s.color })), { label: "まとめて", j: 4, color: "var(--muted)" }].forEach(o => {
+  [...STATS.map((s, j) => ({ label: s.name, cn: `（${s.corner}）`, j, color: s.color })), { label: "まとめて", cn: "", j: 4, color: "var(--muted)" }].forEach(o => {
     const b = document.createElement("button"); b.type = "button"; b.className = "chip";
     b.setAttribute("aria-pressed", String(st.sel === o.j));
-    const d = document.createElement("span"); d.className = "dot"; d.style.background = o.color; b.append(d, o.label);
+    const d = document.createElement("span"); d.className = "dot"; d.style.background = o.color;
+    const cn = document.createElement("span"); cn.className = "cn"; cn.textContent = o.cn;
+    b.append(d, o.label, cn);
     b.addEventListener("click", () => { st.sel = o.j; renderAll(); });
     box.append(b);
   });
