@@ -61,10 +61,13 @@ h2 { margin: 0 0 10px; font-size: 14px; color: var(--accent); font-weight: 700; 
 .dial .slot.none text.sym { fill: var(--muted); }
 .dial .slot text.pt { font-family: var(--f-mono); font-size: 10px; fill: var(--muted); text-anchor: middle; }
 .dial .slot text.pc { font-family: var(--f-mono); font-size: 9px; fill: var(--muted); text-anchor: middle; }
-.dial .mk { transition: transform .25s ease; }
+.dial .mk { cursor: grab; }
+.dial.dragging, .dial.dragging .mk { cursor: grabbing; }
+.dial .mk circle.hit { fill: transparent; stroke: none; }
+.dial.dragging .mk.drag circle:not(.hit) { stroke: var(--ink); stroke-width: 3; }
 .dial .mk circle { stroke: var(--panel); stroke-width: 2; }
 .dial .mk text { font-size: 12px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
-.dial .mk.sel circle { stroke: var(--ink); stroke-width: 2.5; }
+.dial .mk.sel circle:not(.hit) { stroke: var(--ink); stroke-width: 2.5; }
 .dial .center { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); text-anchor: middle; }
 
 .ctl { display: grid; gap: 12px; }
@@ -129,7 +132,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>強さダイヤル <span class="ver">v0.01</span></h1>
+    <h1>強さダイヤル <span class="ver">v0.02</span></h1>
     <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・運 を決める実験</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
@@ -146,7 +149,7 @@ footer a { color: var(--accent); }
         <div class="row">
           <button type="button" class="btn big" id="rotL" aria-label="左に回す">◀</button>
           <button type="button" class="btn big" id="rotR" aria-label="右に回す">▶</button>
-          <span class="note">輪っかの記号を押すと、選んだ能力の最強をそこに置く。←→キーでも回せる</span>
+          <span class="note">色の丸をつかんで輪っかにそってドラッグすると回せる。輪っかの記号を押すと、選んだ能力の最強をそこに置く。←→キーでも回せる</span>
         </div>
         <div class="bests" id="bests"></div>
         <div>
@@ -290,11 +293,47 @@ function drawDial() {
     const i = st.ring.indexOf(b);
     const stack = byPos[i], off = stack.indexOf(j) * 22;
     const r = RM + off * 0.0, a = ang(i) + (stack.length > 1 ? (stack.indexOf(j) - (stack.length - 1) / 2) * 0.16 : 0);
-    const g = el("g", { class: "mk" + (st.sel === j || st.sel === 4 ? " sel" : "") }, svg);
-    el("circle", { cx: CX + r * Math.cos(a), cy: CY + r * Math.sin(a), r: 13, fill: STATS[j].color }, g);
+    const g = el("g", { class: "mk" + (st.sel === j || st.sel === 4 ? " sel" : "") + (drag && drag.j === j ? " drag" : ""), "data-j": j }, svg);
+    el("circle", { cx: CX + r * Math.cos(a), cy: CY + r * Math.sin(a), r: 24, class: "hit" }, g);
+    el("circle", { cx: CX + r * Math.cos(a), cy: CY + r * Math.sin(a), r: 15, fill: STATS[j].color }, g);
     const t = el("text", { x: CX + r * Math.cos(a), y: CY + r * Math.sin(a) }, g); t.textContent = STATS[j].short;
   });
 }
+// ---- 印をつかんで回す ----
+let drag = null;
+function slotFromPoint(ev) {
+  const svg = $("dial"), m = svg.getScreenCTM();
+  if (!m) return null;
+  const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+  const deg = Math.atan2(p.y - CY, p.x - CX) * 180 / Math.PI + 90;
+  return ((Math.round(deg / 30) % 12) + 12) % 12;
+}
+(() => {
+  const svg = $("dial");
+  svg.addEventListener("pointerdown", ev => {
+    const mk = ev.target.closest(".mk");
+    if (!mk) return;
+    const j = +mk.dataset.j;
+    if (st.sel !== 4 && st.sel !== j) st.sel = j;
+    drag = { j, id: ev.pointerId };
+    svg.setPointerCapture(ev.pointerId);
+    svg.classList.add("dragging");
+    ev.preventDefault();
+    renderAll();
+  });
+  svg.addEventListener("pointermove", ev => {
+    if (!drag || ev.pointerId !== drag.id) return;
+    const i = slotFromPoint(ev);
+    if (i === null || st.ring[i] === st.best[drag.j]) return;
+    if (st.sel === 4) rotateAll(i - st.ring.indexOf(st.best[drag.j]));
+    else { st.best[drag.j] = st.ring[i]; renderAll(); }
+  });
+  const end = ev => { if (!drag || ev.pointerId !== drag.id) return; drag = null; svg.classList.remove("dragging"); renderAll(); };
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+  // スマホ：印にさわったときだけ画面のスクロールを止める
+  svg.addEventListener("touchstart", ev => { if (ev.target.closest && ev.target.closest(".mk")) ev.preventDefault(); }, { passive: false });
+})();
 function setBestAt(i) {
   if (st.sel === 4) { const d = i - st.ring.indexOf(st.best[0]); rotateAll(d); return; }
   st.best[st.sel] = st.ring[i]; renderAll();
