@@ -160,8 +160,8 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>強さダイヤル <span class="ver">v0.05</span></h1>
-    <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・運 を決める実験</p>
+    <h1>強さダイヤル <span class="ver">v0.06</span></h1>
+    <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・体力 を決める実験</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
 
@@ -271,7 +271,7 @@ const STATS = [
   { name: "攻撃", short: "攻", corner: "左上", color: "var(--c0)" },
   { name: "守備", short: "守", corner: "右上", color: "var(--c1)" },
   { name: "素早さ", short: "速", corner: "左下", color: "var(--c2)" },
-  { name: "運", short: "運", corner: "右下", color: "var(--c3)" },
+  { name: "体力", short: "体", corner: "右下", color: "var(--c3)" },
 ];
 const DEF_RING = "0123456789XY";
 const PRESETS = [
@@ -430,7 +430,7 @@ $("ringReset").addEventListener("click", () => { st.ring = DEF_RING; $("ringIn")
 
 // ---- レーダー ----
 const RR = 70, RC = 100;
-const axAng = j => (-90 + j * 90) * Math.PI / 180; // 攻=上 守=右 速=下 運=左
+const axAng = j => (-90 + j * 90) * Math.PI / 180; // 攻=上 守=右 速=下 体=左
 const ptOf = (j, v) => [RC + RR * v / 12 * Math.cos(axAng(j)), RC + RR * v / 12 * Math.sin(axAng(j))];
 const polyStr = vals => vals.map((v, j) => ptOf(j, v).map(n => n.toFixed(1)).join(",")).join(" ");
 const cardState = new Map();
