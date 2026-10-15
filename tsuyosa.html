@@ -132,7 +132,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>強さダイヤル <span class="ver">v0.02</span></h1>
+    <h1>強さダイヤル <span class="ver">v0.03</span></h1>
     <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・運 を決める実験</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
@@ -153,6 +153,10 @@ footer a { color: var(--accent); }
         </div>
         <div class="bests" id="bests"></div>
         <div>
+          <div class="lbl">点のつけ方</div>
+          <div class="chips" id="modeChips"></div>
+        </div>
+        <div>
           <div class="lbl">ためし</div>
           <div class="chips" id="presets"></div>
         </div>
@@ -160,7 +164,7 @@ footer a { color: var(--accent); }
           <div class="lbl">輪っかの並び順（0〜9・X・Y の12こ）</div>
           <div class="row"><input type="text" id="ringIn" maxlength="12" autocomplete="off" spellcheck="false" aria-label="輪っかの並び順"><button type="button" class="btn" id="ringReset">もとに戻す</button></div>
         </div>
-        <p class="note">点のつけ方：最強の記号が 12点。そこから時計回りに1つ進むごとに1点ずつ下がる（最強のすぐ左どなりが 1点）。<br>
+        <p class="note">点のつけ方：最強の記号が 12点。がけなし＝どっち回りでも1つ離れるごとに2点ずつ下がり、真反対が 0点。がけあり＝時計回りに1点ずつ下がり、最強のすぐ左どなりが 1点。<br>
         記号：右上の 0 → <b>X</b>（亠か もう使った か不明）、左下・右下の 0 → <b>Y</b>（もう使った）。左上の 0 はそのまま（必ず頭の形）。<br>
         輪っかの小さい数字は、選んだ能力の隅でその記号が出る割合（下の「範囲」の字で数える）。点線の記号はその隅には出てこない。</p>
       </div>
@@ -187,7 +191,7 @@ footer a { color: var(--accent); }
     <div class="stats">
       <div>
         <table class="st" id="stTable"></table>
-        <div class="lbl" style="margin-top:14px">合計点の分布（4〜48点）</div>
+        <div class="lbl" style="margin-top:14px">合計点の分布（0〜48点）</div>
         <svg class="hist" id="hist" viewBox="0 0 450 150" preserveAspectRatio="none" role="img" aria-label="合計点の分布"></svg>
       </div>
       <div>
@@ -244,12 +248,13 @@ const PRESETS = [
   { name: "ためし1（1・X・4・7）", ring: DEF_RING, best: ["1", "X", "4", "7"] },
   { name: "ためし2（9・0・3・6）", ring: DEF_RING, best: ["9", "0", "3", "6"] },
 ];
-let st = { ring: DEF_RING, best: ["9", "0", "3", "6"], sel: 4, range: "joyo", watch: "一人口日山川田火燥語類舞画" };
+let st = { mode: "smooth", ring: DEF_RING, best: ["9", "0", "3", "6"], sel: 4, range: "joyo", watch: "一人口日山川田火燥語類舞画" };
 try { const s = JSON.parse(store.get("tsLab", "null")); if (s && validRing(s.ring) && Array.isArray(s.best) && s.best.length === 4) st = Object.assign(st, s); } catch (e) {}
 function save() { store.set("tsLab", JSON.stringify(st)); }
 function validRing(r) { return typeof r === "string" && r.length === 12 && [...DEF_RING].every(c => r.includes(c)); }
 
-const pts = (sym, k) => 12 - ((st.ring.indexOf(sym) - st.ring.indexOf(st.best[k]) + 12) % 12);
+const dist = (sym, k) => (st.ring.indexOf(sym) - st.ring.indexOf(st.best[k]) + 12) % 12;
+const pts = (sym, k) => { const d = dist(sym, k); return st.mode === "cliff" ? 12 - d : 12 - 2 * Math.min(d, 12 - d); };
 const scores = ch => { const s = SYMS.get(ch); return s ? s.map((x, k) => pts(x, k)) : null; };
 
 // ---- 範囲の集計（記号の出る割合・平均） ----
@@ -285,7 +290,7 @@ function drawDial() {
     g.addEventListener("click", () => setBestAt(i));
   }
   const c = el("text", { x: CX, y: CY - 6, class: "center" }, svg); c.textContent = "内側の数字＝" + STATS[k].name + "の点";
-  const c2 = el("text", { x: CX, y: CY + 10, class: "center" }, svg); c2.textContent = "時計回りに下がる";
+  const c2 = el("text", { x: CX, y: CY + 10, class: "center" }, svg); c2.textContent = st.mode === "cliff" ? "時計回りに下がる（がけあり）" : "両側に下がる（がけなし）";
   // 印
   const byPos = {};
   st.best.forEach((b, j) => { const i = st.ring.indexOf(b); (byPos[i] = byPos[i] || []).push(j); });
@@ -363,9 +368,16 @@ function drawChips() {
   const bs = $("bests"); bs.textContent = "";
   STATS.forEach((s, j) => {
     const sp = document.createElement("span");
-    const worst = st.ring[(st.ring.indexOf(st.best[j]) + 11) % 12];
+    const worst = st.ring[(st.ring.indexOf(st.best[j]) + (st.mode === "cliff" ? 11 : 6)) % 12];
     sp.innerHTML = `<b style="color:${s.color}">${s.short}</b> 最強 ${st.best[j]}・最弱 ${worst}`;
     bs.append(sp);
+  });
+  const mc = $("modeChips"); mc.textContent = "";
+  [["smooth", "がけなし（真反対が最低・12〜0点）"], ["cliff", "がけあり（最強の左どなりが最低・12〜1点）"]].forEach(([id, label]) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = label;
+    b.setAttribute("aria-pressed", String(st.mode === id));
+    b.addEventListener("click", () => { st.mode = id; renderAll(); });
+    mc.append(b);
   });
   const pr = $("presets"); pr.textContent = "";
   PRESETS.forEach(p => {
@@ -473,11 +485,11 @@ function drawStats() {
   // ヒストグラム
   const h = $("hist"); h.textContent = "";
   const cnt = new Array(49).fill(0); tots.forEach(t => cnt[t]++);
-  const mx = Math.max(...cnt), W = 450 / 45;
-  for (let t = 4; t <= 48; t++) {
+  const mx = Math.max(...cnt), W = 450 / 49;
+  for (let t = 0; t <= 48; t++) {
     const bh = cnt[t] / mx * 128;
-    el("rect", { x: (t - 4) * W + 1, y: 134 - bh, width: W - 2, height: bh, rx: 1.5 }, h);
-    if (t % 4 === 0) { const tx = el("text", { x: (t - 4) * W + W / 2, y: 147, "text-anchor": "middle" }, h); tx.textContent = t; }
+    el("rect", { x: t * W + 1, y: 134 - bh, width: W - 2, height: bh, rx: 1.5 }, h);
+    if (t % 4 === 0) { const tx = el("text", { x: t * W + W / 2, y: 147, "text-anchor": "middle" }, h); tx.textContent = t; }
   }
   // 強い・弱い
   all.sort((a, b) => b.t - a.t);
