@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>めずらしさ一覧 v0.03</title>
+<title>めずらしさ一覧 v0.04</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%232c5d73%22/%3E%3Cg fill=%22none%22 stroke=%22%23fbfcfb%22 stroke-width=%225.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M13 15 V50 M13 15 H51 V50 M13 47 H51%22/%3E%3Cpath d=%22M27 16 V27 Q27 36 20 40%22/%3E%3Cpath d=%22M37 16 V33 Q37 37 41 37 H50%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,7 +125,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>めずらしさ一覧 <span class="ver">v0.03</span></h1>
+    <h1>めずらしさ一覧 <span class="ver">v0.04</span></h1>
     <p class="sub">開発者用：四隅の数字の出現率と、そのかけ算の「◯字に1字の形」を ずらっと並べる</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
@@ -158,7 +158,7 @@ footer a { color: var(--accent); }
       </table>
     </div>
     <button type="button" class="more" id="more" hidden></button>
-    <p class="note">見出しを押すと その列が①になって、前の並べ方は②・③に下がる（3段まで、あとから押したほうが優先）。①の列をもう一回押すと逆順。上の札を押すと▲▼、✕で外す。並べ方は覚えておく。例：「仲間ランクごとに めずらしい順」は「◯字に1字」→「仲間ランク」の順に押す。%は その隅でその数字が出る割合（赤いほど めずらしい）。「◯字に1字」＝ 4つの割合をかけ算して ひっくり返した数。「Wiki」「青空」＝ 日本語版ウィキペディア（約5,900万字）・青空文庫（約6,800万字）の中に その字が何回出てくるか（—は0回＝ほぼ見かけない字）。字を押すと くわしく見られる。</p>
+    <p class="note">見出しを押すと その列が①になって、前の並べ方は②・③に下がる（3段まで、あとから押したほうが優先）。①の列をもう一回押すと逆順。上の札を押すと▲▼、✕で外す。並べ方は覚えておく。例：「仲間ランクごとに めずらしい順」は「◯字に1字」→「仲間ランク」の順に押す。%は その隅でその数字が出る割合（赤いほど めずらしい）。「◯字に1字」＝ 4つの割合をかけ算して ひっくり返した数。「Wiki」「青空」＝ 日本語版ウィキペディア（約5,900万字）・青空文庫（約6,800万字）の中に その字が何回出てくるか（—は0回＝ほぼ見かけない字）。「よく見る」＝ Wiki＋青空 の足し算（よく見かける漢字ランキング用、最初は多い順）。字を押すと くわしく見られる。</p>
   </section>
 
   <footer>号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a>。出てくる回数：<a href="https://github.com/scriptin/kanji-frequency" target="_blank" rel="noopener">scriptin/kanji-frequency</a>（Dmitry Shpika、<a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener">CC BY 4.0</a>）</footer>
@@ -208,7 +208,7 @@ const ROWS = [...FIRST].map(([ch, e]) => {
   const p = [0, 1, 2, 3].map(k => F[k][e.c4[k]] / N);
   const x = 1 / (p[0] * p[1] * p[2] * p[3]);
   const m = MATES.get(e.c4).length;
-  return { ch, c4: e.c4, fu: e.fu, p, x, st: starOf(x), m, mt: mateTier(m), n: cards[ch] ? cards[ch].n : 0, wk: fq(ch)[0], az: fq(ch)[1] };
+  return { ch, c4: e.c4, fu: e.fu, p, x, st: starOf(x), m, mt: mateTier(m), n: cards[ch] ? cards[ch].n : 0, wk: fq(ch)[0], az: fq(ch)[1], ws: fq(ch)[0] + fq(ch)[1] };
 });
 const POOLS = { intro: new Set(DATA.levels.intro), sho: new Set(DATA.levels.sho), joyo: new Set(DATA.levels.joyo) };
 const POS = ["左上", "右上", "左下", "右下"];
@@ -248,6 +248,7 @@ const COLS = [
   { key: "mt", label: "仲間ランク", get: r => r.mt },
   { key: "wk", label: "Wiki", r: true, get: r => r.wk },
   { key: "az", label: "青空", r: true, get: r => r.az },
+  { key: "ws", label: "よく見る", r: true, get: r => r.ws },
   { key: "n", label: "持ってる", r: true, get: r => r.n },
 ];
 // 並べ方：[{key, dir}] 最大3段。先頭が①（いちばん優先）
@@ -332,6 +333,7 @@ function render(reset) {
     <td>${MATE[r.mt]}</td>
     <td class="r n">${cnt(r.wk)}</td>
     <td class="r n">${cnt(r.az)}</td>
+    <td class="r n"><b>${cnt(r.ws)}</b></td>
     <td class="r n">${r.n || ""}</td></tr>`).join("");
   const rest = list.length - limit;
   $("more").hidden = rest <= 0;
@@ -360,6 +362,7 @@ function openD(ch) {
       <dt>仲間</dt><dd>${MATE[r.mt]}（${r.m} 字）</dd>
       <dt>Wiki</dt><dd>${perM(r.wk, FREQ.wt)}<br><small style="color:var(--muted)">よく出る順で ${(ROWS.filter(o => o.wk > r.wk).length + 1).toLocaleString()} 位 / ${N.toLocaleString()}</small></dd>
       <dt>青空文庫</dt><dd>${perM(r.az, FREQ.at)}</dd>
+      <dt>よく見る</dt><dd>${r.ws ? r.ws.toLocaleString() + " 回" : "0 回"}<br><small style="color:var(--muted)">よく見かける順で ${(ROWS.filter(o => o.ws > r.ws).length + 1).toLocaleString()} 位 / ${N.toLocaleString()}</small></dd>
       ${r.n ? `<dt>持ってる</dt><dd>${r.n} 枚</dd>` : ""}
     </dl></div>
     <div><div style="font-size:12px;color:var(--muted);font-weight:700">${r.c4} の仲間</div><div class="mates">${mates.map(c => c === ch ? `<b>${esc(c)}</b>` : `<button type="button" data-ch="${esc(c)}">${esc(c)}</button>`).join("")}</div></div>`;
