@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>めずらしさ一覧 v0.01</title>
+<title>めずらしさ一覧 v0.02</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%232c5d73%22/%3E%3Cg fill=%22none%22 stroke=%22%23fbfcfb%22 stroke-width=%225.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M13 15 V50 M13 15 H51 V50 M13 47 H51%22/%3E%3Cpath d=%22M27 16 V27 Q27 36 20 40%22/%3E%3Cpath d=%22M37 16 V33 Q37 37 41 37 H50%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,8 +76,16 @@ table.mt { border-collapse: collapse; width: 100%; font-variant-numeric: tabular
 table.mt thead th { position: sticky; top: 0; z-index: 2; background: var(--panel); font-size: 11px; color: var(--muted); font-weight: 700; padding: 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
 table.mt thead th button { font: inherit; color: inherit; background: none; border: 0; width: 100%; padding: 7px 8px; cursor: pointer; text-align: inherit; }
 table.mt thead th button:hover { color: var(--accent); }
-table.mt thead th button[data-dir]::after { content: " ▼"; color: var(--accent); }
-table.mt thead th button[data-dir="asc"]::after { content: " ▲"; }
+table.mt thead th button[data-dir]::after { content: " ▼" attr(data-no); color: var(--accent); }
+table.mt thead th button[data-dir="asc"]::after { content: " ▲" attr(data-no); }
+table.mt thead th button[data-no="1"] { color: var(--ink); }
+.sortbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.sk { display: inline-flex; align-items: stretch; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); overflow: hidden; }
+.sk:first-of-type { border-color: var(--accent); }
+.sk button { font: inherit; font-size: 12px; color: var(--ink); background: none; border: 0; padding: 3px 6px 3px 10px; cursor: pointer; }
+.sk button.sx { padding: 3px 9px 3px 4px; color: var(--muted); }
+.sk button:hover { color: var(--accent); }
+.sk .no { font-family: var(--f-mono); color: var(--accent); margin-right: 3px; }
 table.mt td { padding: 4px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 table.mt tbody tr:hover td { background: var(--accent-soft); }
 table.mt .r, table.mt th.r button { text-align: right; }
@@ -117,7 +125,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>めずらしさ一覧 <span class="ver">v0.01</span></h1>
+    <h1>めずらしさ一覧 <span class="ver">v0.02</span></h1>
     <p class="sub">開発者用：四隅の数字の出現率と、そのかけ算の「◯字に1字の形」を ずらっと並べる</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
@@ -142,6 +150,7 @@ footer a { color: var(--accent); }
       <span class="sum" id="sum"></span>
     </div>
     <div class="rkbar" id="rkbar" style="margin:8px 0 10px"></div>
+    <div class="sortbar" id="sortbar"></div>
     <div class="tw" id="tw">
       <table class="mt">
         <thead><tr id="head"></tr></thead>
@@ -149,7 +158,7 @@ footer a { color: var(--accent); }
       </table>
     </div>
     <button type="button" class="more" id="more" hidden></button>
-    <p class="note">見出しを押すとソート、もう一回押すと逆順。%は その隅でその数字が出る割合（赤いほど めずらしい）。「◯字に1字」＝ 4つの割合をかけ算して ひっくり返した数。字を押すと くわしく見られる。</p>
+    <p class="note">見出しを押すと その列が①になって、前の並べ方は②・③に下がる（3段まで、あとから押したほうが優先）。①の列をもう一回押すと逆順。上の札を押すと▲▼、✕で外す。並べ方は覚えておく。例：「仲間ランクごとに めずらしい順」は「◯字に1字」→「仲間ランク」の順に押す。%は その隅でその数字が出る割合（赤いほど めずらしい）。「◯字に1字」＝ 4つの割合をかけ算して ひっくり返した数。字を押すと くわしく見られる。</p>
   </section>
 
   <footer>号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a></footer>
@@ -232,25 +241,50 @@ const COLS = [
   { key: "p2", label: "左下", r: true, get: r => r.p[2] },
   { key: "p3", label: "右下", r: true, get: r => r.p[3] },
   { key: "x", label: "◯字に1字", r: true, get: r => r.x },
-  { key: "st", label: "形ランク", get: r => r.x },
+  { key: "st", label: "形ランク", get: r => r.st },
   { key: "m", label: "仲間", r: true, get: r => r.m },
-  { key: "mt", label: "仲間ランク", get: r => r.m },
+  { key: "mt", label: "仲間ランク", get: r => r.mt },
   { key: "n", label: "持ってる", r: true, get: r => r.n },
 ];
-let sort = { key: "x", dir: "desc" };
-try { const s = JSON.parse(store.get("mzSort", "null")); if (s && COLS.some(c => c.key === s.key)) sort = s; } catch (e) {}
+// 並べ方：[{key, dir}] 最大3段。先頭が①（いちばん優先）
+const DEF_DIR = { ch: "asc", code: "asc", p0: "asc", p1: "asc", p2: "asc", p3: "asc", m: "asc", mt: "asc" };
+const okSort = s => s && COLS.some(c => c.key === s.key) && (s.dir === "asc" || s.dir === "desc");
+let sorts = [{ key: "x", dir: "desc" }];
+try {
+  let s = JSON.parse(store.get("mzSort", "null"));
+  if (s && !Array.isArray(s)) s = [s];              // v0.01 の1段の形をなおす
+  if (Array.isArray(s)) {
+    const seen = new Set();
+    s = s.filter(o => okSort(o) && !seen.has(o.key) && seen.add(o.key)).slice(0, 3);
+    if (s.length) sorts = s;
+  }
+} catch (e) {}
+const saveSort = () => store.set("mzSort", JSON.stringify(sorts));
 const PAGE = 500;
 let limit = PAGE;
+const labelOf = k => COLS.find(c => c.key === k).label;
 function drawHead() {
-  $("head").innerHTML = COLS.map(c => `<th class="${c.r ? "r" : ""}"><button type="button" data-key="${c.key}"${sort.key === c.key ? ` data-dir="${sort.dir}"` : ""}>${c.label}</button></th>`).join("");
+  $("head").innerHTML = COLS.map(c => {
+    const i = sorts.findIndex(o => o.key === c.key);
+    const at = i < 0 ? "" : ` data-dir="${sorts[i].dir}" data-no="${sorts.length > 1 ? i + 1 : ""}"`;
+    return `<th class="${c.r ? "r" : ""}"><button type="button" data-key="${c.key}"${at}>${c.label}</button></th>`;
+  }).join("");
+  const NO = ["①", "②", "③"];
+  $("sortbar").innerHTML = `<span>並べ方</span>` + sorts.map((o, i) => `<span class="sk"><button type="button" data-flip="${i}" title="▲▼を入れかえ"><span class="no">${NO[i]}</span>${labelOf(o.key)} ${o.dir === "asc" ? "▲" : "▼"}</button>${sorts.length > 1 ? `<button type="button" class="sx" data-del="${i}" aria-label="${labelOf(o.key)}を外す">✕</button>` : ""}</span>`).join("");
 }
 $("head").addEventListener("click", e => {
   const b = e.target.closest("button[data-key]"); if (!b) return;
   const k = b.dataset.key;
-  if (sort.key === k) sort.dir = sort.dir === "desc" ? "asc" : "desc";
-  else sort = { key: k, dir: ["ch", "code"].includes(k) ? "asc" : (["p0", "p1", "p2", "p3", "m"].includes(k) ? "asc" : "desc") };
-  store.set("mzSort", JSON.stringify(sort));
-  drawHead(); render(true);
+  if (sorts[0].key === k) sorts[0].dir = sorts[0].dir === "desc" ? "asc" : "desc";
+  else sorts = [{ key: k, dir: DEF_DIR[k] || "desc" }, ...sorts.filter(o => o.key !== k)].slice(0, 3);
+  saveSort(); drawHead(); render(true);
+});
+$("sortbar").addEventListener("click", e => {
+  const f = e.target.closest("[data-flip]"), d = e.target.closest("[data-del]");
+  if (f) { const o = sorts[+f.dataset.flip]; o.dir = o.dir === "desc" ? "asc" : "desc"; }
+  else if (d && sorts.length > 1) sorts.splice(+d.dataset.del, 1);
+  else return;
+  saveSort(); drawHead(); render(true);
 });
 const pcCell = p => { const v = Math.round(Math.max(0, Math.min(1, (Math.log10(.4) - Math.log10(p)) / 2.6)) * 60); return `<span class="pc" style="--v:${v}">${(p * 100).toFixed(p < .01 ? 2 : 1)}%</span>`; };
 function filtered() {
@@ -269,8 +303,11 @@ function filtered() {
 }
 function render(reset) {
   if (reset) { limit = PAGE; $("tw").scrollTop = 0; }
-  const col = COLS.find(c => c.key === sort.key), s = sort.dir === "asc" ? 1 : -1;
-  const list = filtered().sort((a, b) => { const x = col.get(a), y = col.get(b); return (x < y ? -1 : x > y ? 1 : 0) * s || a.c4.localeCompare(b.c4); });
+  const keys = sorts.map(o => ({ get: COLS.find(c => c.key === o.key).get, s: o.dir === "asc" ? 1 : -1 }));
+  const list = filtered().sort((a, b) => {
+    for (const k of keys) { const x = k.get(a), y = k.get(b); if (x !== y) return (x < y ? -1 : 1) * k.s; }
+    return a.c4.localeCompare(b.c4) || (a.ch < b.ch ? -1 : 1);
+  });
   $("sum").innerHTML = `<b>${list.length.toLocaleString()}</b> 字`;
   const fc = [0, 0, 0, 0, 0, 0], mc = [0, 0, 0, 0, 0, 0];
   for (const r of list) { fc[r.st]++; mc[r.mt]++; }
