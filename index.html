@@ -385,6 +385,49 @@ header .gear.help + .gear { margin-left: 0; }
 }
 
 
+
+/* ===== v0.28 裏面・仲間ランク札 ===== */
+.kc-mus.mt1 { background: #b4232a; border-color: #f3d36b; }
+.kc-mus.mt2 { background: #5b2a86; border-color: #f3d36b; }
+.kc-mus.mt3 { background: #1f3d6b; border-color: #9fb6d6; }
+.kc-mus.mt4 { background: #2f6b45; border-color: #a9d3b6; }
+.kc-mus.mt5 { background: #6b7275; border-color: #c4cacc; }
+.rarity .mtag { color: #fff; border: 1px solid transparent; }
+.rarity .mtag.mt1 { background: #b4232a; border-color: #f3d36b; } .rarity .mtag.mt2 { background: #5b2a86; border-color: #f3d36b; }
+.rarity .mtag.mt3 { background: #1f3d6b; } .rarity .mtag.mt4 { background: #2f6b45; } .rarity .mtag.mt5 { background: #6b7275; }
+.flip { background: none; border: 0; padding: 0; cursor: pointer; perspective: 1200px; display: block; font: inherit; color: inherit; }
+.flip-in { position: relative; display: grid; transform-style: preserve-3d; }
+.flip .face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: block; }
+.flip .face.back { transform: rotateY(180deg); }
+.flip.flipped .flip-in { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: no-preference) { .flip-in { transition: transform .6s cubic-bezier(.3, .7, .3, 1); } }
+@media (prefers-reduced-motion: reduce) { .flip .face.back { transform: none; visibility: hidden; } .flip.flipped .flip-in { transform: none; } .flip.flipped .face.front { visibility: hidden; } .flip.flipped .face.back { visibility: visible; } }
+.flip-note { display: block; font-size: 11px; color: var(--muted); margin-top: 6px; text-align: center; }
+.bc-stage { justify-items: center; }
+/* 裏面 */
+.kc.kc-back > .kc-in { display: grid; grid-template-rows: auto 1fr auto; padding: 8% 8% 5%; gap: 3%; text-align: left; }
+.kc-back .bk-title { text-align: center; font-family: var(--f-kanji); }
+.kc-back .bk-title b { font-weight: 500; font-size: 18cqw; line-height: 1; }
+.kc-back .bk-dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2.4cqw 4cqw; align-content: start; font-size: 5.2cqw; line-height: 1.35; }
+.kc-back .bk-dl dt { color: var(--cmut); font-weight: 700; font-size: 4.4cqw; padding-top: .6cqw; white-space: nowrap; }
+.kc-back .bk-dl dd { margin: 0; overflow-wrap: anywhere; }
+.kc-back .bk-dl small { display: block; font-size: 3.8cqw; color: var(--cmut); }
+.kc-back .bk-code { font-family: var(--f-mono); font-weight: 700; letter-spacing: .08em; font-size: 6cqw; }
+.kc-back .bk-hint { text-align: center; font-size: 3.8cqw; color: var(--cmut); }
+.kc.kc-back .kc-stars { font-size: 4.6cqw; }
+.kc-plain.kc.kc-back > .kc-in { border-top-width: 6cqw; }
+.kc-goshuin.kc.kc-back > .kc-in { padding-top: 10%; }
+.kc-goshuin.kc-back .bk-title { font-family: "Yuji Syuku", var(--f-kanji); font-size: 16cqw; line-height: 1.1; border-bottom: 1px solid rgba(196, 36, 28, .5); padding-bottom: 2%; }
+.kc-goshuin.kc-back .bk-title em { font-style: normal; font-size: 7cqw; color: rgba(196, 36, 28, .9); margin-left: 2cqw; }
+.kc-goshuin.kc-back .bk-dl { font-family: var(--f-display); }
+.kc-goshuin.kc-back .bk-dl dt { color: rgba(160, 30, 22, .9); }
+.kc-toreka.kc.kc-back > .kc-in { padding: 6%; }
+.kc-toreka.kc-back .bk-title { display: flex; justify-content: space-between; align-items: center; background: var(--edge); color: #fff; border-radius: 999px; padding: 1.5% 6%; }
+.kc-toreka.kc-back .bk-title b { font-size: 10cqw; }
+.kc-toreka.kc-back .bk-title em { font-style: normal; font-family: var(--f-mono); font-weight: 700; font-size: 5cqw; letter-spacing: .2em; }
+.kc-toreka.kc-back .bk-dl { background: rgba(255,255,255,.75); border: 1px solid color-mix(in srgb, var(--edge) 50%, transparent); border-radius: 3px; padding: 4%; }
+.kc-back.r4::after, .kc-back.r5::before { display: none; }
+
 /* ===== v0.26 タブ・カードのデザイン ===== */
 .colbtn { margin-left: auto; font-weight: 700; border-color: var(--r5) !important; }
 .mcw { position: relative; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; display: block; }
@@ -459,9 +502,11 @@ header .gear.help + .gear { margin-left: 0; }
 .kc-goshuin { --mat: #f7f1e3; }
 .kc-goshuin > .kc-in { background: var(--pat), repeating-linear-gradient(0deg, rgba(150,120,70,.05) 0 1px, transparent 1px 3px), var(--mat); }
 .kc-goshuin .kc-k { position: absolute; left: 0; right: 0; top: 18%; font-family: "Yuji Syuku", var(--f-kanji); font-size: 58cqw; }
-.kc-goshuin .gs-seal { position: absolute; right: 9%; bottom: 7%; width: 30cqw; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; place-items: center; background: rgba(200,40,30,.9); color: #fff4ea; border-radius: 6%; box-shadow: inset 0 0 0 2cqw #c8281e, inset 0 0 0 2.6cqw #fff4ea; font-family: var(--f-display); font-weight: 800; font-size: 9cqw; transform: rotate(-4deg); mix-blend-mode: multiply; }
+.kc-goshuin .gs-seal { position: absolute; right: 8%; bottom: 7%; width: 34cqw; aspect-ratio: 1; box-sizing: border-box; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; place-items: center; padding: 2cqw;
+  border: 1.6cqw solid rgba(196, 36, 28, .88); border-radius: 5%; box-shadow: inset 0 0 0 .6cqw rgba(196, 36, 28, .55); background: rgba(255, 250, 240, .35);
+  font-family: "Yuji Syuku", var(--f-kanji); font-size: 12cqw; color: rgba(196, 36, 28, .92); }
 .kc-goshuin .gs-seal i { font-style: normal; line-height: 1; }
-.kc-goshuin .gs-seal b { position: absolute; right: 1cqw; bottom: -9cqw; font-size: 6cqw; color: #c8281e; }
+.kc-goshuin .gs-seal b { position: absolute; left: -9cqw; top: 0; font-weight: 400; font-size: 7cqw; color: rgba(196, 36, 28, .9); }
 .kc-goshuin .gs-tate { position: absolute; writing-mode: vertical-rl; font-family: var(--f-display); font-weight: 800; font-size: 6.5cqw; letter-spacing: .15em; color: var(--cink); }
 .kc-goshuin .gs-r { top: 6%; right: 7%; }
 .kc-goshuin .gs-l { top: 7%; left: 7%; font-size: 6cqw; font-weight: 800; color: var(--cink); opacity: .8; }
@@ -598,7 +643,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.26</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.28</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -1231,7 +1276,8 @@ const RARE = (() => {
   return { first, mates, oneIn, star };
 })();
 const FORM_NAME = ["", "凡", "良", "秀", "稀", "幻"];
-const MATE_NAME = m => m <= 1 ? "天下無双" : m === 2 ? "両雄並立" : m <= 5 ? "少数精鋭" : m <= 19 ? "群雄割拠" : "百花繚乱";
+const MATE_TIER = m => m <= 1 ? 1 : m === 2 ? 2 : m <= 5 ? 3 : m <= 19 ? 4 : 5;
+const MATE_NAME = m => ["", "無双", "双璧", "精鋭", "群雄", "大群"][MATE_TIER(m)];
 const TICKETS = [0, 10, 7, 5, 3, 1.5];
 function rareOf(ch) {
   const e = RARE.first.get(ch); if (!e) return null;
@@ -1277,7 +1323,7 @@ function showRarity(ch) {
   if (!cardMode || !pr.card) { box.hidden = true; return; }
   const r = rareOf(ch); if (!r) { box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = `<span class="stars r${r.st}c">${starStr(r.st)}</span><span class="rk r${r.st}c">${r.form}</span>` + (r.m <= 1 ? `<span class="tag r5c">天下無双</span>` : "");
+  box.innerHTML = `<span class="stars r${r.st}c">${starStr(r.st)}</span><span class="rk r${r.st}c">${r.form}</span>` + `<span class="tag mtag mt${MATE_TIER(r.m)}">${r.mate}</span>`;
   q.dataset.star = r.st;
   void q.offsetWidth;
   if (r.st === 2) q.classList.add("fx2");
@@ -1680,7 +1726,7 @@ setDir(store.get("sjDir", "fwd"));
 
 
 // ===== カードの見た目（v0.26）：デザイン4種 × レアの素材5段 =====
-const CSTYLES = [{ id: "plain", nm: "ふつう" }, { id: "goshuin", nm: "御朱印帳風" }, { id: "toreka", nm: "トレカ風" }, { id: "hanafuda", nm: "花札風" }];
+const CSTYLES = [{ id: "plain", nm: "ふつう" }, { id: "goshuin", nm: "御朱印帳風" }, { id: "toreka", nm: "トレカ風" }];
 let cstyle = CSTYLES.some(c => c.id === store.get("sjCardStyle", "")) ? store.get("sjCardStyle", "") : "plain";
 const KNUM = n => { const d = "〇一二三四五六七八九"; if (n < 10) return d[n]; if (n < 20) return "十" + (n % 10 ? d[n % 10] : ""); return d[Math.floor(n / 10)] + "十" + (n % 10 ? d[n % 10] : ""); };
 const wareki = t => { const x = new Date(t); const y = x.getFullYear() - 2018; return `令和${y === 1 ? "元" : KNUM(y)}年${KNUM(x.getMonth() + 1)}月${KNUM(x.getDate())}日`; };
@@ -1690,7 +1736,7 @@ function cardHTML(ch, size, style = cstyle) {
   const st = r ? r.st : 1, e = r ? r.e : null;
   const c4 = e ? e.c4 : "????", fu = e && e.fu !== null ? e.fu : "";
   const stars = `<span class="kc-stars">${starStr(st)}</span>`;
-  const mus = r && r.m <= 1 ? `<span class="kc-mus" title="仲間ランク：天下無双">無<br>双</span>` : "";
+  const mus = r ? `<span class="kc-mus mt${MATE_TIER(r.m)}" title="仲間ランク：${r.mate}（この号碼の字は ${r.m} 字）">${r.mate[0]}<br>${r.mate[1]}</span>` : "";
   const K = `<span class="kc-k">${escH(ch)}</span>`;
   const code = `${c4}${fu ? "<sub>" + fu + "</sub>" : ""}`;
   const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
@@ -1698,13 +1744,14 @@ function cardHTML(ch, size, style = cstyle) {
   const big = size === "big";
   let inner = "";
   if (style === "goshuin") {
-    const seal = `<span class="gs-seal">${[...c4].map(d => `<i>${d}</i>`).join("")}${fu ? `<b>${fu}</b>` : ""}</span>`;
+    const DAI = "零壱弐参肆伍陸漆捌玖";
+    const seal = `<span class="gs-seal" title="${c4}${fu}">${[...c4].map(d => `<i>${DAI[+d] || d}</i>`).join("")}${fu ? `<b>${DAI[+fu]}</b>` : ""}</span>`;
     inner = big
       ? `<span class="gs-tate gs-r">四角号碼　${r ? r.form : ""}</span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span><span class="gs-foot">${stars}</span>`
       : `${K}${seal}`;
   } else if (style === "toreka") {
     inner = `<span class="tk-name"><b>${escH(ch)}</b>${stars}</span><span class="tk-art">${K}</span>` + (big
-      ? `<span class="tk-type">${r ? r.form + "・" + r.mate : ""}</span><span class="tk-text">${escH(yomi)}</span><span class="tk-foot"><span>No.${code}</span><span>×${c ? c.n : 0}</span></span>`
+      ? `<span class="tk-type">${r ? r.form + "・" + r.mate : ""}</span><span class="tk-text">${escH(yomi)}</span><span class="tk-foot"><span>No.${code}</span></span>`
       : `<span class="tk-foot"><span>${code}</span></span>`);
   } else if (style === "hanafuda") {
     inner = `<span class="hf-moon">${K}</span><span class="hf-tan">${[...c4].map(d => `<i>${d}</i>`).join("")}</span>` + (big ? `<span class="hf-foot">${stars}</span>` : "");
@@ -1714,6 +1761,28 @@ function cardHTML(ch, size, style = cstyle) {
       : `${K}${stars}<span class="pl-code">${code}</span>`);
   }
   return `<div class="kc kc-${style} sz-${size} r${st}"><div class="kc-in">${inner}</div>${mus}</div>`;
+}
+
+function cardBack(ch, style = cstyle) {
+  const r = rareOf(ch), c = cards[ch];
+  const st = r ? r.st : 1, e = r ? r.e : null;
+  const c4 = e ? e.c4 : "????", fu = e && e.fu !== null ? e.fu : "";
+  const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
+  const rows = [];
+  rows.push(["号碼", `<span class="bk-code">${c4}${fu ? "<sub>" + fu + "</sub>" : ""}</span>`]);
+  if (y.on.length) rows.push(["音読み", escH(y.on.slice(0, 6).join("、"))]);
+  if (y.kun.length) rows.push(["訓読み", escH(y.kun.slice(0, 6).join("、")) + (y.kun.length > 6 ? " …" : "")]);
+  if (!y.on.length && !y.kun.length && y.py.length) rows.push(["ピンイン", escH(y.py.join("、"))]);
+  if (r) {
+    rows.push(["形ランク", `<span class="kc-stars">${starStr(st)}</span> ${r.form}<small>約${Math.round(r.x).toLocaleString()}字に1字の形</small>`]);
+    rows.push(["仲間ランク", `${r.mate}<small>この号碼の字は ${r.m} 字</small>`]);
+  }
+  rows.push(["持ってる枚数", `${c ? c.n : 0} 枚`]);
+  rows.push(["はじめて", c ? (style === "goshuin" ? wareki(c.first) : fmtDate(c.first)) : "—"]);
+  const head = style === "goshuin" ? `<span class="bk-title">${escH(ch)}<em>之記</em></span>`
+    : style === "toreka" ? `<span class="bk-title"><b>${escH(ch)}</b><em>DATA</em></span>`
+    : `<span class="bk-title"><b>${escH(ch)}</b></span>`;
+  return `<div class="kc kc-${style} kc-back sz-big r${st}"><div class="kc-in">${head}<dl class="bk-dl">${rows.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl><span class="bk-hint">押すと表にもどる</span></div></div>`;
 }
 function applyCstyle(id) {
   cstyle = id; store.set("sjCardStyle", id);
@@ -1773,7 +1842,7 @@ function openBig(ch) {
   $("cardModal").className = "modal s" + st;
   const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
   const yrows = (y.on.length ? `<dt>音読み</dt><dd>${y.on.slice(0, 8).join("、")}</dd>` : "") + (y.kun.length ? `<dt>訓読み</dt><dd>${y.kun.slice(0, 8).join("、")}${y.kun.length > 8 ? " …" : ""}</dd>` : "") + (!y.on.length && !y.kun.length && y.py.length ? `<dt>ピンイン</dt><dd>${y.py.join("、")}</dd>` : "");
-  $("bcBody").innerHTML = `<div class="bc-stage">${cardHTML(ch, "big")}</div>
+  $("bcBody").innerHTML = `<div class="bc-stage"><button type="button" class="flip" id="bcFlip" aria-label="カードをひっくり返す"><span class="flip-in"><span class="face front">${cardHTML(ch, "big")}</span><span class="face back">${cardBack(ch)}</span></span></button><span class="flip-note">カードを押すと裏返る</span></div>
     <dl class="bc-dl">
       ${yrows}
       <dt>形ランク</dt><dd>${r ? `${starStr(st)} ${r.form} <span class="sub">（約 ${Math.round(r.x).toLocaleString()} 字に1字の形）</span>` : "—"}</dd>
@@ -1781,7 +1850,8 @@ function openBig(ch) {
       <dt>持ってる枚数</dt><dd>${c ? c.n : 0} 枚</dd>
       <dt>はじめて</dt><dd>${c ? fmtDate(c.first) : "—"}</dd>
     </dl>`;
-  holoTrack($("bcBody"));
+  holoTrack($("bcBody").querySelector(".face.front"));
+  $("bcFlip").addEventListener("click", () => $("bcFlip").classList.toggle("flipped"));
   $("cardModal").hidden = false; $("bcClose").focus();
 }
 function closeBig() { $("cardModal").hidden = true; }
