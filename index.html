@@ -388,6 +388,14 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+
+/* ===== v0.33 カードあつめ：さがすまで待つ ===== */
+.qbox.idle .k { color: transparent; border-style: dashed; background: repeating-linear-gradient(45deg, transparent 0 8px, color-mix(in srgb, var(--line) 35%, transparent) 8px 9px); cursor: pointer; }
+.qbox.idle .k::after { content: "？"; color: var(--muted); font-size: 72px; }
+.qbox.idle .slot { opacity: .35; }
+#barMain.seek { background: var(--r5); border-color: var(--r5); }
+@media (prefers-reduced-motion: no-preference) { #barMain.seek { animation: seekPulse 1.8s ease-in-out infinite; } }
+@keyframes seekPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 151, 28, .5); } 50% { box-shadow: 0 0 0 8px rgba(201, 151, 28, 0); } }
 /* ===== v0.32 モーダルが画面からはみ出さない ===== */
 .modal-card { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
 .modal-card > :last-child { min-height: 0; }
@@ -709,7 +717,7 @@ footer a { color: var(--accent); }
 </svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.32</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.33</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -1350,8 +1358,7 @@ function showTab(t) {
   const gt = document.getElementById("getToast"); if (gt) gt.hidden = true;
   if (typeof applyCardMode === "function") {
     const want = cg || col;
-    if (want !== cardMode) { if (typeof closeHint === "function") closeHint(); cardMode = want; applyCardMode(); if (!col) prRandom(); }
-    else if (cg && !$("prK").textContent) prRandom();
+    if (want !== cardMode) { if (typeof closeHint === "function") closeHint(); cardMode = want; applyCardMode(); if (cardMode) cardIdle(); else prRandom(); }
   }
   if (col && typeof renderCol === "function") renderCol();
   if ((pr || cg) && typeof ensureQuestion === "function") ensureQuestion();
@@ -1475,7 +1482,17 @@ function applyCardMode() {
   $("prSrcCh").hidden = cardMode || dir === "rev";
 }
 
+// カードあつめ：自分で「さがす」を押すまで漢字は出さない
+function cardIdle() {
+  pr.idle = true; pr.ch = ""; pr.list = []; pr.done = true; pr.card = false;
+  $("prK").textContent = ""; prAns.value = "";
+  $("prQ").classList.remove("fx2", "fx3", "fx45", "sil"); $("prQ").removeAttribute("data-star"); $("prQ").classList.add("idle");
+  $("prRar").hidden = true;
+  $("prVerdict").innerHTML = "「漢字をさがす」を押すと、漢字があらわれます";
+  prRender(); updateBar();
+}
 function prSet(ch, viaCard = false) {
+  pr.idle = false; $("prQ").classList.remove("idle");
   pr.ch = ch;
   pr.list = byChar.get(ch) || [];
   pr.done = false;
@@ -1650,7 +1667,7 @@ prIn.addEventListener("input", () => {
 });
 prLv.value = store.get("sjLv", "intro");
 if (!prLv.value) prLv.value = "sho";
-prLv.addEventListener("change", () => { store.set(cardMode ? "sjCardLv" : "sjLv", prLv.value); dir === "rev" ? rvNew() : prRandom(); });
+prLv.addEventListener("change", () => { store.set(cardMode ? "sjCardLv" : "sjLv", prLv.value); if (cardMode) cardIdle(); else dir === "rev" ? rvNew() : prRandom(); });
 $("colOpen").addEventListener("click", () => showTab("collection"));
 $("colBack").addEventListener("click", () => showTab("card"));
 
@@ -1782,8 +1799,9 @@ function updateBar() {
     $("barBack").disabled = pr.done || !a.length;
     $("barClear").disabled = pr.done || !a.length;
     $("barShow").disabled = pr.done || !pr.list.length;
-    $("barMain").textContent = pr.done ? "次の字 →" : "答え合わせ";
+    $("barMain").textContent = cardMode && pr.done ? (pr.idle ? "漢字をさがす" : "次をさがす") : pr.done ? "次の字 →" : "答え合わせ";
     $("barMain").disabled = !pr.done && (a.length < 4 || !pr.list.length);
+    $("barMain").classList.toggle("seek", cardMode && pr.done);
   } else {
     $("barShow").disabled = rv.done;
     $("barMain").textContent = rv.done ? "次の問題 →" : (rv.style === "choose" ? "6つから選んでネ" : "答え合わせ");
@@ -1792,6 +1810,7 @@ function updateBar() {
 }
 function ensureQuestion() {
   try {
+    if (cardMode && pr.idle) return;
     if (!pr.ch || !$("prK").textContent) prRandom();
     if (dir === "rev") {
       if (!rv.code || rvSlots.some(s => !s.textContent && !rv.done)) rvNew();
@@ -1982,6 +2001,7 @@ document.addEventListener("click", e => {
   openRank(el.dataset.rank, el.dataset.ch || "");
 }, true);
 
+$("prQ").addEventListener("click", () => { if (cardMode && pr.idle) prRandom(); });
 // ===== コレクション =====
 let colSort = store.get("sjColSort", "new");
 function renderCol() {
