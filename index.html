@@ -390,6 +390,8 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+.nojp { display: inline-block; font-size: 11px; font-weight: 700; color: #b4492b; border: 1px solid currentColor; border-radius: 4px; padding: 0 5px; margin-left: 4px; }
+.kc.kc-back .bk-dl small.nojp { display: inline-block; font-size: 3.6cqw; margin-left: 0; margin-top: 1cqw; color: #b4492b; }
 /* ===== v0.36 漢字を答える（書く）：入力の枠を「？」の横に大きく ===== */
 #revArea .stage { align-items: flex-start; gap: 22px; }
 #revArea .stage .rvwrite { display: grid; justify-items: center; gap: 4px; margin-top: 0; }
@@ -738,7 +740,7 @@ footer a { color: var(--accent); }
 </svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.36</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.38</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -806,8 +808,6 @@ footer a { color: var(--accent); }
           </div>
           <select id="prLv" aria-label="出す範囲">
             <option value="intro">入門 107字</option>
-            <option value="g1">小学1年</option>
-            <option value="g2">小学2年まで</option>
             <option value="sho" selected>小学校</option>
             <option value="joyo">常用漢字</option>
             <option value="all">辞書ぜんぶ</option>
@@ -1351,6 +1351,7 @@ function openKanji(ch, canAdd = true) {
     dl.append(dt, dd);
   };
   row("音読み", y.on, "on"); row("訓読み", y.kun, "kun"); row("ピンイン", y.py, "py");
+  if (!y.on.length && !y.kun.length && y.py.length) { const n = document.createElement("dd"); n.className = "kj-none"; n.style.gridColumn = "1 / -1"; n.textContent = "※ 日本語の読みなし（中国語の読みだけ）"; dl.append(n); }
   if (!dl.children.length) { const p = document.createElement("dd"); p.className = "kj-none"; p.textContent = "読みのデータがない字"; dl.append(p); }
   $("kjAdd").hidden = !canAdd;
   $("kjModal").hidden = false; $("kjClose").focus();
@@ -1435,7 +1436,8 @@ const CARD_LVS = ["joyo", "all"];
 const pickPool = {};
 function weightedPick(lv, avoid) {
   if (!pickPool[lv]) {
-    const chars = Array.from(DATA.levels[lv] || []).filter(c => RARE.first.has(c));
+    // 読みのデータが1つもない字（字体がなくて表示できない字など）はカードあつめに出さない
+    const chars = Array.from(DATA.levels[lv] || []).filter(c => RARE.first.has(c) && YOMI.has(c));
     const w = chars.map(c => TICKETS[rareOf(c).st]);
     const cum = []; let s = 0; for (const x of w) { s += x; cum.push(s); }
     pickPool[lv] = { chars, cum, total: s };
@@ -1686,7 +1688,8 @@ prIn.addEventListener("input", () => {
   const hans = Array.from(prIn.value).filter(c => /\p{Script=Han}/u.test(c));
   if (hans.length) prSet(hans[hans.length - 1]);
 });
-prLv.value = store.get("sjLv", "intro");
+prLv.value = ["g1", "g2"].includes(store.get("sjLv", "intro")) ? "intro" : store.get("sjLv", "intro");
+if (!prLv.value) prLv.value = "intro";
 if (!prLv.value) prLv.value = "sho";
 prLv.addEventListener("change", () => { store.set(cardMode ? "sjCardLv" : "sjLv", prLv.value); if (cardMode) cardIdle(); else dir === "rev" ? rvNew() : prRandom(); });
 $("colOpen").addEventListener("click", () => showTab("collection"));
@@ -1920,7 +1923,7 @@ function cardBack(ch, style = cstyle) {
   rows.push(["号碼", `<span class="bk-code">${c4}${fu ? "<sub>" + fu + "</sub>" : ""}</span>`]);
   if (y.on.length) rows.push(["音読み", escH(y.on.slice(0, 6).join("、"))]);
   if (y.kun.length) rows.push(["訓読み", escH(y.kun.slice(0, 6).join("、")) + (y.kun.length > 6 ? " …" : "")]);
-  if (!y.on.length && !y.kun.length && y.py.length) rows.push(["ピンイン", escH(y.py.join("、"))]);
+  if (!y.on.length && !y.kun.length && y.py.length) rows.push(["ピンイン", escH(y.py.join("、")) + `<small class="nojp">日本語の読みなし</small>`]);
   if (r) {
     rows.push(["形ランク", `<span data-rank="form" data-ch="${escH(ch)}"><span class="kc-stars">${starStr(st)}</span> ${r.form}</span><small>約${Math.round(r.x).toLocaleString()}字に1字の形</small>`]);
     rows.push(["仲間ランク", `<span data-rank="mate" data-ch="${escH(ch)}">${r.mate}</span><small>この号碼の字は ${r.m} 字</small>`]);
@@ -2059,7 +2062,7 @@ function openBig(ch) {
   const c = cards[ch], r = rareOf(ch), st = r ? r.st : 1;
   $("cardModal").className = "modal s" + st;
   const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
-  const yrows = (y.on.length ? `<dt>音読み</dt><dd>${y.on.slice(0, 8).join("、")}</dd>` : "") + (y.kun.length ? `<dt>訓読み</dt><dd>${y.kun.slice(0, 8).join("、")}${y.kun.length > 8 ? " …" : ""}</dd>` : "") + (!y.on.length && !y.kun.length && y.py.length ? `<dt>ピンイン</dt><dd>${y.py.join("、")}</dd>` : "");
+  const yrows = (y.on.length ? `<dt>音読み</dt><dd>${y.on.slice(0, 8).join("、")}</dd>` : "") + (y.kun.length ? `<dt>訓読み</dt><dd>${y.kun.slice(0, 8).join("、")}${y.kun.length > 8 ? " …" : ""}</dd>` : "") + (!y.on.length && !y.kun.length && y.py.length ? `<dt>ピンイン</dt><dd>${y.py.join("、")} <span class="nojp">日本語の読みなし</span></dd>` : "");
   $("bcBody").innerHTML = `<div class="bc-stage"><button type="button" class="flip" id="bcFlip" aria-label="カードをひっくり返す"><span class="flip-in"><span class="face front">${cardHTML(ch, "big")}</span><span class="face back">${cardBack(ch)}</span></span></button><span class="flip-note">カードを押すと裏返る</span></div>
     <dl class="bc-dl">
       ${yrows}
