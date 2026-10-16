@@ -386,6 +386,27 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+
+/* ===== v0.30 キラッとした星 ===== */
+.ks-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ksr { display: inline-flex; gap: .06em; align-items: center; vertical-align: -.12em; white-space: nowrap; line-height: 1; }
+.ks { width: 1.05em; height: 1.05em; flex: none; overflow: visible; }
+.ks.off { fill: none; stroke: currentColor; stroke-width: 1.4; opacity: .38; }
+.ks.on { stroke-width: .9; }
+.ks.g1 { fill: url(#ksg1); stroke: #7a8589; }
+.ks.g2 { fill: url(#ksg2); stroke: #22603a; }
+.ks.g3 { fill: url(#ksg3); stroke: #1e4f7a; }
+.ks.g4 { fill: url(#ksg4); stroke: #57308a; filter: drop-shadow(0 0 .12em rgba(168, 116, 220, .7)); }
+.ks.g5 { fill: url(#ksg5); stroke: #9a6206; filter: drop-shadow(0 0 .14em rgba(255, 200, 60, .9)); }
+@media (prefers-reduced-motion: no-preference) {
+  .ksr.tw .ks.on { animation: ksTw 2.6s ease-in-out infinite; }
+  .ksr.tw .ks.on:nth-child(2) { animation-delay: .25s; } .ksr.tw .ks.on:nth-child(3) { animation-delay: .5s; }
+  .ksr.tw .ks.on:nth-child(4) { animation-delay: .75s; } .ksr.tw .ks.on:nth-child(5) { animation-delay: 1s; }
+}
+@keyframes ksTw { 0%, 70%, 100% { transform: scale(1); filter: drop-shadow(0 0 .12em rgba(255, 210, 90, .6)); } 80% { transform: scale(1.25) rotate(8deg); filter: drop-shadow(0 0 .35em rgba(255, 245, 200, 1)) brightness(1.3); } }
+.kc-goshuin .gs-rk .ksr { flex-direction: row; vertical-align: baseline; }
+.kc-goshuin .gs-rk .kc-stars { display: block; margin-top: 4cqw; }
+
 /* ===== v0.28 裏面・仲間ランク札 ===== */
 .kc-mus.mt1 { background: #b4232a; border-color: #f3d36b; }
 .kc-mus.mt2 { background: #5b2a86; border-color: #f3d36b; }
@@ -643,9 +664,19 @@ footer a { color: var(--accent); }
 
 </head>
 <body>
+<svg class="ks-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ksg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe3e5"/><stop offset="1" stop-color="#8a959a"/></linearGradient>
+    <linearGradient id="ksg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9edc6"/><stop offset=".55" stop-color="#4fae6d"/><stop offset="1" stop-color="#2a6e43"/></linearGradient>
+    <linearGradient id="ksg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6e3fb"/><stop offset=".55" stop-color="#4a90d0"/><stop offset="1" stop-color="#245d8f"/></linearGradient>
+    <linearGradient id="ksg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0dcff"/><stop offset=".5" stop-color="#a874dc"/><stop offset="1" stop-color="#6a3a9e"/></linearGradient>
+    <linearGradient id="ksg5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe0"/><stop offset=".35" stop-color="#ffd84a"/><stop offset=".7" stop-color="#f0a818"/><stop offset="1" stop-color="#b8750b"/></linearGradient>
+    <symbol id="kstar" viewBox="0 0 24 24"><path d="M12 1.8l2.95 6.3 6.9.75-5.15 4.7 1.45 6.8L12 16.9l-6.15 3.45 1.45-6.8L2.15 8.85l6.9-.75z" stroke-linejoin="round"/><path d="M12 4.6l1.7 3.7" stroke="#fff" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".8"/></symbol>
+  </defs>
+</svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.29</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.30</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -1277,7 +1308,7 @@ const RARE = (() => {
   const star = x => x >= 50000 ? 5 : x >= 20000 ? 4 : x >= 8000 ? 3 : x >= 3000 ? 2 : 1;
   return { first, mates, oneIn, star };
 })();
-const FORM_NAME = ["", "凡", "良", "秀", "稀", "幻"];
+const FORM_NAME = ["", "並", "少", "珍", "稀", "幻"];
 const MATE_TIER = m => m <= 1 ? 1 : m === 2 ? 2 : m <= 5 ? 3 : m <= 19 ? 4 : 5;
 const MATE_NAME = m => ["", "無双", "双璧", "精鋭", "群雄", "大群"][MATE_TIER(m)];
 const TICKETS = [0, 10, 7, 5, 3, 1.5];
@@ -1286,7 +1317,8 @@ function rareOf(ch) {
   const x = RARE.oneIn(e.c4), st = RARE.star(x), m = RARE.mates.get(e.c4) || 1;
   return { e, x, st, m, form: FORM_NAME[st], mate: MATE_NAME(m) };
 }
-const starStr = n => "★".repeat(n) + "☆".repeat(5 - n);
+const starStr = n => `<span class="ksr${n >= 4 ? " tw" : ""}" role="img" aria-label="★${n}">` +
+  Array.from({ length: 5 }, (_, i) => `<svg class="ks ${i < n ? "on g" + n : "off"}" viewBox="0 0 24 24" aria-hidden="true"><use href="#kstar"/></svg>`).join("") + `</span>`;
 let cards = {};
 try { cards = JSON.parse(store.get("sjCards", "{}")) || {}; } catch (e) { cards = {}; }
 function saveCards() { store.set("sjCards", JSON.stringify(cards)); }
