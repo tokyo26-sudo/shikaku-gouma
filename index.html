@@ -384,6 +384,124 @@ header .gear.help + .gear { margin-left: 0; }
   #kjModal .kj-card { width: 100%; border-radius: 14px 14px 0 0; max-height: 85vh; padding-bottom: 20px; }
 }
 
+
+/* ===== v0.26 タブ・カードのデザイン ===== */
+.colbtn { margin-left: auto; font-weight: 700; border-color: var(--r5) !important; }
+.mcw { position: relative; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; display: block; }
+.mcw .mn { position: absolute; top: -6px; right: -6px; z-index: 3; font-family: var(--f-mono); font-size: 11px; font-weight: 700; color: #fff; background: var(--accent); border-radius: 999px; padding: 1px 6px; }
+.mcw:hover .kc { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+.col-grid { grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 12px; }
+.bc-card { width: min(360px, 100%); }
+.bc-body { padding-top: 26px; }
+.bc-stage { display: grid; place-items: center; }
+#cardModal .toast-x { z-index: 10; background: var(--panel); }
+.cstyle-opts .opt .kc { width: 64px; margin-bottom: 2px; }
+.gettoast .gk .kc { width: 58px; }
+/* カードの土台 */
+.kc { --cink: #1d2a33; --cmut: #5d6c72; --edge: #a7b0b3; --mat: #fbfaf6; --pat: none; --bw: 2px;
+  position: relative; box-sizing: border-box; width: 100%; aspect-ratio: 5 / 7; border-radius: 7%/5%; overflow: hidden; isolation: isolate;
+  color: var(--cink); text-align: center; transition: transform .15s, box-shadow .15s; container-type: inline-size; font-family: var(--f-body); }
+.kc > .kc-in { position: absolute; inset: 0; box-sizing: border-box; border-radius: inherit; background: var(--pat), var(--mat); border: var(--bw) solid var(--edge); }
+.kc.sz-big { width: min(300px, 78vw); --bw: 3px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.kc .kc-k { font-family: var(--f-kanji); line-height: 1; }
+.kc .kc-stars { letter-spacing: .05em; color: var(--star, var(--cmut)); }
+.kc sub { font-size: .6em; color: #7a5a9e; }
+.kc-mus { position: absolute; top: 4%; left: 5%; z-index: 2; font-family: var(--f-display); font-weight: 800; font-size: 8cqw; line-height: 1.05; color: #fff; background: #b4232a; border: 1px solid #f3d36b; border-radius: 3px; padding: 2% 1.5%; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+/* レアの素材 */
+.kc.r1 { --mat: #fbfaf6; --edge: #b7bdbf; --star: #8a959a; }
+.kc.r2 { --mat: #eef6ef; --edge: #5f9a71; --star: #3f8a57;
+  --pat: radial-gradient(circle, rgba(63,138,87,.16) 18%, transparent 20%) 0 0 / 9cqw 9cqw; }
+.kc.r3 { --mat: linear-gradient(160deg, #f2f6fb, #e1e9f2); --edge: #9fb0c3; --star: #2f6fa3;
+  --pat: radial-gradient(circle at 50% 100%, transparent 28%, rgba(47,111,163,.16) 29% 34%, transparent 35% 48%, rgba(47,111,163,.16) 49% 54%, transparent 55% 68%, rgba(47,111,163,.16) 69% 74%, transparent 75%) 0 0 / 16cqw 8cqw,
+         radial-gradient(circle at 50% 100%, transparent 28%, rgba(47,111,163,.16) 29% 34%, transparent 35% 48%, rgba(47,111,163,.16) 49% 54%, transparent 55% 68%, rgba(47,111,163,.16) 69% 74%, transparent 75%) 8cqw 4cqw / 16cqw 8cqw;
+}
+.kc.r3 > .kc-in { box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 3px #c6d2de; }
+.kc.r4 { --mat: linear-gradient(160deg, #f4ecfb, #e3d3f2); --edge: #c9971c; --star: #7d4fb0; --cink: #3b1f5c;
+  --pat: radial-gradient(circle, transparent 58%, rgba(125,79,176,.22) 59% 63%, transparent 64%) 0 0 / 12cqw 12cqw,
+         radial-gradient(circle, transparent 58%, rgba(125,79,176,.22) 59% 63%, transparent 64%) 6cqw 6cqw / 12cqw 12cqw;
+}
+.kc.r4 > .kc-in { box-shadow: inset 0 0 0 2px #f3d36b; }
+.kc.r5 { --mat: linear-gradient(135deg, #fbecaa 0%, #d9ad45 22%, #fff4c4 45%, #c8962a 68%, #f7e08e 100%); --edge: #8f6512; --star: #8f4b00; --cink: #4a2f00; --cmut: #6b4a12;
+  --pat: repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0 2px, transparent 2px 5px);
+  box-shadow: 0 0 14px rgba(201,151,28,.55); }
+.kc.r5 > .kc-in { box-shadow: inset 0 0 0 2px #fff3c0, inset 0 0 0 4px #b8860b; }
+.kc.r5 .kc-k { color: #5a3a00; text-shadow: 0 1px 0 #fff6d0, 0 0 10px rgba(255,236,160,.9); }
+.kc.r5::before { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(115deg, transparent 22%, rgba(255,90,190,.38) 38%, rgba(90,220,255,.38) 50%, rgba(255,245,90,.38) 62%, transparent 78%);
+  background-size: 260% 260%; background-position: var(--hx, 30%) var(--hy, 30%); mix-blend-mode: color-dodge; opacity: .55; }
+.kc.r4::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.75) 50%, transparent 62%); background-size: 300% 100%; background-position: 140% 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .kc.r4.sz-big::after, .kc.r4.sz-toast::after, .mcw:hover .kc.r4::after { animation: kcShine 3.2s ease-in-out infinite; }
+  .kc.r5.sz-big:not(.trk)::before, .kc.r5.sz-toast::before { animation: kcHolo 4s ease-in-out infinite alternate; }
+  .kc.r5.sz-big::before { opacity: .8; }
+}
+@keyframes kcShine { 0% { background-position: 140% 0; } 45%, 100% { background-position: -40% 0; } }
+@keyframes kcHolo { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+/* ふつう */
+.kc-plain > .kc-in { display: grid; grid-template-rows: auto 1fr auto auto; justify-items: center; padding: 0 4% 6%; }
+.kc-plain .kc-band { width: 108%; height: 6cqw; background: var(--edge); }
+.kc-plain .kc-k { font-size: 50cqw; align-self: center; }
+.kc-plain .kc-stars { font-size: 9cqw; }
+.kc-plain .pl-code { font-family: var(--f-mono); font-size: 9cqw; color: var(--cmut); letter-spacing: .05em; }
+.kc-plain.sz-big > .kc-in { grid-template-rows: auto auto 1fr auto auto; gap: 2%; padding-bottom: 7%; }
+.kc-plain .pl-rk { display: flex; gap: 4cqw; align-items: center; margin-top: 4%; font-size: 7cqw; }
+.kc-plain .pl-rk b { font-family: var(--f-display); font-size: 9cqw; color: var(--star); }
+.kc-plain .pl-corner { position: relative; width: 66cqw; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--edge) 60%, transparent); border-radius: 4%; background: rgba(255,255,255,.55); align-self: center; }
+.kc-plain .pl-corner .kc-k { font-size: 48cqw; }
+.kc-plain .pl-corner i { position: absolute; font-style: normal; font-family: var(--f-mono); font-weight: 700; font-size: 8cqw; color: #b4492b; }
+.kc-plain .pl-corner .d0 { top: -5cqw; left: -4cqw; } .kc-plain .pl-corner .d1 { top: -5cqw; right: -4cqw; }
+.kc-plain .pl-corner .d2 { bottom: -5cqw; left: -4cqw; } .kc-plain .pl-corner .d3 { bottom: -5cqw; right: -4cqw; }
+.kc-plain .pl-corner .d4 { bottom: 10cqw; right: -4cqw; color: #7a5a9e; font-size: 6cqw; }
+.kc-plain.sz-big .pl-code { font-size: 9cqw; color: var(--cink); font-weight: 700; letter-spacing: .15em; }
+.kc-plain .pl-mate { font-family: var(--f-display); font-weight: 800; font-size: 7cqw; color: var(--cmut); }
+/* 御朱印帳風 */
+.kc-goshuin { --mat: #f7f1e3; }
+.kc-goshuin > .kc-in { background: var(--pat), repeating-linear-gradient(0deg, rgba(150,120,70,.05) 0 1px, transparent 1px 3px), var(--mat); }
+.kc-goshuin .kc-k { position: absolute; left: 0; right: 0; top: 18%; font-family: "Yuji Syuku", var(--f-kanji); font-size: 58cqw; }
+.kc-goshuin .gs-seal { position: absolute; right: 9%; bottom: 7%; width: 30cqw; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; place-items: center; background: rgba(200,40,30,.9); color: #fff4ea; border-radius: 6%; box-shadow: inset 0 0 0 2cqw #c8281e, inset 0 0 0 2.6cqw #fff4ea; font-family: var(--f-display); font-weight: 800; font-size: 9cqw; transform: rotate(-4deg); mix-blend-mode: multiply; }
+.kc-goshuin .gs-seal i { font-style: normal; line-height: 1; }
+.kc-goshuin .gs-seal b { position: absolute; right: 1cqw; bottom: -9cqw; font-size: 6cqw; color: #c8281e; }
+.kc-goshuin .gs-tate { position: absolute; writing-mode: vertical-rl; font-family: var(--f-display); font-weight: 800; font-size: 6.5cqw; letter-spacing: .15em; color: var(--cink); }
+.kc-goshuin .gs-r { top: 6%; right: 7%; }
+.kc-goshuin .gs-l { top: 7%; left: 7%; font-size: 6cqw; font-weight: 800; color: var(--cink); opacity: .8; }
+.kc-goshuin .gs-foot { position: absolute; left: 0; right: 0; bottom: 3%; font-size: 6cqw; }
+.kc-goshuin.sz-big .kc-k { top: 20%; font-size: 52cqw; }
+.kc-goshuin.r1, .kc-goshuin.r2 { --edge: #c9b28a; }
+/* トレカ風 */
+.kc-toreka { --bw: 3px; }
+.kc-toreka > .kc-in { display: grid; grid-template-rows: auto 1fr auto; padding: 4%; gap: 2.5%; }
+.kc-toreka .tk-name { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,.75); border: 1px solid var(--edge); border-radius: 999px; padding: 1.5% 5%; font-size: 7cqw; }
+.kc-toreka .tk-name b { font-family: var(--f-kanji); font-size: 10cqw; }
+.kc-toreka .tk-art { display: grid; place-items: center; border: 2px solid var(--edge); border-radius: 3%; background: radial-gradient(circle at 50% 40%, rgba(255,255,255,.95), rgba(255,255,255,.35)); }
+.kc-toreka .tk-art .kc-k { font-size: 50cqw; }
+.kc-toreka .tk-foot { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 7.5cqw; color: var(--cmut); padding: 0 2%; }
+.kc-toreka.sz-big > .kc-in { grid-template-rows: auto 1fr auto auto auto; }
+.kc-toreka.sz-big .tk-art .kc-k { font-size: 46cqw; }
+.kc-toreka .tk-type { font-family: var(--f-display); font-weight: 800; font-size: 6.5cqw; background: var(--edge); color: #fff; border-radius: 2px; padding: 1% 0; }
+.kc-toreka .tk-text { font-size: 6cqw; background: rgba(255,255,255,.7); border: 1px solid color-mix(in srgb, var(--edge) 50%, transparent); border-radius: 3px; padding: 2% 3%; min-height: 9cqw; text-align: left; }
+.kc-toreka.sz-big .tk-foot { font-size: 6.5cqw; }
+.kc-toreka.sz-mini .tk-name { justify-content: center; }
+.kc-toreka.sz-mini .tk-name b, .kc-toreka.sz-toast .tk-name b { display: none; }
+/* 花札風 */
+.kc-hanafuda { --edge: #1b1a1a; }
+.kc-hanafuda > .kc-in { border: 5cqw solid #1b1a1a; }
+.kc-hanafuda.r1 { --mat: #b8322a; } .kc-hanafuda.r2 { --mat: #2f6b45; } .kc-hanafuda.r3 { --mat: #234f80; }
+.kc-hanafuda.r4 { --mat: linear-gradient(160deg, #5a2a86, #3a1660); } .kc-hanafuda.r1, .kc-hanafuda.r2, .kc-hanafuda.r3, .kc-hanafuda.r4 { --cink: #1b1a1a; }
+.kc-hanafuda.r1 { --pat: radial-gradient(circle, rgba(0,0,0,.14) 18%, transparent 20%) 0 0 / 10cqw 10cqw; }
+.kc-hanafuda .hf-moon { position: absolute; left: 50%; top: 12%; transform: translateX(-50%); width: 74cqw; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fffaf0, #efe2c4); display: grid; place-items: center; box-shadow: 0 0 0 1.5cqw rgba(0,0,0,.25); }
+.kc-hanafuda.r5 .hf-moon { background: radial-gradient(circle at 40% 35%, #fffdf3, #f4d77c); }
+.kc-hanafuda .hf-moon .kc-k { font-size: 48cqw; color: #1b1a1a; text-shadow: none; }
+.kc-hanafuda .hf-tan { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%) rotate(-6deg); width: 22cqw; height: 40%; display: grid; grid-template-rows: repeat(4, 1fr); place-items: center; background: #f5efe0; border: 1px solid rgba(0,0,0,.4); font-family: var(--f-display); font-weight: 800; font-size: 9cqw; color: #1b1a1a; box-shadow: 0 2px 4px rgba(0,0,0,.35); }
+.kc-hanafuda.r2 .hf-tan { background: #d8433a; color: #fff; } .kc-hanafuda.r3 .hf-tan { background: #2f5fa0; color: #fff; }
+.kc-hanafuda.r4 .hf-tan { background: #f3d36b; } .kc-hanafuda.r5 .hf-tan { background: #1b1a1a; color: #f3d36b; }
+.kc-hanafuda .hf-tan i { font-style: normal; line-height: 1; }
+.kc-hanafuda .hf-foot { position: absolute; right: 4%; bottom: 3%; font-size: 6cqw; --star: #fff3c0; }
+.kc-hanafuda .kc-mus { top: 6%; left: 6%; }
+.kc-goshuin .kc-mus { top: auto; bottom: 6%; left: 7%; }
+.kc-toreka .kc-mus { top: 17%; left: 9%; }
+.kc-hanafuda.sz-big .hf-moon { top: 9%; }
+
 /* ===== v0.25 カード集め・コレクション ===== */
 @media (max-width: 600px) {
   .modes { flex-wrap: wrap; row-gap: 0; }
@@ -480,7 +598,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.25</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.26</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -489,7 +607,7 @@ footer a { color: var(--accent); }
   <div class="tabs modes" role="tablist" aria-label="じびき と れんしゅう">
     <button type="button" role="tab" id="tabSearch" aria-selected="true" aria-controls="jibiki">じびき</button>
     <button type="button" role="tab" id="tabPractice" aria-selected="false" aria-controls="practiceSec">れんしゅう</button>
-    <button type="button" role="tab" id="tabCards" aria-selected="false" aria-controls="cardsSec">コレクション</button>
+    <button type="button" role="tab" id="tabCard" aria-selected="false" aria-controls="practiceSec">カードあつめ</button>
     <span class="tab-extra" id="tabExtra" hidden><span class="score" id="prScore"></span><button type="button" class="btn small" id="histOpen">成績一覧</button></span>
   </div>
 
@@ -555,7 +673,7 @@ footer a { color: var(--accent); }
             <option value="all">辞書ぜんぶ</option>
           </select>
           <span id="prSrcCh" class="pr-srcch"><label for="prIn">字</label><input type="text" id="prIn" autocomplete="off" maxlength="2" aria-label="練習する漢字を自分で1字入れる"></span>
-          <label class="swl cardsw" title="オンにすると、正解でカードがもらえる（常用漢字・辞書ぜんぶ、号碼を答えるだけ）"><span>カード集め</span><input type="checkbox" role="switch" class="switch" id="cardMode"></label>
+          <button type="button" class="btn small colbtn" id="colOpen" hidden>コレクション →</button>
           <span class="seg" id="rvStyleSeg" role="group" aria-label="答え方" hidden>
             <button type="button" id="rvWriteBtn" aria-pressed="true">書く</button>
             <button type="button" id="rvChooseBtn" aria-pressed="false">選ぶ</button>
@@ -664,11 +782,16 @@ footer a { color: var(--accent); }
         <h4>色味</h4>
         <div class="opts" id="palOpts"></div>
       </div>
+      <div class="set-group">
+        <h4>カードのデザイン</h4>
+        <div class="opts cstyle-opts" id="cstyleOpts"></div>
+      </div>
     </div>
   </div>
 
-  <section class="cards-sec" id="cardsSec" role="tabpanel" aria-labelledby="tabCards" hidden>
+  <section class="cards-sec" id="cardsSec" role="tabpanel" aria-labelledby="tabCard" hidden>
     <div class="col-head">
+      <button type="button" class="btn small" id="colBack">← カードあつめ</button>
       <div class="col-sum" id="colSum"></div>
       <div class="seg" role="group" aria-label="並べかえ" id="colSort">
         <button type="button" data-k="new" aria-pressed="true">新しい順</button>
@@ -683,7 +806,6 @@ footer a { color: var(--accent); }
 
   <div class="modal" id="cardModal" hidden>
     <div class="modal-card bc-card" role="dialog" aria-modal="true" aria-label="カード">
-      <div class="bc-band" id="bcBand"></div>
       <button type="button" class="toast-x" id="bcClose" aria-label="閉じる">✕</button>
       <div class="bc-body" id="bcBody"></div>
     </div>
@@ -1061,25 +1183,30 @@ function addKanji(ch) { kanjiIn.value = kanjiIn.value + ch; renderKanji(); }
 
 // ---- タブ ----
 function showTab(t) {
-  if (!["search", "practice", "cards"].includes(t)) t = "search";
-  const pr = t === "practice", cd = t === "cards";
-  if (!pr && typeof closeHint === "function") closeHint();
+  if (!["search", "practice", "card", "collection"].includes(t)) t = "search";
+  const pr = t === "practice", cg = t === "card", col = t === "collection";
+  if (t === "search" && typeof closeHint === "function") closeHint();
   $("tabSearch").setAttribute("aria-selected", String(t === "search"));
   $("tabPractice").setAttribute("aria-selected", String(pr));
-  $("tabCards").setAttribute("aria-selected", String(cd));
+  $("tabCard").setAttribute("aria-selected", String(cg || col));
   $("jibiki").hidden = t !== "search";
-  $("practiceSec").hidden = !pr;
-  $("cardsSec").hidden = !cd;
-  $("chart").hidden = cd;
+  $("practiceSec").hidden = !(pr || cg);
+  $("cardsSec").hidden = !col;
+  $("chart").hidden = col;
   $("tabExtra").hidden = !pr;
-  document.body.classList.toggle("practicing", pr);
-  if (cd && typeof renderCol === "function") renderCol();
+  document.body.classList.toggle("practicing", pr || cg);
   const gt = document.getElementById("getToast"); if (gt) gt.hidden = true;
-  if (pr && typeof ensureQuestion === "function") ensureQuestion();
+  if (typeof applyCardMode === "function") {
+    const want = cg || col;
+    if (want !== cardMode) { if (typeof closeHint === "function") closeHint(); cardMode = want; applyCardMode(); if (!col) prRandom(); }
+    else if (cg && !$("prK").textContent) prRandom();
+  }
+  if (col && typeof renderCol === "function") renderCol();
+  if ((pr || cg) && typeof ensureQuestion === "function") ensureQuestion();
   store.set("sjTab", t);
 }
 $("tabSearch").addEventListener("click", () => showTab("search"));
-$("tabCards").addEventListener("click", () => showTab("cards"));
+$("tabCard").addEventListener("click", () => showTab("card"));
 $("tabPractice").addEventListener("click", () => showTab("practice"));
 
 // ---- れんしゅう ----
@@ -1121,7 +1248,7 @@ function addCard(ch) {
   saveCards();
   return cards[ch];
 }
-let cardMode = store.get("sjCardMode", "0") === "1";
+let cardMode = false;
 const CARD_LVS = ["joyo", "all"];
 const pickPool = {};
 function weightedPick(lv, avoid) {
@@ -1178,18 +1305,19 @@ let getTimer = 0;
 function showGet(ch, c) {
   const r = rareOf(ch), t = $("getToast");
   t.style.borderColor = `var(--r${r ? r.st : 1})`;
-  t.innerHTML = `<span class="gk">${ch}</span><span class="gt"><b>カードゲット！</b><span>${c.n === 1 ? '<span class="new">NEW</span>' : "×" + c.n + " 枚目"}${r ? ` <span class="r${r.st}c">${starStr(r.st)} ${r.form}</span>` : ""}</span></span>`;
+  t.innerHTML = `<span class="gk">${cardHTML(ch, "toast")}</span><span class="gt"><b>カードゲット！</b><span>${c.n === 1 ? '<span class="new">NEW</span>' : "×" + c.n + " 枚目"}${r ? ` <span class="r${r.st}c">${starStr(r.st)} ${r.form}</span>` : ""}</span></span>`;
   t.hidden = false; t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
   clearTimeout(getTimer); getTimer = setTimeout(() => { t.hidden = true; }, 2600);
 }
 function applyCardMode() {
   document.body.classList.toggle("cardmode", cardMode);
-  $("cardMode").checked = cardMode;
-  $("dirRev").disabled = cardMode;
+  $("colOpen").hidden = !cardMode;
+  document.querySelector(".pr-top .dirseg").hidden = cardMode;
   for (const o of prLv.options) { const ok = !cardMode || CARD_LVS.includes(o.value); o.hidden = !ok; o.disabled = !ok; }
   prLv.value = cardMode ? store.get("sjCardLv", "joyo") : store.get("sjLv", "intro");
   if (!prLv.value) prLv.value = cardMode ? "joyo" : "intro";
-  if (cardMode && dir === "rev") setDir("fwd");
+  if (cardMode && dir === "rev") { const keep = store.get("sjDir", "fwd"); setDir("fwd"); store.set("sjDir", keep); }
+  if (!cardMode && store.get("sjDir", "fwd") === "rev" && dir !== "rev") setDir("rev");
   $("prSrcCh").hidden = cardMode || dir === "rev";
 }
 
@@ -1369,10 +1497,8 @@ prIn.addEventListener("input", () => {
 prLv.value = store.get("sjLv", "intro");
 if (!prLv.value) prLv.value = "sho";
 prLv.addEventListener("change", () => { store.set(cardMode ? "sjCardLv" : "sjLv", prLv.value); dir === "rev" ? rvNew() : prRandom(); });
-$("cardMode").addEventListener("change", () => {
-  cardMode = $("cardMode").checked; store.set("sjCardMode", cardMode ? "1" : "0");
-  closeHint(); applyCardMode(); prRandom();
-});
+$("colOpen").addEventListener("click", () => showTab("collection"));
+$("colBack").addEventListener("click", () => showTab("card"));
 
 // ---- 号碼 → 漢字 ----
 const rv = { code: "", src: "", done: false, style: store.get("sjRvStyle", "write") === "choose" ? "choose" : "write" };
@@ -1552,6 +1678,67 @@ kanjiIn.addEventListener("input", renderKanji);
 searchCode(); renderKanji(); prRandom(); renderScore();
 setDir(store.get("sjDir", "fwd"));
 
+
+// ===== カードの見た目（v0.26）：デザイン4種 × レアの素材5段 =====
+const CSTYLES = [{ id: "plain", nm: "ふつう" }, { id: "goshuin", nm: "御朱印帳風" }, { id: "toreka", nm: "トレカ風" }, { id: "hanafuda", nm: "花札風" }];
+let cstyle = CSTYLES.some(c => c.id === store.get("sjCardStyle", "")) ? store.get("sjCardStyle", "") : "plain";
+const KNUM = n => { const d = "〇一二三四五六七八九"; if (n < 10) return d[n]; if (n < 20) return "十" + (n % 10 ? d[n % 10] : ""); return d[Math.floor(n / 10)] + "十" + (n % 10 ? d[n % 10] : ""); };
+const wareki = t => { const x = new Date(t); const y = x.getFullYear() - 2018; return `令和${y === 1 ? "元" : KNUM(y)}年${KNUM(x.getMonth() + 1)}月${KNUM(x.getDate())}日`; };
+const escH = v => String(v).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function cardHTML(ch, size, style = cstyle) {
+  const r = rareOf(ch), c = cards[ch];
+  const st = r ? r.st : 1, e = r ? r.e : null;
+  const c4 = e ? e.c4 : "????", fu = e && e.fu !== null ? e.fu : "";
+  const stars = `<span class="kc-stars">${starStr(st)}</span>`;
+  const mus = r && r.m <= 1 ? `<span class="kc-mus" title="仲間ランク：天下無双">無<br>双</span>` : "";
+  const K = `<span class="kc-k">${escH(ch)}</span>`;
+  const code = `${c4}${fu ? "<sub>" + fu + "</sub>" : ""}`;
+  const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
+  const yomi = y.on.length || y.kun.length ? [y.on.slice(0, 2).join("・"), y.kun.slice(0, 2).join("・")].filter(Boolean).join("／") : y.py.slice(0, 2).join("・");
+  const big = size === "big";
+  let inner = "";
+  if (style === "goshuin") {
+    const seal = `<span class="gs-seal">${[...c4].map(d => `<i>${d}</i>`).join("")}${fu ? `<b>${fu}</b>` : ""}</span>`;
+    inner = big
+      ? `<span class="gs-tate gs-r">四角号碼　${r ? r.form : ""}</span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span><span class="gs-foot">${stars}</span>`
+      : `${K}${seal}`;
+  } else if (style === "toreka") {
+    inner = `<span class="tk-name"><b>${escH(ch)}</b>${stars}</span><span class="tk-art">${K}</span>` + (big
+      ? `<span class="tk-type">${r ? r.form + "・" + r.mate : ""}</span><span class="tk-text">${escH(yomi)}</span><span class="tk-foot"><span>No.${code}</span><span>×${c ? c.n : 0}</span></span>`
+      : `<span class="tk-foot"><span>${code}</span></span>`);
+  } else if (style === "hanafuda") {
+    inner = `<span class="hf-moon">${K}</span><span class="hf-tan">${[...c4].map(d => `<i>${d}</i>`).join("")}</span>` + (big ? `<span class="hf-foot">${stars}</span>` : "");
+  } else {
+    inner = `<span class="kc-band"></span>` + (big
+      ? `<span class="pl-rk">${stars}<b>${r ? r.form : ""}</b></span><span class="pl-corner">${K}${[...c4].map((d, i) => `<i class="d${i}">${d}</i>`).join("")}${fu ? `<i class="d4">${fu}</i>` : ""}</span><span class="pl-code">${code}</span><span class="pl-mate">${r ? r.mate : ""}</span>`
+      : `${K}${stars}<span class="pl-code">${code}</span>`);
+  }
+  return `<div class="kc kc-${style} sz-${size} r${st}"><div class="kc-in">${inner}</div>${mus}</div>`;
+}
+function applyCstyle(id) {
+  cstyle = id; store.set("sjCardStyle", id);
+  document.querySelectorAll("#cstyleOpts .opt").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+  if (!$("cardsSec").hidden) renderCol();
+  if (!$("cardModal").hidden && bigCh) openBig(bigCh);
+}
+function buildCstyleOpts() {
+  const sample = "館";
+  $("cstyleOpts").innerHTML = CSTYLES.map(c => `<button type="button" class="opt" data-id="${c.id}" aria-pressed="${c.id === cstyle}">${cardHTML(sample, "mini", c.id)}${c.nm}</button>`).join("");
+}
+$("cstyleOpts").addEventListener("click", e => { const b = e.target.closest(".opt"); if (b) applyCstyle(b.dataset.id); });
+// 幻のカード：指やマウスで光が動く
+function holoTrack(el) {
+  const card = el.querySelector(".kc"); if (!card) return;
+  const move = (x, y) => { card.style.setProperty("--hx", (x * 100).toFixed(1) + "%"); card.style.setProperty("--hy", (y * 100).toFixed(1) + "%"); card.classList.add("trk"); };
+  card.addEventListener("pointermove", ev => { const b = card.getBoundingClientRect(); move((ev.clientX - b.left) / b.width, (ev.clientY - b.top) / b.height); });
+  card.addEventListener("pointerleave", () => card.classList.remove("trk"));
+}
+window.addEventListener("deviceorientation", ev => {
+  if ($("cardModal").hidden || ev.gamma == null) return;
+  const card = $("bcBody").querySelector(".kc"); if (!card) return;
+  card.style.setProperty("--hx", (50 + ev.gamma * 1.5) + "%"); card.style.setProperty("--hy", (50 + (ev.beta - 40) * 1.2) + "%"); card.classList.add("trk");
+});
+
 // ===== コレクション =====
 let colSort = store.get("sjColSort", "new");
 function renderCol() {
@@ -1570,28 +1757,23 @@ function renderCol() {
   info.sort(cmp);
   const g = $("colGrid"); g.textContent = "";
   for (const o of info) {
-    const st = o.r ? o.r.st : 1;
-    const b = document.createElement("button"); b.type = "button"; b.className = "mc s" + st;
-    b.innerHTML = `<span class="mk"></span><span class="ms r${st}c">${starStr(st)}</span><span class="mcode">${o.r ? o.r.e.c4 : ""}</span>` + (o.c.n > 1 ? `<span class="mn">×${o.c.n}</span>` : "");
-    b.querySelector(".mk").textContent = o.ch;
+    const b = document.createElement("button"); b.type = "button"; b.className = "mcw";
+    b.innerHTML = cardHTML(o.ch, "mini") + (o.c.n > 1 ? `<span class="mn">×${o.c.n}</span>` : "");
+    b.setAttribute("aria-label", o.ch + " のカード");
     b.addEventListener("click", () => openBig(o.ch));
     g.append(b);
   }
 }
 $("colSort").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; colSort = b.dataset.k; store.set("sjColSort", colSort); renderCol(); });
 const fmtDate = t => { const d = new Date(t); return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`; };
+let bigCh = "";
 function openBig(ch) {
+  bigCh = ch;
   const c = cards[ch], r = rareOf(ch), st = r ? r.st : 1;
-  $("bcBand").style.background = `var(--r${st})`;
   $("cardModal").className = "modal s" + st;
   const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
-  const e = r ? r.e : null;
-  const d = e ? [...e.c4].map((x, i) => `<span class="d d${i}">${x}</span>`).join("") + (e.fu !== null ? `<span class="d d4">${e.fu}</span>` : "") : "";
   const yrows = (y.on.length ? `<dt>音読み</dt><dd>${y.on.slice(0, 8).join("、")}</dd>` : "") + (y.kun.length ? `<dt>訓読み</dt><dd>${y.kun.slice(0, 8).join("、")}${y.kun.length > 8 ? " …" : ""}</dd>` : "") + (!y.on.length && !y.kun.length && y.py.length ? `<dt>ピンイン</dt><dd>${y.py.join("、")}</dd>` : "");
-  $("bcBody").innerHTML = `
-    <div class="bc-rk"><span class="pill r${st}c">${starStr(st)} ${r ? r.form : ""}</span>${r ? `<span class="pill ${r.m <= 1 ? "r5c" : ""}">${r.mate}</span>` : ""}</div>
-    <div class="bc-corner"><div class="k"></div>${d}</div>
-    <div class="bc-code">${e ? e.c4 + (e.fu !== null ? "<sub>" + e.fu + "</sub>" : "") : ""}</div>
+  $("bcBody").innerHTML = `<div class="bc-stage">${cardHTML(ch, "big")}</div>
     <dl class="bc-dl">
       ${yrows}
       <dt>形ランク</dt><dd>${r ? `${starStr(st)} ${r.form} <span class="sub">（約 ${Math.round(r.x).toLocaleString()} 字に1字の形）</span>` : "—"}</dd>
@@ -1599,7 +1781,7 @@ function openBig(ch) {
       <dt>持ってる枚数</dt><dd>${c ? c.n : 0} 枚</dd>
       <dt>はじめて</dt><dd>${c ? fmtDate(c.first) : "—"}</dd>
     </dl>`;
-  $("bcBody").querySelector(".k").textContent = ch;
+  holoTrack($("bcBody"));
   $("cardModal").hidden = false; $("bcClose").focus();
 }
 function closeBig() { $("cardModal").hidden = true; }
@@ -1607,7 +1789,7 @@ $("bcClose").addEventListener("click", closeBig);
 $("cardModal").addEventListener("click", e => { if (e.target === $("cardModal")) closeBig(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cardModal").hidden) closeBig(); });
 applyCardMode();
-if (cardMode) prRandom();
+buildCstyleOpts();
 
 showTab(store.get("sjTab", "search"));
 </script>
