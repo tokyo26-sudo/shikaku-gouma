@@ -389,6 +389,18 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+
+/* ===== v0.35 パソコン：操作ボタンを漢字の上に横一列 ===== */
+@media (min-width: 800px) {
+  #viewPractice > .pr-top { order: 1; }
+  #viewPractice > .pbar { order: 2; position: static; margin: 0; padding: 0; border: 0; background: none; justify-content: center; gap: 8px; }
+  #viewPractice > #fwdArea, #viewPractice > #revArea { order: 3; }
+  #viewPractice > .toast { order: 4; }
+  #viewPractice > .pbar .btn { padding: 8px 14px; font-size: 14px; }
+  #viewPractice > .pbar #barMain { order: 9; flex: 0 0 auto; min-width: 180px; padding: 9px 22px; font-size: 15px; border-radius: 999px; }
+  #viewPractice > .pbar #barShow { margin-right: 6px; }
+  #viewPractice > .pr-area .stage { padding-top: 0; }
+}
 /* ===== v0.33 カードあつめ：さがすまで待つ ===== */
 .qbox.idle .k { color: transparent; border-style: dashed; background: repeating-linear-gradient(45deg, transparent 0 8px, color-mix(in srgb, var(--line) 35%, transparent) 8px 9px); cursor: pointer; }
 .qbox.idle .k::after { content: "？"; color: var(--muted); font-size: 72px; }
@@ -717,7 +729,7 @@ footer a { color: var(--accent); }
 </svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.33</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.35</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
