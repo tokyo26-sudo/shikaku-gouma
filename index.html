@@ -383,6 +383,94 @@ header .gear.help + .gear { margin-left: 0; }
   #kjModal { place-items: end stretch; padding: 0; }
   #kjModal .kj-card { width: 100%; border-radius: 14px 14px 0 0; max-height: 85vh; padding-bottom: 20px; }
 }
+
+/* ===== v0.25 カード集め・コレクション ===== */
+@media (max-width: 600px) {
+  .modes { flex-wrap: wrap; row-gap: 0; }
+  .modes > button { font-size: 14px; padding: 8px 10px 10px; }
+  .tab-extra { gap: 6px; }
+  .tab-extra .btn.small { padding: 3px 8px; font-size: 12px; }
+}
+:root { --r1: #8a959a; --r2: #3f8a57; --r3: #2f6fa3; --r4: #7d4fb0; --r5: #c9971c; --r5b: #f3d36b; }
+.cardsw { margin-left: auto; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+.cardsw span { font-weight: 700; color: var(--ink); }
+body.cardmode .cardsw { border-color: var(--r5); background: color-mix(in srgb, var(--r5b) 30%, var(--bg)); }
+.rarity { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 22px; font-size: 13px; }
+.rarity .stars { letter-spacing: 1px; font-size: 14px; }
+.rarity .rk { font-weight: 800; font-family: var(--f-display); font-size: 16px; }
+.rarity .tag { font-size: 11px; border: 1px solid currentColor; border-radius: 4px; padding: 0 5px; font-weight: 700; }
+.r1c { color: var(--r1); } .r2c { color: var(--r2); } .r3c { color: var(--r3); } .r4c { color: var(--r4); } .r5c { color: var(--r5); }
+.qbox[data-star] .k { border-style: solid; border-width: 2px; }
+.qbox[data-star="2"] .k { border-color: var(--r2); }
+.qbox[data-star="3"] .k { border-color: var(--r3); box-shadow: 0 0 14px color-mix(in srgb, var(--r3) 45%, transparent); }
+.qbox[data-star="4"] .k { border-color: var(--r4); box-shadow: 0 0 18px color-mix(in srgb, var(--r4) 55%, transparent); }
+.qbox[data-star="5"] .k { border-color: var(--r5); border-width: 3px; box-shadow: 0 0 24px color-mix(in srgb, var(--r5b) 80%, transparent), inset 0 0 18px color-mix(in srgb, var(--r5b) 35%, transparent); }
+.qbox.sil .k { color: transparent; text-shadow: 0 0 0 #111; }
+.encounter { position: fixed; inset: 0; z-index: 40; pointer-events: none; display: grid; place-items: center; background: rgba(5, 10, 14, 0); }
+.encounter .big { font-family: var(--f-display); font-weight: 800; font-size: 140px; line-height: 1; opacity: 0; }
+.encounter .bang { position: absolute; top: 22%; font-size: 64px; font-weight: 800; color: #fff; opacity: 0; }
+.encounter .sp { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--r5b); opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .qbox.fx2 .k { animation: fxFade .45s ease-out; }
+  .qbox.fx3 .k { animation: fxGlow 1s ease-out; }
+  .qbox.fx45 .k { animation: fxPop .5s cubic-bezier(.2, 1.6, .4, 1); }
+  .encounter.on4 { animation: encBg 1.5s ease-out; }
+  .encounter.on5 { animation: encBg5 2s ease-out; }
+  .encounter.on4 .big { color: var(--r4); animation: encWord 1.5s ease-out; }
+  .encounter.on5 .big { color: var(--r5b); text-shadow: 0 0 30px var(--r5); animation: encWord 2s ease-out; }
+  .encounter.on5 .bang { animation: encBang .7s ease-out; }
+  .encounter.on5 .sp { animation: encSp 1.6s ease-out .7s; }
+  body.shake .wrap { animation: shake .5s ease-in-out; }
+  .gettoast.show { animation: getIn .35s cubic-bezier(.2, 1.5, .4, 1); }
+}
+@keyframes fxFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes fxGlow { 0% { box-shadow: 0 0 0 transparent; } 40% { box-shadow: 0 0 36px var(--r3); } 100% { } }
+@keyframes fxPop { from { transform: scale(.6); } to { transform: none; } }
+@keyframes encBg { 0% { background: rgba(5,10,14,0); } 15% { background: rgba(5,10,14,.72); } 70% { background: rgba(5,10,14,.55); } 100% { background: rgba(5,10,14,0); } }
+@keyframes encBg5 { 0% { background: rgba(5,10,14,0); } 10% { background: rgba(5,10,14,.85); } 60% { background: rgba(40,28,4,.6); } 100% { background: rgba(5,10,14,0); } }
+@keyframes encWord { 0%, 30% { opacity: 0; transform: scale(.4); } 50% { opacity: 1; transform: scale(1.1); } 75% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
+@keyframes encBang { 0% { opacity: 0; transform: scale(.3); } 40% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0; } }
+@keyframes encSp { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.3); } }
+@keyframes shake { 0%, 100% { transform: none; } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+@keyframes getIn { from { transform: translate(-50%, 20px) scale(.8); opacity: 0; } to { transform: translate(-50%, 0) scale(1); opacity: 1; } }
+.gettoast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 35; background: var(--panel); border: 2px solid var(--r1); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.gettoast .gk { font-family: var(--f-kanji); font-size: 40px; line-height: 1; }
+.gettoast .gt { display: grid; font-size: 13px; line-height: 1.4; }
+.gettoast .gt b { font-size: 16px; }
+.gettoast .new { color: var(--hit); font-weight: 800; }
+/* コレクション */
+.cards-sec { display: grid; gap: 12px; }
+.col-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.col-sum { font-size: 14px; color: var(--muted); } .col-sum b { color: var(--ink); font-size: 18px; }
+.col-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+.mc { position: relative; background: var(--panel); border: 1px solid var(--line); border-top: 5px solid var(--r1); border-radius: 8px; padding: 6px 4px 6px; display: grid; justify-items: center; gap: 2px; cursor: pointer; font: inherit; color: var(--ink); }
+.mc:hover { border-color: var(--accent); }
+.mc .mk { font-family: var(--f-kanji); font-size: 40px; line-height: 1.15; }
+.mc .ms { font-size: 10px; letter-spacing: 1px; }
+.mc .mcode { font-family: var(--f-mono); font-size: 10px; color: var(--muted); }
+.mc .mn { position: absolute; top: 3px; right: 4px; font-family: var(--f-mono); font-size: 10px; font-weight: 700; color: var(--panel); background: var(--accent); border-radius: 999px; padding: 0 5px; }
+.mc.s2 { border-top-color: var(--r2); } .mc.s3 { border-top-color: var(--r3); } .mc.s4 { border-top-color: var(--r4); }
+.mc.s5 { border-top-color: var(--r5); background: linear-gradient(170deg, color-mix(in srgb, var(--r5b) 30%, var(--panel)), var(--panel) 60%); }
+.col-empty { color: var(--muted); padding: 30px 0; text-align: center; }
+/* 大きいカード */
+.bc-card { width: min(380px, 100%); padding: 0; overflow: auto; grid-template-rows: auto; gap: 0; }
+.bc-band { height: 10px; background: var(--r1); border-radius: 12px 12px 0 0; }
+.bc-body { display: grid; gap: 12px; padding: 14px 18px 18px; justify-items: center; }
+.bc-rk { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.bc-rk .pill { border: 1.5px solid currentColor; border-radius: 999px; padding: 2px 12px; font-weight: 800; font-family: var(--f-display); font-size: 15px; }
+.bc-corner { position: relative; width: 180px; height: 180px; }
+.bc-corner .k { position: absolute; inset: 16px; display: grid; place-items: center; font-family: var(--f-kanji); font-size: 120px; line-height: 1; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.bc-corner .d { position: absolute; font-family: var(--f-mono); font-size: 20px; font-weight: 700; color: var(--hit); }
+.bc-corner .d0 { top: -8px; left: -6px; } .bc-corner .d1 { top: -8px; right: -6px; } .bc-corner .d2 { bottom: -8px; left: -6px; } .bc-corner .d3 { bottom: -8px; right: -6px; }
+.bc-corner .d4 { bottom: 22px; right: -6px; font-size: 14px; color: var(--fu); }
+.bc-code { font-family: var(--f-mono); font-size: 22px; font-weight: 700; letter-spacing: .15em; }
+.bc-code sub { font-size: .55em; color: var(--fu); }
+.bc-dl { width: 100%; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0; font-size: 14px; line-height: 1.5; }
+.bc-dl dt { font-size: 12px; color: var(--muted); font-weight: 700; padding-top: 2px; white-space: nowrap; }
+.bc-dl dd { margin: 0; overflow-wrap: anywhere; }
+.bc-dl .sub { color: var(--muted); font-size: 12px; }
+#cardModal.s5 .bc-card { border: 2px solid var(--r5); box-shadow: 0 0 30px color-mix(in srgb, var(--r5b) 60%, transparent); }
+
 footer { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
 footer a { color: var(--accent); }
 
@@ -392,7 +480,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.24</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.25</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -401,6 +489,7 @@ footer a { color: var(--accent); }
   <div class="tabs modes" role="tablist" aria-label="じびき と れんしゅう">
     <button type="button" role="tab" id="tabSearch" aria-selected="true" aria-controls="jibiki">じびき</button>
     <button type="button" role="tab" id="tabPractice" aria-selected="false" aria-controls="practiceSec">れんしゅう</button>
+    <button type="button" role="tab" id="tabCards" aria-selected="false" aria-controls="cardsSec">コレクション</button>
     <span class="tab-extra" id="tabExtra" hidden><span class="score" id="prScore"></span><button type="button" class="btn small" id="histOpen">成績一覧</button></span>
   </div>
 
@@ -466,6 +555,7 @@ footer a { color: var(--accent); }
             <option value="all">辞書ぜんぶ</option>
           </select>
           <span id="prSrcCh" class="pr-srcch"><label for="prIn">字</label><input type="text" id="prIn" autocomplete="off" maxlength="2" aria-label="練習する漢字を自分で1字入れる"></span>
+          <label class="swl cardsw" title="オンにすると、正解でカードがもらえる（常用漢字・辞書ぜんぶ、号碼を答えるだけ）"><span>カード集め</span><input type="checkbox" role="switch" class="switch" id="cardMode"></label>
           <span class="seg" id="rvStyleSeg" role="group" aria-label="答え方" hidden>
             <button type="button" id="rvWriteBtn" aria-pressed="true">書く</button>
             <button type="button" id="rvChooseBtn" aria-pressed="false">選ぶ</button>
@@ -475,11 +565,12 @@ footer a { color: var(--accent); }
         <div class="view pr-area" id="fwdArea">
           <div class="stage">
             <button type="button" class="skipbtn" id="prSkip" title="この問題を成績に入れずに、別の問題にする">↻ 別の問題</button>
-            <div class="qbox">
+            <div class="qbox" id="prQ">
               <div class="k" id="prK"></div>
               <span class="slot s0"></span><span class="slot s1"></span><span class="slot s2"></span><span class="slot s3"></span><span class="slot s4" title="附角（入れなくてもいい）"></span>
             </div>
           </div>
+          <div class="rarity" id="prRar" hidden></div>
           <p class="verdict" id="prVerdict"></p>
           <input type="text" id="prAns" hidden aria-hidden="true" tabindex="-1">
           <div class="parts-head">
@@ -575,6 +666,30 @@ footer a { color: var(--accent); }
       </div>
     </div>
   </div>
+
+  <section class="cards-sec" id="cardsSec" role="tabpanel" aria-labelledby="tabCards" hidden>
+    <div class="col-head">
+      <div class="col-sum" id="colSum"></div>
+      <div class="seg" role="group" aria-label="並べかえ" id="colSort">
+        <button type="button" data-k="new" aria-pressed="true">新しい順</button>
+        <button type="button" data-k="code" aria-pressed="false">号碼順</button>
+        <button type="button" data-k="star" aria-pressed="false">★の多い順</button>
+        <button type="button" data-k="mate" aria-pressed="false">仲間の少ない順</button>
+      </div>
+    </div>
+    <div class="col-grid" id="colGrid"></div>
+    <p class="col-empty" id="colEmpty" hidden>まだカードがないダカラ。れんしゅうで「カード集め」をオンにして、号碼を4隅ぜんぶ当てるとカードがもらえるヨ</p>
+  </section>
+
+  <div class="modal" id="cardModal" hidden>
+    <div class="modal-card bc-card" role="dialog" aria-modal="true" aria-label="カード">
+      <div class="bc-band" id="bcBand"></div>
+      <button type="button" class="toast-x" id="bcClose" aria-label="閉じる">✕</button>
+      <div class="bc-body" id="bcBody"></div>
+    </div>
+  </div>
+  <div class="encounter" id="enc" aria-hidden="true"><div class="bang">！</div><div class="big" id="encWord"></div></div>
+  <div class="gettoast" id="getToast" role="status" hidden></div>
 
   <div class="modal" id="kjModal" hidden>
     <div class="modal-card kj-card" role="dialog" aria-modal="true" aria-labelledby="kjBig">
@@ -946,18 +1061,25 @@ function addKanji(ch) { kanjiIn.value = kanjiIn.value + ch; renderKanji(); }
 
 // ---- タブ ----
 function showTab(t) {
-  const pr = t === "practice";
+  if (!["search", "practice", "cards"].includes(t)) t = "search";
+  const pr = t === "practice", cd = t === "cards";
   if (!pr && typeof closeHint === "function") closeHint();
-  $("tabSearch").setAttribute("aria-selected", String(!pr));
+  $("tabSearch").setAttribute("aria-selected", String(t === "search"));
   $("tabPractice").setAttribute("aria-selected", String(pr));
-  $("jibiki").hidden = pr;
+  $("tabCards").setAttribute("aria-selected", String(cd));
+  $("jibiki").hidden = t !== "search";
   $("practiceSec").hidden = !pr;
+  $("cardsSec").hidden = !cd;
+  $("chart").hidden = cd;
   $("tabExtra").hidden = !pr;
   document.body.classList.toggle("practicing", pr);
+  if (cd && typeof renderCol === "function") renderCol();
+  const gt = document.getElementById("getToast"); if (gt) gt.hidden = true;
   if (pr && typeof ensureQuestion === "function") ensureQuestion();
   store.set("sjTab", t);
 }
 $("tabSearch").addEventListener("click", () => showTab("search"));
+$("tabCards").addEventListener("click", () => showTab("cards"));
 $("tabPractice").addEventListener("click", () => showTab("practice"));
 
 // ---- れんしゅう ----
@@ -969,18 +1091,123 @@ let hist = [];
 try { hist = JSON.parse(store.get("sjHist", "[]")) || []; } catch (e) { hist = []; }
 function saveHist() { store.set("sjHist", JSON.stringify(hist.slice(-2000))); }
 
-function prSet(ch) {
+
+// ===== v0.25 レア度・カード =====
+// 形ランク：四隅の数字が その隅でどれくらい出るか（本辞書で数える）をかけ算 →「◯字に1字の形」
+const RARE = (() => {
+  const first = new Map(), mates = new Map();
+  for (const [ch, list] of byChar) { const e = list.find(x => !x.fb); if (e) first.set(ch, e); }
+  const F = [0, 1, 2, 3].map(() => ({})); let n = 0;
+  for (const e of first.values()) { n++; for (let k = 0; k < 4; k++) F[k][e.c4[k]] = (F[k][e.c4[k]] || 0) + 1; mates.set(e.c4, (mates.get(e.c4) || 0) + 1); }
+  const oneIn = c4 => { let p = 1; for (let k = 0; k < 4; k++) p *= (F[k][c4[k]] || 1) / n; return 1 / p; };
+  const star = x => x >= 50000 ? 5 : x >= 20000 ? 4 : x >= 8000 ? 3 : x >= 3000 ? 2 : 1;
+  return { first, mates, oneIn, star };
+})();
+const FORM_NAME = ["", "凡", "良", "秀", "稀", "幻"];
+const MATE_NAME = m => m <= 1 ? "天下無双" : m === 2 ? "両雄並立" : m <= 5 ? "少数精鋭" : m <= 19 ? "群雄割拠" : "百花繚乱";
+const TICKETS = [0, 10, 7, 5, 3, 1.5];
+function rareOf(ch) {
+  const e = RARE.first.get(ch); if (!e) return null;
+  const x = RARE.oneIn(e.c4), st = RARE.star(x), m = RARE.mates.get(e.c4) || 1;
+  return { e, x, st, m, form: FORM_NAME[st], mate: MATE_NAME(m) };
+}
+const starStr = n => "★".repeat(n) + "☆".repeat(5 - n);
+let cards = {};
+try { cards = JSON.parse(store.get("sjCards", "{}")) || {}; } catch (e) { cards = {}; }
+function saveCards() { store.set("sjCards", JSON.stringify(cards)); }
+function addCard(ch) {
+  const now = Date.now(), c = cards[ch];
+  if (c) { c.n++; c.last = now; } else cards[ch] = { n: 1, first: now, last: now };
+  saveCards();
+  return cards[ch];
+}
+let cardMode = store.get("sjCardMode", "0") === "1";
+const CARD_LVS = ["joyo", "all"];
+const pickPool = {};
+function weightedPick(lv, avoid) {
+  if (!pickPool[lv]) {
+    const chars = Array.from(DATA.levels[lv] || []).filter(c => RARE.first.has(c));
+    const w = chars.map(c => TICKETS[rareOf(c).st]);
+    const cum = []; let s = 0; for (const x of w) { s += x; cum.push(s); }
+    pickPool[lv] = { chars, cum, total: s };
+  }
+  const P = pickPool[lv];
+  for (let t = 0; t < 5; t++) {
+    const r = Math.random() * P.total;
+    let lo = 0, hi = P.cum.length - 1;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (P.cum[mid] < r) lo = mid + 1; else hi = mid; }
+    if (P.chars[lo] !== avoid) return P.chars[lo];
+  }
+  return P.chars[0];
+}
+const reduceMotion = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
+let encTimer = 0;
+function showRarity(ch) {
+  const q = $("prQ"), box = $("prRar");
+  q.classList.remove("fx2", "fx3", "fx45", "sil"); q.removeAttribute("data-star");
+  clearTimeout(encTimer);
+  const E = $("enc"); E.className = "encounter";
+  if (!cardMode || !pr.card) { box.hidden = true; return; }
+  const r = rareOf(ch); if (!r) { box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<span class="stars r${r.st}c">${starStr(r.st)}</span><span class="rk r${r.st}c">${r.form}</span>` + (r.m <= 1 ? `<span class="tag r5c">天下無双</span>` : "");
+  q.dataset.star = r.st;
+  void q.offsetWidth;
+  if (r.st === 2) q.classList.add("fx2");
+  else if (r.st === 3) q.classList.add("fx3");
+  else if (r.st >= 4) {
+    if (reduceMotion()) return;
+    q.classList.add("sil");
+    $("encWord").textContent = r.form;
+    E.querySelectorAll(".sp").forEach(x => x.remove());
+    if (r.st === 5) {
+      for (let i = 0; i < 18; i++) {
+        const sp = document.createElement("span"); sp.className = "sp";
+        const a = Math.random() * Math.PI * 2, d = 120 + Math.random() * 180;
+        sp.style.setProperty("--dx", Math.cos(a) * d + "px"); sp.style.setProperty("--dy", Math.sin(a) * d + "px");
+        E.append(sp);
+      }
+      document.body.classList.remove("shake"); void document.body.offsetWidth; document.body.classList.add("shake");
+    }
+    void E.offsetWidth;
+    E.classList.add(r.st === 5 ? "on5" : "on4");
+    encTimer = setTimeout(() => { q.classList.remove("sil"); void q.offsetWidth; q.classList.add("fx45"); document.body.classList.remove("shake"); }, r.st === 5 ? 1300 : 900);
+  }
+}
+let getTimer = 0;
+function showGet(ch, c) {
+  const r = rareOf(ch), t = $("getToast");
+  t.style.borderColor = `var(--r${r ? r.st : 1})`;
+  t.innerHTML = `<span class="gk">${ch}</span><span class="gt"><b>カードゲット！</b><span>${c.n === 1 ? '<span class="new">NEW</span>' : "×" + c.n + " 枚目"}${r ? ` <span class="r${r.st}c">${starStr(r.st)} ${r.form}</span>` : ""}</span></span>`;
+  t.hidden = false; t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
+  clearTimeout(getTimer); getTimer = setTimeout(() => { t.hidden = true; }, 2600);
+}
+function applyCardMode() {
+  document.body.classList.toggle("cardmode", cardMode);
+  $("cardMode").checked = cardMode;
+  $("dirRev").disabled = cardMode;
+  for (const o of prLv.options) { const ok = !cardMode || CARD_LVS.includes(o.value); o.hidden = !ok; o.disabled = !ok; }
+  prLv.value = cardMode ? store.get("sjCardLv", "joyo") : store.get("sjLv", "intro");
+  if (!prLv.value) prLv.value = cardMode ? "joyo" : "intro";
+  if (cardMode && dir === "rev") setDir("fwd");
+  $("prSrcCh").hidden = cardMode || dir === "rev";
+}
+
+function prSet(ch, viaCard = false) {
   pr.ch = ch;
   pr.list = byChar.get(ch) || [];
   pr.done = false;
+  pr.card = !!(viaCard && cardMode);
   prIn.value = ch;
   $("prK").textContent = ch;
   prAns.value = "";
   $("prVerdict").innerHTML = pr.list.length ? "" : "この字は辞書に無い。別の字にしてネ";
   if (pr.list.length && pr.list[0].fb) $("prVerdict").innerHTML = "予備辞書の字（4桁のみ、流儀がちがう）";
   prRender();
+  showRarity(ch);
 }
 function prRandom() {
+  if (cardMode) { prSet(weightedPick(CARD_LVS.includes(prLv.value) ? prLv.value : "joyo", pr.ch), true); return; }
   const pool = Array.from(DATA.levels[prLv.value] || DATA.levels.sho);
   let ch = pool[Math.floor(Math.random() * pool.length)];
   if (pool.length > 1) while (ch === pr.ch) ch = pool[Math.floor(Math.random() * pool.length)];
@@ -1024,6 +1251,7 @@ function prCheck() {
   const ok = r.marks.every(m => m !== "ng");
   pr.done = true;
   hist.push({ ch: pr.ch, ok, ans: a, marks: r.marks, codes: pr.list.map(e => e.c4 + (e.fu ?? "")) }); saveHist();
+  if (ok && pr.card && cardMode) showGet(pr.ch, addCard(pr.ch));
   const all = pr.list.map(fmt).join(" ／ ");
   $("prVerdict").innerHTML = (ok ? `<b class="ok">正解！</b> ` : `<b class="ng">ざんねん</b> 正解は `) + all +
     ` <button type="button" class="linkbtn" id="prGo">じびきで見る</button>`;
@@ -1140,7 +1368,11 @@ prIn.addEventListener("input", () => {
 });
 prLv.value = store.get("sjLv", "intro");
 if (!prLv.value) prLv.value = "sho";
-prLv.addEventListener("change", () => { store.set("sjLv", prLv.value); dir === "rev" ? rvNew() : prRandom(); });
+prLv.addEventListener("change", () => { store.set(cardMode ? "sjCardLv" : "sjLv", prLv.value); dir === "rev" ? rvNew() : prRandom(); });
+$("cardMode").addEventListener("change", () => {
+  cardMode = $("cardMode").checked; store.set("sjCardMode", cardMode ? "1" : "0");
+  closeHint(); applyCardMode(); prRandom();
+});
 
 // ---- 号碼 → 漢字 ----
 const rv = { code: "", src: "", done: false, style: store.get("sjRvStyle", "write") === "choose" ? "choose" : "write" };
@@ -1251,7 +1483,7 @@ function setDir(d) {
   const r = dir === "rev";
   $("dirFwd").setAttribute("aria-pressed", String(!r));
   $("dirRev").setAttribute("aria-pressed", String(r));
-  $("fwdArea").hidden = r; $("revArea").hidden = !r; $("prSrcCh").hidden = r; $("rvStyleSeg").hidden = !r;
+  $("fwdArea").hidden = r; $("revArea").hidden = !r; $("prSrcCh").hidden = r || cardMode; $("rvStyleSeg").hidden = !r;
   closeHint();
   store.set("sjDir", dir);
   if (r && !rv.code) rvNew();
@@ -1263,7 +1495,7 @@ $("dirRev").addEventListener("click", () => setDir("rev"));
 // ---- 下の帯 ----
 function updateBar() {
   const r = dir === "rev";
-  $("prSkip").hidden = pr.done; $("rvSkip").hidden = rv.done;
+  $("prSkip").hidden = pr.done || cardMode; $("rvSkip").hidden = rv.done;
   $("barBack").hidden = r; $("barClear").hidden = r;
   if (!r) {
     const a = normCode(prAns.value).replace(/\?/g, "");
@@ -1319,7 +1551,65 @@ useFb.addEventListener("change", () => searchCode());
 kanjiIn.addEventListener("input", renderKanji);
 searchCode(); renderKanji(); prRandom(); renderScore();
 setDir(store.get("sjDir", "fwd"));
-showTab(store.get("sjTab", "search") === "practice" ? "practice" : "search");
+
+// ===== コレクション =====
+let colSort = store.get("sjColSort", "new");
+function renderCol() {
+  const keys = Object.keys(cards);
+  const total = keys.reduce((a, k) => a + cards[k].n, 0);
+  $("colSum").innerHTML = `<b>${keys.length}</b> 種類・ぜんぶで <b>${total}</b> 枚`;
+  $("colEmpty").hidden = keys.length > 0;
+  $("colSort").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === colSort)));
+  const info = keys.map(ch => ({ ch, c: cards[ch], r: rareOf(ch) }));
+  const cmp = {
+    new: (a, b) => b.c.first - a.c.first,
+    code: (a, b) => ((a.r && a.r.e.c4) || "").localeCompare((b.r && b.r.e.c4) || "") || a.ch.localeCompare(b.ch),
+    star: (a, b) => ((b.r ? b.r.x : 0) - (a.r ? a.r.x : 0)),
+    mate: (a, b) => ((a.r ? a.r.m : 99) - (b.r ? b.r.m : 99)) || ((b.r ? b.r.x : 0) - (a.r ? a.r.x : 0)),
+  }[colSort] || ((a, b) => b.c.first - a.c.first);
+  info.sort(cmp);
+  const g = $("colGrid"); g.textContent = "";
+  for (const o of info) {
+    const st = o.r ? o.r.st : 1;
+    const b = document.createElement("button"); b.type = "button"; b.className = "mc s" + st;
+    b.innerHTML = `<span class="mk"></span><span class="ms r${st}c">${starStr(st)}</span><span class="mcode">${o.r ? o.r.e.c4 : ""}</span>` + (o.c.n > 1 ? `<span class="mn">×${o.c.n}</span>` : "");
+    b.querySelector(".mk").textContent = o.ch;
+    b.addEventListener("click", () => openBig(o.ch));
+    g.append(b);
+  }
+}
+$("colSort").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; colSort = b.dataset.k; store.set("sjColSort", colSort); renderCol(); });
+const fmtDate = t => { const d = new Date(t); return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`; };
+function openBig(ch) {
+  const c = cards[ch], r = rareOf(ch), st = r ? r.st : 1;
+  $("bcBand").style.background = `var(--r${st})`;
+  $("cardModal").className = "modal s" + st;
+  const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
+  const e = r ? r.e : null;
+  const d = e ? [...e.c4].map((x, i) => `<span class="d d${i}">${x}</span>`).join("") + (e.fu !== null ? `<span class="d d4">${e.fu}</span>` : "") : "";
+  const yrows = (y.on.length ? `<dt>音読み</dt><dd>${y.on.slice(0, 8).join("、")}</dd>` : "") + (y.kun.length ? `<dt>訓読み</dt><dd>${y.kun.slice(0, 8).join("、")}${y.kun.length > 8 ? " …" : ""}</dd>` : "") + (!y.on.length && !y.kun.length && y.py.length ? `<dt>ピンイン</dt><dd>${y.py.join("、")}</dd>` : "");
+  $("bcBody").innerHTML = `
+    <div class="bc-rk"><span class="pill r${st}c">${starStr(st)} ${r ? r.form : ""}</span>${r ? `<span class="pill ${r.m <= 1 ? "r5c" : ""}">${r.mate}</span>` : ""}</div>
+    <div class="bc-corner"><div class="k"></div>${d}</div>
+    <div class="bc-code">${e ? e.c4 + (e.fu !== null ? "<sub>" + e.fu + "</sub>" : "") : ""}</div>
+    <dl class="bc-dl">
+      ${yrows}
+      <dt>形ランク</dt><dd>${r ? `${starStr(st)} ${r.form} <span class="sub">（約 ${Math.round(r.x).toLocaleString()} 字に1字の形）</span>` : "—"}</dd>
+      <dt>仲間ランク</dt><dd>${r ? `${r.mate} <span class="sub">（この号碼の字は ${r.m} 字）</span>` : "—"}</dd>
+      <dt>持ってる枚数</dt><dd>${c ? c.n : 0} 枚</dd>
+      <dt>はじめて</dt><dd>${c ? fmtDate(c.first) : "—"}</dd>
+    </dl>`;
+  $("bcBody").querySelector(".k").textContent = ch;
+  $("cardModal").hidden = false; $("bcClose").focus();
+}
+function closeBig() { $("cardModal").hidden = true; }
+$("bcClose").addEventListener("click", closeBig);
+$("cardModal").addEventListener("click", e => { if (e.target === $("cardModal")) closeBig(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cardModal").hidden) closeBig(); });
+applyCardMode();
+if (cardMode) prRandom();
+
+showTab(store.get("sjTab", "search"));
 </script>
 
 </body>
