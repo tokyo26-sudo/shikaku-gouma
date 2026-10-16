@@ -387,6 +387,34 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+
+/* ===== v0.31 ランクの説明 ===== */
+[data-rank] { cursor: help; }
+.sz-mini [data-rank], .sz-toast [data-rank] { cursor: inherit; }
+.rkbtn { font: inherit; background: none; border: 0; padding: 2px 4px; cursor: help; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; }
+.rkbtn:hover { background: var(--accent-soft); }
+.rarity .rkbtn.mtag { padding: 0 6px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.bc-dl [data-rank], .kc-back [data-rank] { text-decoration: underline dotted; text-underline-offset: 3px; }
+#rankModal { z-index: 60; }
+.rank-card { width: min(560px, 100%); grid-template-rows: auto 1fr; }
+.rank-body { overflow: auto; display: grid; gap: 14px; font-size: 14px; line-height: 1.6; min-height: 0; }
+.rank-body .sub { color: var(--muted); font-size: 12px; }
+.rank-mine { display: flex; gap: 12px; align-items: flex-start; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.rank-mine .rm-k { font-family: var(--f-kanji); font-size: 52px; line-height: 1; }
+.rank-mine .rm-t { font-size: 13px; }
+.rank-sec { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.rank-sec.hl { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.rank-sec h4 { margin: 0 0 6px; font-size: 15px; }
+.rank-sec p { margin: 0 0 8px; }
+.rank-tb { border-collapse: collapse; width: 100%; font-size: 13px; }
+.rank-tb th { text-align: left; font-size: 11px; color: var(--muted); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+.rank-tb td { padding: 5px 6px; border-bottom: 1px solid var(--line); }
+.rank-tb td.n { font-family: var(--f-mono); white-space: nowrap; }
+.rank-tb tr.me td { background: var(--accent-soft); font-weight: 700; }
+.mtag { display: inline-block; color: #fff; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 4px; border: 1px solid transparent; }
+.mtag.mt1 { background: #b4232a; border-color: #f3d36b; } .mtag.mt2 { background: #5b2a86; border-color: #f3d36b; }
+.mtag.mt3 { background: #1f3d6b; } .mtag.mt4 { background: #2f6b45; } .mtag.mt5 { background: #6b7275; }
+
 /* ===== v0.30 キラッとした星 ===== */
 .ks-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 .ksr { display: inline-flex; gap: .06em; align-items: center; vertical-align: -.12em; white-space: nowrap; line-height: 1; }
@@ -676,7 +704,7 @@ footer a { color: var(--accent); }
 </svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.30</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.31</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -881,6 +909,14 @@ footer a { color: var(--accent); }
     <div class="col-grid" id="colGrid"></div>
     <p class="col-empty" id="colEmpty" hidden>まだカードがないダカラ。れんしゅうで「カード集め」をオンにして、号碼を4隅ぜんぶ当てるとカードがもらえるヨ</p>
   </section>
+
+  <div class="modal" id="rankModal" hidden>
+    <div class="modal-card rank-card" role="dialog" aria-modal="true" aria-labelledby="rankTitle">
+      <h3 id="rankTitle">ランクの見かた</h3>
+      <button type="button" class="toast-x" id="rankClose" aria-label="閉じる">✕</button>
+      <div class="rank-body" id="rankBody"></div>
+    </div>
+  </div>
 
   <div class="modal" id="cardModal" hidden>
     <div class="modal-card bc-card" role="dialog" aria-modal="true" aria-label="カード">
@@ -1306,7 +1342,7 @@ const RARE = (() => {
   for (const e of first.values()) { n++; for (let k = 0; k < 4; k++) F[k][e.c4[k]] = (F[k][e.c4[k]] || 0) + 1; mates.set(e.c4, (mates.get(e.c4) || 0) + 1); }
   const oneIn = c4 => { let p = 1; for (let k = 0; k < 4; k++) p *= (F[k][c4[k]] || 1) / n; return 1 / p; };
   const star = x => x >= 50000 ? 5 : x >= 20000 ? 4 : x >= 8000 ? 3 : x >= 3000 ? 2 : 1;
-  return { first, mates, oneIn, star };
+  return { first, mates, oneIn, star, F, n };
 })();
 const FORM_NAME = ["", "並", "少", "珍", "稀", "幻"];
 const MATE_TIER = m => m <= 1 ? 1 : m === 2 ? 2 : m <= 5 ? 3 : m <= 19 ? 4 : 5;
@@ -1357,7 +1393,7 @@ function showRarity(ch) {
   if (!cardMode || !pr.card) { box.hidden = true; return; }
   const r = rareOf(ch); if (!r) { box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = `<span class="stars r${r.st}c">${starStr(r.st)}</span><span class="rk r${r.st}c">${r.form}</span>` + `<span class="tag mtag mt${MATE_TIER(r.m)}">${r.mate}</span>`;
+  box.innerHTML = `<button type="button" class="rkbtn" data-rank="form" data-ch="${ch}" aria-label="形ランクの説明"><span class="stars r${r.st}c">${starStr(r.st)}</span><span class="rk r${r.st}c">${r.form}</span></button>` + `<button type="button" class="rkbtn tag mtag mt${MATE_TIER(r.m)}" data-rank="mate" data-ch="${ch}" aria-label="仲間ランクの説明">${r.mate}</button>`;
   q.dataset.star = r.st;
   void q.offsetWidth;
   if (r.st === 2) q.classList.add("fx2");
@@ -1769,8 +1805,8 @@ function cardHTML(ch, size, style = cstyle) {
   const r = rareOf(ch), c = cards[ch];
   const st = r ? r.st : 1, e = r ? r.e : null;
   const c4 = e ? e.c4 : "????", fu = e && e.fu !== null ? e.fu : "";
-  const stars = `<span class="kc-stars">${starStr(st)}</span>`;
-  const mus = r ? `<span class="kc-mus mt${MATE_TIER(r.m)}" title="仲間ランク：${r.mate}（この号碼の字は ${r.m} 字）">${r.mate[0]}<br>${r.mate[1]}</span>` : "";
+  const stars = `<span class="kc-stars" data-rank="form" data-ch="${escH(ch)}">${starStr(st)}</span>`;
+  const mus = r ? `<span class="kc-mus mt${MATE_TIER(r.m)}" data-rank="mate" data-ch="${escH(ch)}" title="仲間ランク：${r.mate}（この号碼の字は ${r.m} 字）">${r.mate[0]}<br>${r.mate[1]}</span>` : "";
   const K = `<span class="kc-k">${escH(ch)}</span>`;
   const code = `${c4}${fu ? "<sub>" + fu + "</sub>" : ""}`;
   const y = (typeof YOMI !== "undefined" && YOMI.get(ch)) || { on: [], kun: [], py: [] };
@@ -1781,17 +1817,17 @@ function cardHTML(ch, size, style = cstyle) {
     const DAI = "零壱弐参肆伍陸漆捌玖";
     const seal = `<span class="gs-seal" title="${c4}${fu}">${[...c4].map(d => `<i>${DAI[+d] || d}</i>`).join("")}${fu ? `<b>${DAI[+fu]}</b>` : ""}</span>`;
     inner = big
-      ? `<span class="gs-tate gs-r">四角号碼　<b class="gs-rk">${r ? r.form : ""}<span class="kc-stars">${starStr(st)}</span></b></span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span>`
+      ? `<span class="gs-tate gs-r">四角号碼　<b class="gs-rk" data-rank="form" data-ch="${escH(ch)}">${r ? r.form : ""}<span class="kc-stars">${starStr(st)}</span></b></span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span>`
       : `${K}${seal}`;
   } else if (style === "toreka") {
     inner = `<span class="tk-name"><b>${escH(ch)}</b>${stars}</span><span class="tk-art">${K}</span>` + (big
-      ? `<span class="tk-type">${r ? r.form + "・" + r.mate : ""}</span><span class="tk-text">${escH(yomi)}</span><span class="tk-foot"><span>No.${code}</span></span>`
+      ? `<span class="tk-type">${r ? `<span data-rank="form" data-ch="${escH(ch)}">${r.form}</span>・<span data-rank="mate" data-ch="${escH(ch)}">${r.mate}</span>` : ""}</span><span class="tk-text">${escH(yomi)}</span><span class="tk-foot"><span>No.${code}</span></span>`
       : `<span class="tk-foot"><span>${code}</span></span>`);
   } else if (style === "hanafuda") {
     inner = `<span class="hf-moon">${K}</span><span class="hf-tan">${[...c4].map(d => `<i>${d}</i>`).join("")}</span>` + (big ? `<span class="hf-foot">${stars}</span>` : "");
   } else {
     inner = `<span class="kc-band"></span>` + (big
-      ? `<span class="pl-rk">${stars}<b>${r ? r.form : ""}</b></span><span class="pl-corner">${K}${[...c4].map((d, i) => `<i class="d${i}">${d}</i>`).join("")}${fu ? `<i class="d4">${fu}</i>` : ""}</span><span class="pl-code">${code}</span><span class="pl-mate">${r ? r.mate : ""}</span>`
+      ? `<span class="pl-rk" data-rank="form" data-ch="${escH(ch)}">${stars}<b>${r ? r.form : ""}</b></span><span class="pl-corner">${K}${[...c4].map((d, i) => `<i class="d${i}">${d}</i>`).join("")}${fu ? `<i class="d4">${fu}</i>` : ""}</span><span class="pl-code">${code}</span><span class="pl-mate" data-rank="mate" data-ch="${escH(ch)}">${r ? r.mate : ""}</span>`
       : `${K}${stars}<span class="pl-code">${code}</span>`);
   }
   return `<div class="kc kc-${style} sz-${size} r${st}"><div class="kc-in">${inner}</div>${mus}</div>`;
@@ -1808,8 +1844,8 @@ function cardBack(ch, style = cstyle) {
   if (y.kun.length) rows.push(["訓読み", escH(y.kun.slice(0, 6).join("、")) + (y.kun.length > 6 ? " …" : "")]);
   if (!y.on.length && !y.kun.length && y.py.length) rows.push(["ピンイン", escH(y.py.join("、"))]);
   if (r) {
-    rows.push(["形ランク", `<span class="kc-stars">${starStr(st)}</span> ${r.form}<small>約${Math.round(r.x).toLocaleString()}字に1字の形</small>`]);
-    rows.push(["仲間ランク", `${r.mate}<small>この号碼の字は ${r.m} 字</small>`]);
+    rows.push(["形ランク", `<span data-rank="form" data-ch="${escH(ch)}"><span class="kc-stars">${starStr(st)}</span> ${r.form}</span><small>約${Math.round(r.x).toLocaleString()}字に1字の形</small>`]);
+    rows.push(["仲間ランク", `<span data-rank="mate" data-ch="${escH(ch)}">${r.mate}</span><small>この号碼の字は ${r.m} 字</small>`]);
   }
   rows.push(["持ってる枚数", `${c ? c.n : 0} 枚`]);
   rows.push(["はじめて", c ? (style === "goshuin" ? wareki(c.first) : fmtDate(c.first)) : "—"]);
@@ -1841,6 +1877,75 @@ window.addEventListener("deviceorientation", ev => {
   const card = $("bcBody").querySelector(".kc"); if (!card) return;
   card.style.setProperty("--hx", (50 + ev.gamma * 1.5) + "%"); card.style.setProperty("--hy", (50 + (ev.beta - 40) * 1.2) + "%"); card.classList.add("trk");
 });
+
+
+// ===== ランクの説明（v0.31） =====
+const POSN = ["左上", "右上", "左下", "右下"];
+let rankStats = null;
+function getRankStats() {
+  if (rankStats) return rankStats;
+  const pool = Array.from(DATA.levels.joyo).filter(c => RARE.first.has(c));
+  const f = [0, 0, 0, 0, 0, 0], m = [0, 0, 0, 0, 0, 0];
+  for (const c of pool) { const r = rareOf(c); f[r.st]++; m[MATE_TIER(r.m)]++; }
+  const byCode = new Map();
+  for (const [ch, e] of RARE.first) { if (!byCode.has(e.c4)) byCode.set(e.c4, []); byCode.get(e.c4).push(ch); }
+  rankStats = { n: pool.length, f, m, byCode };
+  return rankStats;
+}
+function openRank(kind, ch) {
+  const S = getRankStats(), r = ch ? rareOf(ch) : null;
+  const pct = (a) => Math.round(a * 100 / S.n) + "%";
+  const FROW = [
+    [1, "3千字に1字より ありふれた形"], [2, "3千〜8千字に1字"], [3, "8千〜2万字に1字"], [4, "2万〜5万字に1字"], [5, "5万字に1字より めずらしい形"],
+  ];
+  const MROW = [[1, "1字だけ（この号碼はこの字だけ）"], [2, "2字"], [3, "3〜5字"], [4, "6〜19字"], [5, "20字以上"]];
+  let mine = "";
+  if (r) {
+    const parts = [...r.e.c4].map((d, k) => `${POSN[k]} <b>${d}</b>（${(RARE.F[k][d] * 100 / RARE.n).toFixed(1)}%）`).join("、");
+    const mates = (S.byCode.get(r.e.c4) || []).filter(c => c !== ch);
+    mine = `<div class="rank-mine">
+      <div class="rm-k">${escH(ch)}</div>
+      <div class="rm-t"><b>${r.e.c4}</b><br>
+        形ランク：<span class="r${r.st}c">${starStr(r.st)} ${r.form}</span><br>
+        <span class="sub">${parts} → かけ算すると 約 ${Math.round(r.x).toLocaleString()} 字に1字の形</span><br>
+        仲間ランク：<span class="mtag mt${MATE_TIER(r.m)}">${r.mate}</span> <span class="sub">この号碼の字は ${r.m} 字${mates.length ? "：" + escH(ch) + mates.slice(0, 24).join("") + (mates.length > 24 ? "…" : "") : "（この字だけ）"}</span>
+      </div></div>`;
+  }
+  $("rankBody").innerHTML = mine + `
+    <section class="rank-sec${kind === "form" ? " hl" : ""}" id="rankForm">
+      <h4>形ランク（★）　並・少・珍・稀・幻</h4>
+      <p>漢字の<b>四隅の数字の組み合わせが、どれくらいめずらしいか</b>。<br>
+      それぞれの隅で、その数字がどれくらいよく出るかを辞書の 7,914字で数えて、4つの隅の割合を<b>かけ算</b>する。メガネ（2人に1人）で左利き（10人に1人）の人は 20人に1人、と同じ考え方。<br>
+      <b>カードあつめでは、めずらしい形ほど出にくい</b>。</p>
+      <table class="rank-tb"><tr><th>ランク</th><th>めずらしさ</th><th>常用での割合</th><th>出やすさ</th></tr>
+      ${FROW.map(([k, t]) => `<tr${r && r.st === k ? ' class="me"' : ""}><td class="r${k}c">${starStr(k)} <b>${FORM_NAME[k]}</b></td><td>${t}</td><td class="n">${pct(S.f[k])}</td><td class="n">${k === 1 ? "いちばん出る" : "並の " + TICKETS[k] / 10 + " 倍"}</td></tr>`).join("")}
+      </table>
+    </section>
+    <section class="rank-sec${kind === "mate" ? " hl" : ""}" id="rankMate">
+      <h4>仲間ランク（札）　無双・双璧・精鋭・群雄・大群</h4>
+      <p><b>同じ4桁の号碼をもつ字が、辞書（7,914字）に何字いるか</b>。仲間が少ないほど「唯一無二」。<br>
+      形ランクとは別もの：一（1000）は形はふつう（並）だけど、1000 の字は 一 だけなので<b>無双</b>。<br>
+      カードあつめの出やすさには<b>関係しない</b>。</p>
+      <table class="rank-tb"><tr><th>ランク</th><th>同じ号碼の字</th><th>常用での割合</th></tr>
+      ${MROW.map(([k, t]) => `<tr${r && MATE_TIER(r.m) === k ? ' class="me"' : ""}><td><span class="mtag mt${k}">${["", "無双", "双璧", "精鋭", "群雄", "大群"][k]}</span></td><td>${t}</td><td class="n">${pct(S.m[k])}</td></tr>`).join("")}
+      </table>
+    </section>`;
+  $("rankModal").hidden = false;
+  const target = $(kind === "mate" ? "rankMate" : "rankForm");
+  $("rankClose").focus();
+  setTimeout(() => target.scrollIntoView({ block: "nearest", behavior: "smooth" }), 30);
+}
+function closeRank() { $("rankModal").hidden = true; }
+$("rankClose").addEventListener("click", closeRank);
+$("rankModal").addEventListener("click", e => { if (e.target === $("rankModal")) closeRank(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("rankModal").hidden) { e.stopImmediatePropagation(); closeRank(); } }, true);
+// ★や札を押したら説明（コレクションの小さいカードの中は、ふつうにカードを開く）
+document.addEventListener("click", e => {
+  const el = e.target.closest && e.target.closest("[data-rank]");
+  if (!el || el.closest(".sz-mini, .sz-toast, .cstyle-opts")) return;
+  e.preventDefault(); e.stopPropagation();
+  openRank(el.dataset.rank, el.dataset.ch || "");
+}, true);
 
 // ===== コレクション =====
 let colSort = store.get("sjColSort", "new");
@@ -1879,8 +1984,8 @@ function openBig(ch) {
   $("bcBody").innerHTML = `<div class="bc-stage"><button type="button" class="flip" id="bcFlip" aria-label="カードをひっくり返す"><span class="flip-in"><span class="face front">${cardHTML(ch, "big")}</span><span class="face back">${cardBack(ch)}</span></span></button><span class="flip-note">カードを押すと裏返る</span></div>
     <dl class="bc-dl">
       ${yrows}
-      <dt>形ランク</dt><dd>${r ? `${starStr(st)} ${r.form} <span class="sub">（約 ${Math.round(r.x).toLocaleString()} 字に1字の形）</span>` : "—"}</dd>
-      <dt>仲間ランク</dt><dd>${r ? `${r.mate} <span class="sub">（この号碼の字は ${r.m} 字）</span>` : "—"}</dd>
+      <dt>形ランク</dt><dd>${r ? `<span data-rank="form" data-ch="${ch}">${starStr(st)} ${r.form}</span> <span class="sub">（約 ${Math.round(r.x).toLocaleString()} 字に1字の形）</span>` : "—"}</dd>
+      <dt>仲間ランク</dt><dd>${r ? `<span data-rank="mate" data-ch="${ch}">${r.mate}</span> <span class="sub">（この号碼の字は ${r.m} 字）</span>` : "—"}</dd>
       <dt>持ってる枚数</dt><dd>${c ? c.n : 0} 枚</dd>
       <dt>はじめて</dt><dd>${c ? fmtDate(c.first) : "—"}</dd>
     </dl>`;
