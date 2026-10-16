@@ -388,7 +388,12 @@ header .gear.help + .gear { margin-left: 0; }
 
 
 
+/* ===== v0.32 モーダルが画面からはみ出さない ===== */
+.modal-card { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
+.modal-card > :last-child { min-height: 0; }
 /* ===== v0.31 ランクの説明 ===== */
+.rank-more { margin: 0; text-align: center; }
+
 [data-rank] { cursor: help; }
 .sz-mini [data-rank], .sz-toast [data-rank] { cursor: inherit; }
 .rkbtn { font: inherit; background: none; border: 0; padding: 2px 4px; cursor: help; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; }
@@ -704,7 +709,7 @@ footer a { color: var(--accent); }
 </svg>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.31</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.32</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -867,9 +872,42 @@ footer a { color: var(--accent); }
               <li>結果は「成績一覧」に たまります。この端末の ぶらうざ に保存されます</li>
             </ul>
           </li>
+          <li><b>カードあつめ</b>：号碼を当てて漢字のカードを集めます（くわしくは下）</li>
           <li><b>部品の早見表</b>：上の帯を押すと、0〜9 の形と字の例が開きます</li>
-          <li><b>設定</b>（歯車）：漢字の字体と、画面の色味を選べます</li>
+          <li><b>設定</b>（歯車）：漢字の字体、画面の色味、カードのデザイン（ふつう・御朱印帳風・トレカ風）を選べます</li>
         </ul>
+        <h4 id="helpCards">カードあつめ</h4>
+        <ul>
+          <li>出てきた漢字の号碼を、<b>4隅ぜんぶ正解</b>するとカードが1枚もらえます。同じ字を当てるたびに枚数がふえます</li>
+          <li>「答えを見る」を押したときや、まちがえたときは もらえません。問題をとばすこともできません</li>
+          <li>範囲は「常用漢字」と「辞書ぜんぶ」から選べます</li>
+          <li>めずらしい字が出ると、画面が暗くなったり光ったりします</li>
+          <li>集めたカードは右上の「コレクション」で見られます。並べかえができ、カードを押すと大きく表示、大きいカードを押すと裏返って読みなどが見られます</li>
+          <li>カードはこの端末の ぶらうざ に保存されます</li>
+        </ul>
+        <h4>形ランク（★）　並・少・珍・稀・幻</h4>
+        <p>漢字の<b>四隅の数字の組み合わせが、どれくらいめずらしいか</b>を表します。</p>
+        <p>たとえば、クラスに「メガネの人」が2人に1人、「左利きの人」が10人に1人いるとき、「メガネで左利き」の人は 2×10 で<b>20人に1人</b>。条件が重なるほど めずらしくなります。号碼も同じで、それぞれの隅で その数字がどれくらいよく出るかを辞書の 7,914字で数え、4つの隅の割合をかけ算して「◯字に1字の形」を出しています。</p>
+        <p class="help-ex"><span class="ek">燥</span><span>は <b>9689</b>。左上9・右上6・左下8・右下9 は どれも めったに出ない数字なので、かけ算すると 約31万字に1字の形 → <b>幻</b>。<br><span class="ek" style="font-size:1em">布</span>（4022）は どの隅もよく出る数字で 約640字に1字 → <b>並</b>。</span></p>
+        <ul>
+          <li><b>並</b> ★1：3千字に1字より ありふれた形</li>
+          <li><b>少</b> ★2：3千〜8千字に1字</li>
+          <li><b>珍</b> ★3：8千〜2万字に1字</li>
+          <li><b>稀</b> ★4：2万〜5万字に1字</li>
+          <li><b>幻</b> ★5：5万字に1字より めずらしい形</li>
+        </ul>
+        <p>カードあつめでは、めずらしい形ほど出にくくなります（並を1とすると、少 0.7倍・珍 0.5倍・稀 0.3倍・幻 0.15倍）。<br>
+        ※ 本当は隅どうしに つながりがあるので（左右が同じ形の字など）、ぴったりの確率ではなく「めずらしさの目安」です。</p>
+        <h4>仲間ランク（札）　無双・双璧・精鋭・群雄・大群</h4>
+        <p><b>同じ4桁の号碼をもつ字が、辞書（7,914字）に何字いるか</b>を表します。仲間が少ないほど「唯一無二」です。</p>
+        <ul>
+          <li><b>無双</b>：その号碼の字は1字だけ</li>
+          <li><b>双璧</b>：2字</li>
+          <li><b>精鋭</b>：3〜5字</li>
+          <li><b>群雄</b>：6〜19字</li>
+          <li><b>大群</b>：20字以上</li>
+        </ul>
+        <p>形ランクとは別ものです。一（1000）は形はふつう（並）ですが、1000 の字は 一 だけなので 無双。山（2277）は形はめずらしい（幻）ですが、出・凶・幽 などの仲間がいるので 群雄です。カードあつめの出やすさには関係しません。</p>
         <h4>辞書について</h4>
         <p>号碼はウィクショナリー由来の辞書（7,914字）によります。辞書や流儀によって号碼がちがう字もあります。</p>
       </div>
@@ -1914,22 +1952,19 @@ function openRank(kind, ch) {
   $("rankBody").innerHTML = mine + `
     <section class="rank-sec${kind === "form" ? " hl" : ""}" id="rankForm">
       <h4>形ランク（★）　並・少・珍・稀・幻</h4>
-      <p>漢字の<b>四隅の数字の組み合わせが、どれくらいめずらしいか</b>。<br>
-      それぞれの隅で、その数字がどれくらいよく出るかを辞書の 7,914字で数えて、4つの隅の割合を<b>かけ算</b>する。メガネ（2人に1人）で左利き（10人に1人）の人は 20人に1人、と同じ考え方。<br>
-      <b>カードあつめでは、めずらしい形ほど出にくい</b>。</p>
+      <p>漢字の<b>四隅の数字の組み合わせが、どれくらいめずらしいか</b>。<br>カードあつめでは、<b>めずらしい形ほど出にくい</b>。</p>
       <table class="rank-tb"><tr><th>ランク</th><th>めずらしさ</th><th>常用での割合</th><th>出やすさ</th></tr>
       ${FROW.map(([k, t]) => `<tr${r && r.st === k ? ' class="me"' : ""}><td class="r${k}c">${starStr(k)} <b>${FORM_NAME[k]}</b></td><td>${t}</td><td class="n">${pct(S.f[k])}</td><td class="n">${k === 1 ? "いちばん出る" : "並の " + TICKETS[k] / 10 + " 倍"}</td></tr>`).join("")}
       </table>
     </section>
     <section class="rank-sec${kind === "mate" ? " hl" : ""}" id="rankMate">
       <h4>仲間ランク（札）　無双・双璧・精鋭・群雄・大群</h4>
-      <p><b>同じ4桁の号碼をもつ字が、辞書（7,914字）に何字いるか</b>。仲間が少ないほど「唯一無二」。<br>
-      形ランクとは別もの：一（1000）は形はふつう（並）だけど、1000 の字は 一 だけなので<b>無双</b>。<br>
-      カードあつめの出やすさには<b>関係しない</b>。</p>
+      <p><b>同じ4桁の号碼をもつ字が、辞書（7,914字）に何字いるか</b>。仲間が少ないほど「唯一無二」。<br>カードあつめの出やすさには関係しません。</p>
       <table class="rank-tb"><tr><th>ランク</th><th>同じ号碼の字</th><th>常用での割合</th></tr>
       ${MROW.map(([k, t]) => `<tr${r && MATE_TIER(r.m) === k ? ' class="me"' : ""}><td><span class="mtag mt${k}">${["", "無双", "双璧", "精鋭", "群雄", "大群"][k]}</span></td><td>${t}</td><td class="n">${pct(S.m[k])}</td></tr>`).join("")}
       </table>
-    </section>`;
+    </section>
+    <p class="sub rank-more">くわしい説明は、右上の本のマーク（使い方）の「カードあつめ」に書いてあります。</p>`;
   $("rankModal").hidden = false;
   const target = $(kind === "mate" ? "rankMate" : "rankForm");
   $("rankClose").focus();
