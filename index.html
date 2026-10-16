@@ -503,12 +503,14 @@ header .gear.help + .gear { margin-left: 0; }
 .kc-goshuin > .kc-in { background: var(--pat), repeating-linear-gradient(0deg, rgba(150,120,70,.05) 0 1px, transparent 1px 3px), var(--mat); }
 .kc-goshuin .kc-k { position: absolute; left: 0; right: 0; top: 18%; font-family: "Yuji Syuku", var(--f-kanji); font-size: 58cqw; }
 .kc-goshuin .gs-seal { position: absolute; right: 8%; bottom: 7%; width: 34cqw; aspect-ratio: 1; box-sizing: border-box; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; place-items: center; padding: 2cqw;
-  border: 1.6cqw solid rgba(196, 36, 28, .88); border-radius: 5%; box-shadow: inset 0 0 0 .6cqw rgba(196, 36, 28, .55); background: rgba(255, 250, 240, .35);
+  border: 1.6cqw solid rgba(196, 36, 28, .88); border-radius: 5%; background: rgba(255, 250, 240, .35);
   font-family: "Yuji Syuku", var(--f-kanji); font-size: 12cqw; color: rgba(196, 36, 28, .92); }
 .kc-goshuin .gs-seal i { font-style: normal; line-height: 1; }
-.kc-goshuin .gs-seal b { position: absolute; left: -9cqw; top: 0; font-weight: 400; font-size: 7cqw; color: rgba(196, 36, 28, .9); }
+.kc-goshuin .gs-seal b { position: absolute; right: -7.5cqw; bottom: -1cqw; font-weight: 400; font-size: 7cqw; color: rgba(196, 36, 28, .9); }
 .kc-goshuin .gs-tate { position: absolute; writing-mode: vertical-rl; font-family: var(--f-display); font-weight: 800; font-size: 6.5cqw; letter-spacing: .15em; color: var(--cink); }
 .kc-goshuin .gs-r { top: 6%; right: 7%; }
+.kc-goshuin .gs-rk { font-weight: 800; color: var(--star); }
+.kc-goshuin .gs-rk .kc-stars { display: inline-block; margin-top: 3.5cqw; font-size: 5.5cqw; letter-spacing: .1em; }
 .kc-goshuin .gs-l { top: 7%; left: 7%; font-size: 6cqw; font-weight: 800; color: var(--cink); opacity: .8; }
 .kc-goshuin .gs-foot { position: absolute; left: 0; right: 0; bottom: 3%; font-size: 6cqw; }
 .kc-goshuin.sz-big .kc-k { top: 20%; font-size: 52cqw; }
@@ -643,7 +645,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>四角号碼じびき <span class="ver">v0.28</span></h1>
+    <h1>四角号碼じびき <span class="ver">v0.29</span></h1>
     <p class="sub">漢字の四隅の形を 0〜9 で表した番号。5桁目は附角</p>
     <button type="button" class="gear help" id="helpOpen" aria-label="四角号碼の説明と使い方"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg></button>
     <button type="button" class="gear" id="setOpen" aria-label="設定（字体と色味）"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -1747,7 +1749,7 @@ function cardHTML(ch, size, style = cstyle) {
     const DAI = "零壱弐参肆伍陸漆捌玖";
     const seal = `<span class="gs-seal" title="${c4}${fu}">${[...c4].map(d => `<i>${DAI[+d] || d}</i>`).join("")}${fu ? `<b>${DAI[+fu]}</b>` : ""}</span>`;
     inner = big
-      ? `<span class="gs-tate gs-r">四角号碼　${r ? r.form : ""}</span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span><span class="gs-foot">${stars}</span>`
+      ? `<span class="gs-tate gs-r">四角号碼　<b class="gs-rk">${r ? r.form : ""}<span class="kc-stars">${starStr(st)}</span></b></span>${K}${seal}<span class="gs-tate gs-l">${c ? wareki(c.first) + "　拝受" : ""}</span>`
       : `${K}${seal}`;
   } else if (style === "toreka") {
     inner = `<span class="tk-name"><b>${escH(ch)}</b>${stars}</span><span class="tk-art">${K}</span>` + (big
