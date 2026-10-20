@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#2c5d73">
+<title>弾当て v0.04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;800&family=Zen+Kaku+Gothic+New:wght@400;700&family=Martian+Mono:wght@400;600&family=Klee+One:wght@600&family=Yuji+Syuku&display=swap">
+<style>
+/* 弾当て（プロトタイプ）：見えている漢字の四隅に、数字の弾を当てて殻を割る。縮む標的の枠がぴったりの時に投げると大ダメージ */
+:root {
+  --bg: #eef1ef; --panel: #fbfcfb; --ink: #1d2a33; --muted: #5d6c72; --line: #c9d3d1; --accent: #2c5d73; --accent-soft: #dbe7ea; --hit: #b4492b;
+  --shell: #6d8a96; --ok: #2f8a57; --gold: #d9a521;
+  --f-display: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --f-kanji: var(--f-display);
+  --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --f-mono: "Martian Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #12191d; --panel: #1a2328; --ink: #e3eae9; --muted: #93a3a6; --line: #2f3d43; --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --shell: #3d5560; --ok: #7fd19b; color-scheme: dark; } }
+:root[data-pal="seiji"] { --bg: #eef1ef; --panel: #fbfcfb; --ink: #1d2a33; --muted: #5d6c72; --line: #c9d3d1; --accent: #2c5d73; --accent-soft: #dbe7ea; --hit: #b4492b; --shell: #6d8a96; --ok: #2f8a57; color-scheme: light; }
+:root[data-pal="yoru"] { --bg: #12191d; --panel: #1a2328; --ink: #e3eae9; --muted: #93a3a6; --line: #2f3d43; --accent: #8cc0d3; --accent-soft: #23343b; --hit: #f08b6b; --shell: #3d5560; --ok: #7fd19b; color-scheme: dark; }
+:root[data-pal="washi"] { --bg: #efe7d8; --panel: #faf6ee; --ink: #2b241e; --muted: #6f6355; --line: #d8cbb5; --accent: #b0432a; --accent-soft: #f3dcd2; --hit: #8f3a22; --shell: #a08c74; --ok: #4f7d3a; color-scheme: light; }
+/* じびきの「漢字の字体」の設定に合わせる */
+:root[data-kfont="klee"] { --f-kanji: "Klee One", "Hiragino Mincho ProN", "Yu Mincho", serif; }
+:root[data-kfont="gothic"] { --f-kanji: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif; }
+:root[data-kfont="fude"] { --f-kanji: "Yuji Syuku", "Hiragino Mincho ProN", "Yu Mincho", serif; }
+:root[data-pal="kokuban"] { --bg: #1d362d; --panel: #234237; --ink: #f1efe4; --muted: #b5c2b5; --line: #3e5f52; --accent: #f0d264; --accent-soft: #34574a; --hit: #f5a07f; --shell: #5d7f70; --ok: #a7e3a0; color-scheme: dark; }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; }
+.app { height: 100dvh; max-width: 480px; margin: 0 auto; display: grid; grid-template-rows: auto auto 1fr auto auto; padding: max(8px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom)); gap: 8px; }
+
+/* 上：タイトル・点・設定 */
+.top { display: flex; align-items: center; gap: 10px; }
+.top h1 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: .04em; white-space: nowrap; }
+.back { font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+.back:hover { border-color: var(--accent); background: var(--accent-soft); }
+.top .ver { font-family: var(--f-mono); font-size: 10px; color: var(--muted); margin-left: 3px; font-weight: 400; letter-spacing: 0; }
+.top .sc { margin-left: auto; font-family: var(--f-mono); font-size: 15px; white-space: nowrap; }
+.top .sc small { font-family: var(--f-body); font-size: 11px; color: var(--muted); margin-left: 2px; }
+.top .got { font-size: 12px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 380px) { .top { gap: 6px; } .top h1 { font-size: 19px; } .top .ver { display: none; } .top .got { display: none; } .back { padding: 4px 8px; } }
+.ib { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); display: grid; place-items: center; cursor: pointer; font-size: 16px; }
+
+/* 逃げるまでのゲージ */
+.esc { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+.esc .bar { flex: 1; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.esc .bar i { display: block; height: 100%; width: 100%; background: var(--accent); border-radius: 4px; transform-origin: left; }
+.esc.low .bar i { background: var(--hit); }
+.esc .info { font-family: var(--f-mono); min-width: 5.5em; text-align: right; }
+
+/* 盤：漢字と四隅の殻 */
+.stagewrap { display: grid; place-items: center; min-height: 0; position: relative; container-type: size; }
+.board { --bs: min(92vw, 54dvh, 440px); }
+@container (min-width: 1px) { .board { --bs: min(100cqw, 100cqh, 440px); } }
+.board { width: var(--bs); height: var(--bs); position: relative; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); touch-action: none; }
+.board .kj { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-kanji); font-weight: 500; font-size: calc(var(--bs) * .8); line-height: 1; color: var(--ink); pointer-events: none; }
+.board .cross { position: absolute; inset: 0; pointer-events: none; }
+.board .cross::before, .board .cross::after { content: ""; position: absolute; background: var(--line); }
+.board .cross::before { left: 50%; top: 4%; bottom: 4%; width: 1px; }
+.board .cross::after { top: 50%; left: 4%; right: 4%; height: 1px; }
+.q { position: absolute; width: 50%; height: 50%; cursor: pointer; }
+.q0 { left: 0; top: 0; } .q1 { right: 0; top: 0; } .q2 { left: 0; bottom: 0; } .q3 { right: 0; bottom: 0; }
+.shell { position: absolute; inset: 4px; border-radius: 10px; background: var(--shell); opacity: .55; transition: opacity .25s, transform .25s; overflow: hidden; }
+.q0 .shell { border-top-left-radius: 12px; }
+.shell svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.shell svg path { fill: none; stroke: var(--panel); stroke-width: 2.4; stroke-linecap: round; opacity: 0; transition: opacity .15s; }
+.shell.c1 svg path:nth-child(1), .shell.c2 svg path:nth-child(-n+2), .shell.c3 svg path { opacity: .95; }
+.q.open .shell { opacity: 0; transform: scale(.85); pointer-events: none; }
+.q.hitfx .shell { animation: shake .22s; }
+@keyframes shake { 25% { transform: translate(-3px, 2px); } 50% { transform: translate(3px, -2px); } 75% { transform: translate(-2px, -1px); } }
+.hp { position: absolute; z-index: 2; height: 6px; width: calc(100% - 64px); border-radius: 3px; background: rgba(0,0,0,.18); overflow: hidden; }
+.hp i { display: block; height: 100%; width: 100%; background: var(--gold); transition: width .25s; }
+.q0 .hp, .q1 .hp { top: 9px; } .q2 .hp, .q3 .hp { bottom: 9px; }
+.q0 .hp, .q2 .hp { left: 50px; } .q1 .hp, .q3 .hp { right: 50px; }
+.q.open .hp, .q.open .xs { opacity: 0; }
+.xs { position: absolute; z-index: 2; display: flex; flex-wrap: wrap; gap: 3px; max-width: calc(100% - 20px); pointer-events: none; }
+.q0 .xs, .q1 .xs { top: 20px; } .q2 .xs, .q3 .xs { bottom: 20px; }
+.q0 .xs, .q2 .xs { left: 10px; } .q1 .xs, .q3 .xs { right: 10px; justify-content: flex-end; }
+.xs span { font-family: var(--f-mono); font-size: 12px; font-weight: 600; color: #fff; background: var(--hit); border-radius: 6px; padding: 1px 5px; opacity: .9; }
+.dg { position: absolute; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-mono); font-size: 24px; color: #fff; background: var(--ok); box-shadow: 0 2px 6px rgba(0,0,0,.3); transform: scale(0); transition: transform .3s cubic-bezier(.2, 1.6, .4, 1); pointer-events: none; z-index: 3; }
+.q0 .dg { left: -10px; top: -10px; } .q1 .dg { right: -10px; top: -10px; } .q2 .dg { left: -10px; bottom: -10px; } .q3 .dg { right: -10px; bottom: -10px; }
+.q.open .dg { transform: scale(1); }
+/* 標的の枠（隅＝1.0 の大きさに点線、縮む枠） */
+.tgt { position: absolute; left: 15%; top: 15%; width: 70%; height: 70%; border: 2px dashed var(--accent); border-radius: 10px; opacity: 0; pointer-events: none; transition: opacity .1s; }
+.ring { position: absolute; left: 15%; top: 15%; width: 70%; height: 70%; border: 3px solid var(--hit); border-radius: 12px; opacity: 0; pointer-events: none; }
+.q.aim .tgt, .q.aim .ring { opacity: 1; }
+.ring::before, .ring::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--hit); transform: translate(-50%, -50%); border-radius: 2px; }
+.ring::before { width: 46%; height: 3px; } .ring::after { width: 3px; height: 46%; }
+.q.aim .tgt.sweet + .ring { border-color: var(--gold); }
+.q.aim .tgt.sweet + .ring::before, .q.aim .tgt.sweet + .ring::after { background: var(--gold); }
+.q.aim .tgt.sweet { border-style: solid; border-color: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 35%, transparent); }
+.frag { position: absolute; width: 14px; height: 14px; background: var(--shell); border-radius: 3px; pointer-events: none; animation: fly .7s ease-out forwards; z-index: 4; }
+@keyframes fly { to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; } }
+.pop { white-space: pre-line; position: absolute; left: 50%; top: 50%; width: 150%; text-align: center; line-height: 1.25; transform: translate(-50%, -50%); font-weight: 700; font-size: 17px; pointer-events: none; animation: popup .9s ease-out forwards; z-index: 5; text-shadow: 0 1px 0 var(--panel), 0 0 6px var(--panel); }
+.pop.perfect { color: var(--gold); font-size: 20px; } .pop.miss { color: var(--muted); } .pop.ok { color: var(--ok); } .pop.ng { color: var(--hit); }
+@keyframes popup { 0% { transform: translate(-50%, -30%) scale(.6); opacity: 0; } 20% { transform: translate(-50%, -60%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -140%) scale(1); opacity: 0; } }
+.flyball { position: fixed; z-index: 20; pointer-events: none; transition: transform .22s cubic-bezier(.3, .1, .5, 1), opacity .22s; }
+.banner { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 6; }
+.banner b { font-family: var(--f-kanji); font-size: 36px; color: var(--gold); text-shadow: 0 2px 0 var(--panel), 0 0 14px var(--panel), 0 0 24px var(--panel); animation: bannerIn 1.4s ease-out forwards; }
+@keyframes bannerIn { 0% { transform: scale(.5); opacity: 0; } 18% { transform: scale(1.15); opacity: 1; } 75% { transform: scale(1); opacity: 1; } 100% { transform: translateY(-20px); opacity: 0; } }
+.banner b.esc { color: var(--hit); }
+.board.shake { animation: shake .3s; }
+
+/* 下：お知らせ・弾 */
+.msg { text-align: center; font-size: 13px; color: var(--muted); min-height: 1.4em; }
+.msg b { color: var(--ink); }
+.tray { display: grid; grid-template-columns: 1fr auto auto 1fr; grid-template-areas: ". cur nx ." "keep keep keep keep"; gap: 8px 14px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+.keep { grid-area: keep; display: grid; gap: 4px; justify-items: center; }
+.cur { grid-area: cur; } .nx { grid-area: nx; }
+.keep .lb, .nx .lb, .cur .lb { font-size: 10px; color: var(--muted); text-align: center; }
+.keep .slots { display: flex; gap: 8px; }
+.keephd { display: flex; align-items: center; gap: 10px; }
+.reroll { white-space: nowrap; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; }
+.reroll:active { transform: scale(.94); }
+@media (max-width: 360px) { .keep .slots { gap: 5px; } .slot { width: 44px; height: 44px; } .slot .ball { width: 38px; height: 38px; font-size: 16px; } }
+.slot { width: 48px; height: 48px; border-radius: 10px; border: 2px dashed var(--line); background: var(--bg); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.cur, .nx { display: grid; gap: 4px; justify-items: center; }
+.ball { border-radius: 18%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; line-height: 1; font-family: var(--f-mono); color: #fff; background: linear-gradient(150deg, rgba(255,255,255,.42), transparent 45%), var(--bc, #888); box-shadow: inset 0 -4px 0 rgba(0,0,0,.22), inset 0 0 0 2px rgba(255,255,255,.18), 0 2px 5px rgba(0,0,0,.25); }
+.ball .bs { display: block; width: .95em; height: .95em; margin-top: .02em; }
+.ball .bs path { fill: none; stroke: #fff; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.ball .bn { display: block; font-size: .78em; margin-top: -.05em; text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.slot .ball { width: 44px; height: 44px; font-size: 19px; }
+.cur .ball { width: 84px; height: 84px; font-size: 38px; cursor: pointer; }
+.nx .ball { width: 48px; height: 48px; font-size: 21px; opacity: .85; }
+.cur .ball.bump { animation: bump .25s; }
+@keyframes bump { 50% { transform: scale(.85); } }
+.help { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+/* 設定 */
+.modal { position: fixed; inset: 0; z-index: 30; background: rgba(10, 20, 25, .5); display: grid; place-items: center; padding: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; width: min(440px, 100%); max-height: calc(100dvh - 28px); overflow: auto; padding: 16px; display: grid; gap: 14px; -webkit-user-select: text; user-select: text; }
+.card h2 { margin: 0; font-size: 17px; }
+.card h3 { margin: 0 0 6px; font-size: 13px; color: var(--accent); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; flex-wrap: wrap; }
+.seg button { border: 0; background: var(--bg); padding: 8px 12px; font-size: 13px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--panel); font-weight: 700; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+.btn.pri { background: var(--accent); color: var(--panel); border-color: var(--accent); font-weight: 700; }
+.note { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.6; }
+.gotlist { font-family: var(--f-kanji); font-size: 24px; line-height: 1.4; word-break: break-all; }
+.credit { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.credit a { color: var(--accent); }
+.rot { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: none; place-items: center; text-align: center; padding: 20px; font-size: 16px; }
+@media (orientation: landscape) and (max-height: 500px) { .rot { display: grid; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a class="back" href="index.html" aria-label="じびきへもどる">← じびき</a>
+    <h1>弾当て<span class="ver">v0.04</span></h1>
+    <span class="sc" id="score">0<small>点</small></span>
+    <span class="got" id="gotN"></span>
+    <button type="button" class="ib" id="setOpen" aria-label="設定">⚙</button>
+  </div>
+  <div class="esc" id="esc"><span>逃げるまで</span><div class="bar"><i id="escBar"></i></div><span class="info" id="escInfo"></span></div>
+  <div class="stagewrap">
+    <div class="board" id="board">
+      <div class="kj" id="kj"></div>
+      <div class="cross"></div>
+    </div>
+  </div>
+  <div class="msg" id="msg">隅をタップ → 縮む枠が点線にぴったり重なったら、もう一回タップ！</div>
+  <div class="tray" id="tray">
+    <div class="cur"><div class="lb">いまの弾（押すと次へ）</div><div id="curBall" role="button" aria-label="いまの弾を次の弾に変える"></div></div>
+    <div class="nx"><div class="lb">次</div><div id="nextBall"></div></div>
+    <div class="keep"><div class="keephd"><span class="lb">キープ（押すと入れかえ）</span><button type="button" class="reroll" id="keepRoll" aria-label="キープの弾を入れかえる">🔄 入れかえ</button></div><div class="slots" id="slots"></div></div>
+  </div>
+</div>
+
+<div class="modal" id="setM" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-label="設定">
+    <div class="row"><h2>設定</h2><a class="back" href="index.html" style="margin-left:auto">← じびきへ</a><button type="button" class="btn" id="setX">とじる</button></div>
+    <div><h3>出てくる漢字</h3><div class="seg" id="lvSeg"><button type="button" data-v="0">入門</button><button type="button" data-v="1">小学校</button><button type="button" data-v="2">常用</button></div></div>
+    <div><h3>標的の枠の速さ</h3><div class="seg" id="spSeg"><button type="button" data-v="n">ふつう</button><button type="button" data-v="s">ゆっくり</button><button type="button" data-v="0">タイミングなし</button></div>
+      <p class="note">「タイミングなし」は隅をタップしたらすぐ投げる（ダメージはふつう）</p></div>
+    <div><h3>ブルブル（振動）</h3><div class="row"><div class="seg" id="vbSeg"><button type="button" data-v="1">オン</button><button type="button" data-v="0">オフ</button></div></div>
+      <div class="row" style="margin-top:8px"><button type="button" class="btn" data-hz="throw">投げた</button><button type="button" class="btn" data-hz="hit">当たった</button><button type="button" class="btn" data-hz="perfect">ぴったり</button><button type="button" class="btn" data-hz="break">割れた</button><button type="button" class="btn" data-hz="get">ゲット</button></div>
+      <p class="note" id="vbNote"></p></div>
+    <div><h3>弾当てでとった漢字（<span id="gotN2">0</span>字）</h3><p class="note" style="margin-bottom:6px">とった漢字は じびきの「ずかん」にもカードとしてたまるヨ</p><div class="gotlist" id="gotList"></div>
+      <div class="row" style="margin-top:8px"><button type="button" class="btn" id="wipe">この一覧と点を消す（ずかんのカードは消えない）</button></div></div>
+    <div><h3>あそびかた</h3><p class="note">見えている漢字の四隅は、それぞれ四角号碼の数字。隅をタップすると、十字の照準つきの赤い枠が縮んでくる。点線にぴったり重なって金色になった瞬間にもう一回タップ（画面のどこでもいい）で弾を投げる。<br>・正解の数字の弾は殻を8割けずる（2発で割れる）。ぴったりなら1発！<br>・ちがう数字の弾も少しけずれるけど、殻は1割のこる。<b>開けるのは正解の弾だけ</b>。ちがった数字は隅に ×3 のように残る<br>・枠が大きすぎるうちに投げると外れることがある。小さくなりすぎると弱い<br>・<b>いまの弾を押すと、すぐ次の弾に変わる</b>（何回でも）。ほしい数字が出るまで変えられる<br>・キープ枠（5つ）を押すと、いまの弾と入れかえ。あとで使える。「🔄 入れかえ」でキープの弾をまとめて新しくできる（何回でも）<br>・4隅ぜんぶ割れたら、その漢字をゲット。逃げるまでのゲージがなくなると逃げられる</p></div>
+    <p class="credit">号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。画数：<a href="https://www.edrdg.org/wiki/index.php/KANJIDIC_Project" target="_blank" rel="noopener">KANJIDIC2</a>（© EDRDG、CC BY-SA 4.0）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a></p>
+  </div>
+</div>
+<div class="rot">📱 たてにして遊んでネ</div>
+
+<script>
+// 字・号碼4桁・画数2桁・範囲（0入門 1小学校 2常用）。号碼が2つある字は入れていない
+const POOL_RAW = "亜1010072哀0073092挨5303102愛2024131曖6204172悪1033111握5701122圧7121051扱5704062宛3021082嵐2221122安3040060案3090101暗6006131以2810051衣0073061位2021071囲6055071医7171071依2023082委2040081威5320092畏6073092胃6022091尉7420112異6080111移2792111萎4440112偉2425122椅4492122彙2790132意0033131違3430132維2091142慰7433152遺3530151緯2495162域4315111育0022081一1000010壱4071072逸3730112茨4418092芋4440062引1220041因6043061咽6600092姻4640092員6080101院7321101淫3211112陰7823112飲8778121隠7223142韻0668192右4060050宇3040060羽1712061雨1022080唄6608102鬱4472292畝0768102浦3312102運3730121雲1073121永3023051泳3313081英4453081詠0363122影6292152鋭8811152易6022081疫0014092益8010101液3014111駅7738141悦9801102越4380122謁0662152閲7721152円7722040延1240081沿3816081炎9080082怨2733092宴3040102媛4244122援5204122煙9181132猿4423132遠3430131鉛8816132塩4811131演3318141縁2793152艶5711192汚3112062王1010040凹7777052央5003051応0023071往2021081押5605082旺6101082欧7778082殴7774082翁8012102奥2743122横4498151岡7722082屋7721091億2023151憶9003162臆7023172虞2128132乙1771012俺2421102卸8712092音0060091恩6033101温3611121穏2293162下1023030火9080040加4600051可1062051仮2124061何2122070花4421070佳2421082価2126081果6090081河3112081苛4462082科2490091架4690092夏1024101家3023100荷4422101華4450102菓4490112貨2480111渦3712122過3730121嫁4343132暇6704132禍3722132寡3022142歌1768141箇8860142稼2393152課0669151蚊5014102我2355071画1077081芽4424081賀4680121餓8375152介8022042回6060060灰7128061会8073060快9503071戒5340072改1874071怪9701082拐5602082悔9805092海3815091皆2160092械4395111絵2893121開7744121階7126121塊4611132楷4196132解2725131潰3518152壊4413162懐9403162諧0166162貝6080070外2320050劾0482082害3060101崖2221112涯3111112慨9101132蓋4410132該0068132概4191142骸7028162垣4111092各2760061角2722071拡5003081革4450091格4796101核4098102殻4724112郭0742112較5004132隔7122132閣7760141確1461151獲4424162嚇6403172穫2494182岳7277082楽3290131額3168181顎6128182掛5300112潟3712152括5206092活3216091喝6602112渇3612112割3260121葛4472112滑3712132褐3622132轄5306172且7710052株4599101釜8010102鎌8813182刈4200042干1040031刊1240051甘4477052汗3114062缶8077062完3021071肝7124072官3077081冠3721092巻9071091看2060091陥7726102乾4841112勘4472112患5033112貫7780112寒3030121喚6703122堪4411122換5703122敢1814122棺4397122款4798122間7760121閑7790122勧8422132寛3021132幹4844131感5333131漢3413131慣9708141管8877141関7743141歓8728152監7810152緩2294152憾9303162還3630162館8377161環1613172簡8822181観8621181韓4445182艦2841212鑑8811232含8060072岸2224081岩2260081玩1111082眼6703111頑1128132顔0128181願7128191企8010062伎2424062危2721061机4791061気8041061岐2474072希4022071忌1733072汽3811070奇4062082祈3222082季2040081紀2791091軌5401092既7171102記0761101起4780101飢8771102鬼2621102帰2702101基4410111寄3062111規5601111亀2771112喜4060121揮5705121期4782121棋4498122貴5080121棄0090132毀7714132旗0828141器6666150畿2265152輝9725152機4295161騎7432182技5404071宜3010082欺4788122義8055131疑2748141儀2825152戯2325152擬5708172犠2855172議0865201菊4492112吉4060062喫6703122詰0466132却4772072客3060091脚7722112逆3830091虐2121092九4001021久2780031及1724032丘7210052旧2600051休2429060吸6704061朽4192062臼7777062求4313071究3041071泣3011081急2733091級2794091宮3060101救4814111球1313111給2896121嗅6603132窮3022152牛2500041去4073051巨7171052居7726081拒5101082虚2121112許0864111距6111122魚2733111御2722122漁3713141凶2277042共4480061狂4121072京0090080享0040082供2428081協4402081況3611082峡2573092挟5503092狭4523092恐1733102恭4433102胸7722101脅4022102強1323111教4844111郷2772111境4011141橋4292161矯8242172鏡8011191競0021201響2760202驚4832222仰2722062暁6401122業3290131凝3718162曲5560061局7722071極4191121玉1010051巾4022032斤7222042均4712071近3230071金8010080菌4460112勤4412121琴1120122筋8822121僅2421122禁4490131緊7790152錦8612162謹0461172襟3429182吟6802072銀8713141区7171041句2762051苦4460081駆7131142愚6033132空3010080偶2622112遇3630122隅7622122串5000072屈7727082掘5707112窟3027132熊2133142繰2699192君1760071訓0260101勲2433152薫4433162軍3750091郡1762101群1865131兄6021051刑1240062形1242071系2090071径2721081茎4410082係2229091型1210091契5743092計0460091恵5033102啓3860112掲5602112渓3213112経2791111敬4864121景6090121軽5701121傾2128132携5002132継2991132詣0166132慶0024152憬9609152稽2396152警4860191鶏2752192芸4473071迎3730072鯨2039192隙7929132劇2220151撃5750152激3814161桁4192102欠2780041穴3080051血2710061決3513071結2496121傑2529132潔3719151月7722040犬4303041件2520061見6021070券9022081肩3022082建1540091研1164091県2690091倹2823102兼8023102剣8250102拳9050102軒5104102健2524111険7823111圏6071122堅7710122検4893121嫌4843132献4323132絹2692131遣3530132権4891151憲3033161賢7780162謙0863172鍵8514172繭4422182顕6118182験7833181元1021041幻2772042玄0073052言0060070弦1023082限7723091現1611111舷2043112減3315121源3119131己1771031古4060050呼6204081固6060081股7724082虎2121082孤1243092故4864091枯4496092個2620101庫0025101湖3712121雇3021122誇0462132鼓4414132錮8610162顧3128212五1010041互1010042午8040041後2224091娯4648102悟9106102碁4460132語0166141誤0668141護0464201口6000030工1010030公8073040勾2772042孔1241042功1412051巧1112052広0023051甲6050052交0040061光9021060向2722061后7226061好4744061江3111060考4420061行2122061坑4011072孝4440071抗5001072攻1814072効0442081幸4040081拘5702082肯2122082侯2723092厚7124091恒9101092洪3418092皇2610091紅2191091荒4421092郊0742092香2060092候2723101耕5590101航2041101貢1080102降7725101高0022100康0023111控5301112梗4194112黄4480111喉6703122慌9401122港3411121硬1164122絞2094122項1118122溝3514132鉱8013131構4594141酵1464142稿2092152興7780161鋼8712161乞8071032号6020050合8060060拷5402092剛7220102傲2824132豪0023142克4021072告2460071谷8060070刻0280081国6010080黒6033111穀4794141酷1466142獄4323142骨7722101駒7732152込3830052頃2178112今8020041困6090071恨9703092根4793101婚4246112混3611111痕0013112紺2497112魂1671142墾2710162懇2733172佐2421072沙3912072査4010091砂1962091唆6304102差8021101詐0861122鎖8918182座0021101挫5801102災2280071妻5040081采2090082砕1464092宰3040102栽4395102彩2292112採5209111済3012111祭2790111斎0022112細2690111菜4490111最6014121裁4375121債2528132催2221132塞3010132歳2125132載4355132際7729141埼4412112在4021061材4490071剤0220102財6480101罪6011131崎2472112作2821071削9220092昨6801091柵4794092索4090102策8890121酢1861122搾5301132錯8416162咲6803092冊7744051札4291051刷7220081刹4290082拶5202092殺4794101察3090141撮5604152擦5309172雑4091141皿7710051三1010030山2277030参2320081桟4395102惨9302112産0021111傘8040122散4824121算8844141酸1364141賛5580151残1325101斬5202112暫5260152士4010031子1740031支4040041止2110041氏7274041仕2421051史5000050司1762051四6021050市0022050矢8043051旨2160062死1021061至1010061伺2722072志4033071私2293071刺5290082始4346081姉4042081枝4494081祉3121082肢7424082姿3740091思6033091指5106091施0821092師2172101恣3733102紙2294101脂7126102視3621111紫2190122詞0762121歯2177121嗣6722132試0364131詩0464131資3780131飼8772131誌0463141雌2011142摯4450152賜6682152諮0766162示1090051字3040060寺4034061次3718061自2600061似2820071児2621071事5000080侍2424082治3316081持5404091時6404101滋3813122慈8033132辞2064131磁1863141璽1010192鹿0021112式4310061識0365191軸5506122七4071021失2503051室3010090疾0013102湿3611122嫉4043132漆3413142質7280151実3053081芝4430062写3740051社3421071車5000070舎8060081者4460081捨5806111赦4834112斜8490112煮4433122遮3030142謝0460171蛇5311112尺7780041借2426101酌1762102釈2798112爵2074172若4460081弱1712101寂3094112手2050040主0010050守3034060朱2590062取1714081狩4324092首8060091殊1529102珠1519102酒3116101腫7221132種2291141趣4180152受2040081呪6601082授5204111需1022142儒2122162樹4490161収2774041囚6080052州3200061舟2744062秀2022072周7722080宗3090081拾5806091秋2998091臭2643092袖3526102終2793111羞8021112習1760111週3730111就0391121衆2723121集2090121愁2933132酬1260132醜1661172蹴6311192襲0173222十4000020汁3410052充0021062住2021071柔1790092重2010091従2828101渋3113112銃8011142縦2898161叔2794082祝3621091宿3026111淑3714112粛5022112縮2396171出2277050述3330081俊2324092春5060091瞬6205182旬2762062巡3230062盾7226092准3011102殉1722102純2591101循2226122順2108121準3040131潤3712152遵3830152処2740051初3722071書5060100庶0023112暑6060121署6060131緒2496142諸0466151女4040031如4640062助7412071序0022071叙8794092徐2829102除7829101小9000030升2440042少9020040召1760052匠7171062床0029072抄5902072肖9022072尚9022082招5706081承1723081昇6044082松4893081沼3716082昭6706091宵3022102将3214101消3912101症0011102祥3825102称2899102笑8843101唱6606111商0022111渉3112112章0040111紹2796112訟0863112勝7922121掌9050122晶6066122焼9481121焦2033122硝1962122粧9091122詔0766122証0161121象2723121傷2822131奨3243132照6733131詳0865132彰0242142障7024141憧9001152賞9080151償2928172礁1063172鐘8011202上2110030丈5000032冗3721042条2790071状3313071乗2090091城4315091浄3715092剰2290112常9022110情9502111場4612121畳6010122蒸4433131縄2691152壌4013162嬢4043162錠8318162譲0063202醸1063202色2771061拭5304092食8073091植4491121殖1421122飾8872132触2523132嘱6702152織2395181職1315181辱7134102尻7721052心3300040申5000050伸2520072臣7171071芯4433072身2740071辛0040072侵2724092信2026091津3510092神3520091唇7160102娠4143102振5103102浸3714102針8410101深3719111紳2590112進3030111森4099120診0862122寝3014132慎9408132新0292131審3060152震1023152薪4492162親0691161人8000020仁2121041尽7730062迅3730062甚4471092陣7520102尋1734122腎7722132須2128122図6040070水1223041吹6708072垂2010081炊9788082帥2472092粋9494102衰0073102推5001111酔1464112遂3830122睡6201132穂2593152随7423122髄7423192枢4191082崇2290112数9844131据5706112杉4292072裾3726132寸4030031瀬3118192是6080092井5500042世4471051正1010051生2510051成5320061西1060061声4027071制2220081姓4541082征2121082性9501081青5022081斉0022082政1814091星6010091牲2551092省9060091凄3514102逝3230102清3512111盛5310111婿4742122晴6502121聖1610131誠0365131精9592141誓5260142静5725141請0562152整5810161醒1661162税2891121夕2720031昔4460081析4292082席0022101脊1122102隻2040102惜9406112戚5320112責5080111跡6013132積2598161績2598171籍8896202切4772041折5202071拙5207082窃3072092接5004111設0764111雪1017110摂5103132節8872131説0861141舌2060061絶2791121千2040030川2200030仙2227052占2160052先2421060宣3010091専5034091泉2623091浅3315091洗3411091染3490091扇3022102栓4891102旋0828112船2846111煎8033132羨8018132腺7623132詮0861132践6315132箋8850142銭8315141潜3516152線2693151遷3130152選3730151薦4422162繊2395172鮮2835172全8010060前8022091善8060121然2333121漸3212142膳7826162繕2896182狙4721082阻7721082祖3721091租2791102素5090101措5406112粗9791112組2791111疎1519122塑8710132遡3730132礎1468182壮3411062早6040061争2750061走4080071奏5043091相4690091荘4411092草4440090送3830091倉8060101捜5504102挿5205102掃5702112曹5560112曽8060112爽4003112窓3033111創8260121喪4073122痩0014122葬4444122装3473121僧2826132想4633131層7726141総2893141遭3530142槽4596152踪6319152操5609161燥9689172霜1096172騒7733182藻4419192造3430101像2723141増4816141憎9806142蔵4425151贈6886182臓7425191束5090071足6080071促2628092則6280091息2633101捉5608102速3530101側2220111測3210121俗2826092族0823111属7722121賊6385132続2491131卒0040081率0040111存4024061村4490071孫1249101尊8034121損5608131遜3230132他2421051多2720060汰3413072打5102051妥2040072唾6201112堕7410122惰9402122駄7433142太4003041対0440071体2523070耐1420092待2424091怠2333092胎7326092退3730091帯4422101泰5013102堆4011112袋2373112逮3530112替5560122貸2380121隊7823121滞3412132態2133141戴4385172大4003030代2324050台2360051第8822111題6180181滝3011132宅3071061択5708072沢3718072卓2140082拓5106082託0261102濯3711172諾0466152濁3612162但2621072達3430121脱7821112奪4034142棚4792122誰0061152丹7744042旦6010052担5601081炭2228091胆7621092探5709111淡3918112短8141121嘆6403132端0212142綻2398142誕0264151鍛8714172団6034061男6042071段7744091断2272111弾1925122暖6204131談0968151壇4011162地4411061池3411060知8640081値2421101致1814102遅3730122痴0016132稚2091132置6071131緻2894162竹8822060畜0060102逐3130102蓄4460132築8890161秩2593102窒3010112茶4490090着8060121嫡4042142中5000040仲2520061虫5013061沖3510072宙3060081忠5033081抽5506082注3011081昼7710091柱4091091衷5073102酎1460102鋳8514152駐7031152著4460111貯6382121丁1020021弔1752042庁0022051兆3211061町6102071長7173081挑5201092帳4123111張1123111彫7222112眺6201112釣8712112頂1128111鳥2732111朝4742121貼6186122超4780122腸7622131跳6211132徴2824142嘲6702152潮3712151澄3211152調0762151聴1413172懲2833182直4071081勅5492092捗5102102沈3411072珍1812092朕7823102陳7529112賃2280131鎮8418182追3730091椎4091122墜7810152通3730101痛0012121塚4713122漬3518142坪4114082爪7223042鶴4722212低2224071呈6010072廷1240072弟8022071定3080081底0024081抵5204082亭0020092貞2180092帝0022092訂0162092庭0024101逓3230102停2022111偵2128112堤4618122提5608121程2691121艇2244132締2092152諦0062162泥3711082的2762081笛8860111摘5002142滴3012142適3030141敵0824151溺3712132迭3530082哲5260102鉄8513131徹2824152撤5804152天1043040典5580081店0026081点2133091展7723101添3213112転5103111田6040050伝2123061殿7724132電1071130斗3400042吐6401062妬4146082徒2428101途3830102都4762111渡3014122塗3810132賭6486152土4010030奴4744052努4742071度0024091怒4733092刀1722021冬2730051灯9182061当9017060投5704071豆1010071東5090080到1210082倒2220102凍3519102唐0026102島2772101桃4291102討0460101透3230102党9021101悼9104112盗3710112陶7722112塔4416122搭5406122棟4599122湯3612121痘0011122登1210121答8860121等8834121筒8822122統2091121稲2296142踏6216152糖9096161頭1118161謄7926172藤4423182闘7714182騰7922202同7722060洞3712092胴7722102動2412111堂9010111童0010121道3830121働2422131銅8712141導3834151瞳6001172峠2173092匿7171102特2454101得2624111督2760132徳2423141篤8832162毒5050081独4523091読0461141栃4292092凸7777052突3043082届7726081屯5071042豚7123112頓5178132貪8080112鈍8511122曇6073162丼5500052那1752072奈4090082内4022041梨2290112謎0963162鍋8712172南4022091軟5708112難4051181二1010020尼7721052弐1314062匂2772042肉4022061虹5111092日6010040入8000020乳2241081尿7723072任2221061妊4241072忍1733072認0763141寧3020142年8050061念8033081捻5803112粘9196112燃9383161納2492101能2121101農5523131濃3513162把5701072波3414081派3213091破1464101覇1052192馬7132101婆3440112罵6032152拝5105081杯4199082背1122091俳2121101配1761101排5101112敗6884111廃0021122輩1150152売4021071倍2026101梅4895101培4016112陪7026112媒4449122買6080120賠6086152白2600051伯2620072拍5600082泊3610082迫3630082剝2210102舶2640112博4304121薄4414162麦5024071漠3413132縛2394162爆9683192箱8896151箸8860152畑9680091肌7721062八8000020鉢8513132発1241091髪7244142伐2325062抜5404072罰6062142閥7725142反7124041半9050050氾3711052犯4721051帆4721062汎3711062伴2925072判9250071坂4114071阪7124072板4194081版2104081班1111101畔6905102般2744102販6184112斑1111122飯8174121搬5704132煩9188132頒8128132範8851152繁8890162藩4416182晩6701121番2060121蛮0013122盤2710152皮4024051妃4741062否1060071批5101071彼2424082披5404082肥7721081非1111081卑2640092飛1241091疲0014102秘2390101被3424102悲1133121扉3021122費5580121碑1664142罷6021152避3030162尾7721072眉7726092美8043091備2422121微2824132鼻2644141膝7423152肘7420072匹7171042必3300050泌3310082筆8850121姫4141102百1060061氷3223051表5073081俵2523101票1090111評0164121漂3119142標4199151苗4460082秒2992091病0012101描5406112猫4426112品6066090浜3218102貧8080111賓3080152頻2128172敏8854102瓶8141112不1090041夫5003040父8040040付2420051布4022051扶5503072府0024081怖9402082阜2740082附7420082訃0360092負2780091赴4380092浮3214102婦4742111符8824112富3060121普8060122腐0022142敷5824152膚2122152賦6384152譜0866192侮2825082武1314081部0762111舞8025152封4410092風7721090伏2323062服7724081副1260111幅4126122復2824121福3126131腹7824131複3824141覆1024182払5203052沸3512082仏2223041物2752081粉9892101紛2892102雰1022122噴6408152墳4418152憤9408152奮4060161分8022040文0040040丙1022052平1040051兵7280071併2824082並8010081柄4192092陛7121101閉7724111塀4714122幣9822152弊9844152蔽4424152餅8874142米9090060壁7010162璧7010182癖0014182別6220071蔑4425142片2202041辺3730051返3130071偏2322112遍3330122編2392151弁2344051勉2421101歩2120081保2629091哺6302102捕5302102補3322121舗8362152母7750051募4442122墓4410131慕4433142暮4460141簿8814192方0022040包2771051芳4422072邦5702072奉5050082宝3010081抱5701082放0824081法3413081泡3711082胞7721092俸2525102倣2824102砲1761102崩2222112訪0062111報4744121蜂5715132豊5510131飽8771132褒0073152縫2793162亡0071031乏2030042忙9001062坊4012072妨4042072忘0033071防7022071房3022082肪7022082某4490092冒6060092剖0260102紡2092102望0710111傍2022122帽4626122棒4595121貿7780121貌2621142暴6013151膨7222162謀0469162頰4108162北1111051木4090040朴4390062牧2854081睦6401132僕2223142墨6010142撲5203152没3714072勃4442092堀4717112奔4044082翻2762182凡7721032盆8010092麻0029112摩0025152磨0026162魔0021212毎8050061妹4549081枚4894081昧6509092埋4611102幕4422131膜7423142枕4491082末5090051抹5509082万1022031満3412121慢9604142漫3614142未5090051味6509081魅2521152岬2675082密3077111蜜3013142脈7223101妙4942072民7774050眠6704102矛1722052務1822111無8033121夢4420131霧1022192名2760060命8062081明6702081迷3930091冥3780102盟6710131銘8716142鳴6702141滅3315132免2741082面1060091綿2692141茂4425082模4493141毛2071041妄0040062盲0060082耗5291102網2792142目6010050黙6333152門7777080紋2094102問7760111冶3316072夜0024081野6712111弥1829082厄7121042役2724071約2792091訳0768111薬4490161躍6711212闇7760172由5060050油3516081愉9802122諭0862162輸5802161癒0013182唯6001112友4004041有4022061勇1742091幽2277092悠2833112郵2712111湧3712122猶4826122裕3826122遊3830121雄4001122誘0262142融1523162優2124171与2140032予1720041余8090071預1128131幼2472051用7722050羊8050061妖4243072洋3815091要1040091容3060101庸0022112揚5602122揺5207122葉4490121陽7622121溶3316132腰7124132様4893141瘍0012142踊6712142窯3033152養8073151擁5001162謡0267162曜6701181抑5702072沃3213072浴3816101欲8768111翌1710111翼1780172拉5001082裸3629132羅6091192来5090071雷1060132頼5198162絡2796122落4416121酪1766132辣0549142乱2261071覧7821171濫3811182藍4410182欄4792202吏5000062利2290071里6010071理1611111痢0012122裏0073131履7724152璃1012152離0041192陸7421111立0010050律2520091慄9109132略6706111柳4792092留7760101竜0071102粒9091112隆7721112硫1061122侶2626092旅0823101虜2122132慮2123152了1720022両1022061良3073071料9490101涼3019112陵7424112量6010121僚2429142寮3090152療0019172瞭6409172糧9691182力4002021緑2793141林4499080厘7121092倫2822102輪5802151隣7925162臨7876181瑠1716142涙3313102塁6010122類9148181礼3221051冷3812071励7422072戻3023072例2220081零1030132霊1010152隷4593162齢2873172麗1121192暦7126142歴7121141列1220061劣9042062烈1233102裂1273122恋0033102連3530101廉0023132練2599141錬8519162呂6060072賂6786132路6716131露1016212老4471061弄1044072郎3772092朗3772101浪3713102廊0022122楼4994132漏3712142六0080040録8713161麓4421192論0862151和2690081話0266131賄6482132脇7422102惑5333122枠4494082湾3012122腕7321122";
+const POOL = [...POOL_RAW.matchAll(/(.)(\d{4})(\d\d)(\d)/gu)].map(m => ({ ch: m[1], c4: m[2], st: +m[3], lv: +m[4] }));
+const $ = id => document.getElementById(id);
+const store = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+try { const p = store.get("sjPal", "auto"); if (p && p !== "auto") document.documentElement.setAttribute("data-pal", p); } catch (e) {}
+try { const f = store.get("sjFont", ""); if (["klee", "gothic", "fude"].includes(f)) document.documentElement.setAttribute("data-kfont", f); } catch (e) {}
+
+// ---- 設定 ----
+let LV = +store.get("dnLv", "2"), SPEED = store.get("dnSpeed", "n"), VIB = store.get("dnVib", "1") === "1";
+let score = +store.get("dnScore", "0") || 0;
+let got = {}; try { got = JSON.parse(store.get("dnCards", "{}")) || {}; } catch (e) {}
+// とった漢字は じびきの「ずかん」（sjCards）にもたまる。形は じびき と同じ {字: {n, first, last}}
+function toZukan(ch, n = 1) {
+  let c = {}; try { c = JSON.parse(store.get("sjCards", "{}")) || {}; } catch (e) {}
+  const now = Date.now();
+  if (c[ch]) { c[ch].n = (c[ch].n || 0) + n; c[ch].last = now; } else c[ch] = { n, first: now, last: now };
+  store.set("sjCards", JSON.stringify(c));
+}
+// v0.03 までに弾当てでとった漢字も、1回だけ ずかんに入れる
+if (store.get("dnMerged", "") !== "1") { for (const [ch, n] of Object.entries(got)) toZukan(ch, n); store.set("dnMerged", "1"); }
+const BALL_COL = ["#7a6a5a", "#c0392b", "#d35400", "#c49a00", "#2e8b57", "#16a085", "#2874a6", "#6c3483", "#b03a7a", "#34495e"];
+
+// ---- ブルブル（Android は vibrate、iPhone はスイッチの切りかえで「コツッ」）----
+const canVib = typeof navigator.vibrate === "function";
+function iosTick() {
+  const l = document.createElement("label"); l.setAttribute("aria-hidden", "true"); l.style.display = "none";
+  const i = document.createElement("input"); i.type = "checkbox"; i.setAttribute("switch", ""); l.append(i);
+  document.head.append(l); l.click(); l.remove();
+}
+const HZ = { throw: [12], hit: [25], ok: [50], perfect: [40, 50, 60], break: [120], get: [60, 60, 60, 60, 120], miss: [] };
+function buzz(kind) {
+  if (!VIB) return; const p = HZ[kind] || []; if (!p.length) return;
+  if (canVib) { try { navigator.vibrate(p); } catch (e) {} return; }
+  // iPhone：パターンの「鳴らす」部分の数だけ コツッ を続ける
+  let t = 0; for (let k = 0; k < p.length; k += 2) { setTimeout(iosTick, t); t += p[k] + (p[k + 1] || 0) + 40; }
+}
+
+// ---- 弾 ----
+// 弾の形（じびきの部品と同じ線の絵）：0頭 1横 2垂 3点 4叉 5插 6方 7角 8八 9小
+const SHAPE = ["M19 7 L21 14 M8 21 H32", "M7 20 H33", "M20 6 V34", "M16 12 L23 23", "M20 7 V33 M7 20 H33", "M9 14 H31 M20 6 V29 Q20 33 16 31 M9 27 L31 20", "M9 9 H31 V31 H9 Z", "M8 10 H30 V32", "M16 9 Q14 22 8 31 M24 9 Q26 22 32 31", "M20 6 V29 Q20 33 17 31 M12 15 L8 25 M28 15 L32 25"];
+const ballEl = (d, cls = "") => d === null || d === undefined ? "" : `<div class="ball ${cls}" style="--bc:${BALL_COL[d]}"><svg class="bs" viewBox="0 0 40 40" aria-hidden="true"><path d="${SHAPE[d]}"/></svg><span class="bn">${d}</span></div>`;
+let cur = null, nxt = null, keep = [null, null, null, null, null];
+function draw() {
+  // 今の字の、まだ開いていない隅の数字が少し出やすい
+  const need = K ? K.c4.split("").filter((d, k) => !K.open[k]) : [];
+  if (need.length && Math.random() < .5) return +need[Math.floor(Math.random() * need.length)];
+  return Math.floor(Math.random() * 10);
+}
+function renderBalls() {
+  $("curBall").innerHTML = ballEl(cur); $("nextBall").innerHTML = ballEl(nxt);
+  $("slots").innerHTML = keep.map((d, i) => `<button type="button" class="slot" data-i="${i}" aria-label="キープ${i + 1}${d === null ? "（空き）" : "：" + d}">${ballEl(d)}</button>`).join("");
+}
+$("slots").addEventListener("click", e => {
+  const b = e.target.closest(".slot"); if (!b) return;
+  const i = +b.dataset.i;
+  if (keep[i] === null) { keep[i] = cur; cur = nxt; nxt = draw(); } else { [keep[i], cur] = [cur, keep[i]]; }
+  renderBalls(); const c = $("curBall").firstElementChild; if (c) c.classList.add("bump"); buzz("throw");
+});
+// キープの弾を入れかえる（入っている弾だけ。何回でも）
+$("keepRoll").addEventListener("pointerdown", e => {
+  e.preventDefault(); if (!keep.some(d => d !== null)) return;
+  keep = keep.map(d => d === null ? null : draw()); renderBalls();
+});
+// いまの弾を押すと、待ち時間なしで次の弾へ（何回でも。今の弾は捨てる）
+$("curBall").addEventListener("pointerdown", e => {
+  if (cur === null) return; e.preventDefault();
+  cur = nxt; nxt = draw(); renderBalls();
+});
+
+// ---- 漢字（体力は隅ごと。画数で決まる）----
+let K = null, escT = 0, escMax = 0, lastT = 0, combo = 0;
+const hpMax = st => 30 + st * 3;          // 1画 33 〜 20画 90
+const WRONG = 10;                          // ちがう数字の弾のダメージ
+function pickKanji() {
+  const pool = POOL.filter(p => p.lv <= LV); let p;
+  for (let t = 0; t < 20; t++) { p = pool[Math.floor(Math.random() * pool.length)]; if (!K || p.ch !== K.ch) break; }
+  return p;
+}
+function newKanji() {
+  const p = pickKanji(); const m = hpMax(p.st);
+  K = { ...p, max: m, hp: [m, m, m, m], open: [false, false, false, false], wrong: [[], [], [], []], balls: 0, perfects: 0, done: false };
+  escMax = (40 + p.st * 1.5) * (SPEED === "s" ? 1.5 : 1); escT = escMax;
+  $("kj").textContent = p.ch;
+  const b = $("board"); b.querySelectorAll(".q, .banner, .frag, .pop").forEach(e => e.remove());
+  for (let k = 0; k < 4; k++) {
+    const q = document.createElement("div"); q.className = "q q" + k; q.dataset.k = k;
+    q.innerHTML = `<div class="shell"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${crackPaths(k)}</svg></div><div class="hp"><i></i></div><div class="tgt"></div><div class="ring"></div><div class="dg">${p.c4[k]}</div><div class="xs"></div>`;
+    b.append(q);
+  }
+  if (cur === null) { cur = draw(); nxt = draw(); }
+  renderBalls(); setMsg(`<b>${p.ch}</b>（${p.st}画）が あらわれた！`);
+}
+function crackPaths(k) {
+  const R = (a, b) => (a + Math.random() * (b - a)).toFixed(1);
+  const cx = k % 2 ? 30 : 70, cy = k < 2 ? 70 : 30; // 字のまん中寄りから割れる
+  let s = "";
+  for (let i = 0; i < 3; i++) s += `<path d="M${cx} ${cy} L${R(15, 85)} ${R(15, 85)} L${R(0, 100)} ${R(0, 100)}"/>`;
+  return s;
+}
+function setMsg(h) { $("msg").innerHTML = h; }
+function qEl(k) { return $("board").querySelector(".q" + k); }
+function updQ(k) {
+  const q = qEl(k); if (!q) return;
+  const f = K.hp[k] / K.max;
+  q.querySelector(".hp i").style.width = Math.max(0, f * 100) + "%";
+  const sh = q.querySelector(".shell"); sh.classList.remove("c1", "c2", "c3");
+  const lost = 1 - f; if (lost > 0) sh.classList.add(lost > .66 ? "c3" : lost > .33 ? "c2" : "c1");
+}
+
+// ---- ねらう：縮む標的の枠 ----
+let aim = null; // { k, t0 }
+const RING_FROM = 2.0, RING_TO = .3;
+const ringDur = () => SPEED === "s" ? 2600 : 1800;
+function startAim(k) {
+  if (!K || K.done || K.open[k] || aim || cur === null) return;
+  if (SPEED === "0") { throwAt(k, 1.0, true); return; }
+  aim = { k, t0: performance.now() }; qEl(k).classList.add("aim"); buzz("throw");
+}
+function ringScale(now) { const t = Math.min(1, (now - aim.t0) / ringDur()); return RING_FROM + (RING_TO - RING_FROM) * t; }
+function judge(s) {
+  if (s > 1.6) return { m: 0, tag: "はずれ…（早すぎ）", cls: "miss" };
+  if (s > 1.15) { const p = 1 - (s - 1.15) / .45 * .85; return Math.random() < p ? { m: 1.0, tag: "あたり", cls: "ok" } : { m: 0, tag: "はずれ…（早い）", cls: "miss" }; }
+  if (s >= .9) return { m: 1.5, tag: "ぴったり！", cls: "perfect", perfect: true };
+  if (s >= .5) return { m: .6 + (s - .5) / .4 * .4, tag: "おそめ", cls: "ok" };
+  return { m: .4, tag: "おそすぎ", cls: "ok" };
+}
+function throwAt(k, s, noTiming) {
+  const q = qEl(k); q.classList.remove("aim"); const tg = q.querySelector(".tgt"); tg.classList.remove("sweet");
+  aim = null;
+  const d = cur; cur = nxt; nxt = draw(); K.balls++;
+  const J = noTiming ? { m: 1.0, tag: "", cls: "ok" } : judge(s);
+  flyBall(d, q, () => resolve(k, d, J));
+  renderBalls();
+}
+function resolve(k, d, J) {
+  if (!K || K.done) return;
+  const q = qEl(k), right = String(d) === K.c4[k];
+  if (J.m === 0) { pop(q, J.tag, "miss"); combo = 0; return; }
+  let dmg = (right ? K.max * .8 : WRONG) * J.m;
+  if (J.perfect) { combo++; K.perfects++; } else combo = 0;
+  // ハズレの弾では開かない：殻は1割で止まる。最後のひと押しは正解の弾だけ
+  const floor = right ? 0 : Math.min(K.hp[k], Math.ceil(K.max * .1));
+  K.hp[k] = Math.max(floor, K.hp[k] - dmg); updQ(k);
+  if (!right && !K.wrong[k].includes(d)) { K.wrong[k].push(d); K.wrong[k].sort(); q.querySelector(".xs").innerHTML = K.wrong[k].map(x => `<span>×${x}</span>`).join(""); }
+  q.classList.remove("hitfx"); void q.offsetWidth; q.classList.add("hitfx");
+  const label = (J.tag ? J.tag + (combo > 1 && J.perfect ? ` ${combo}連続` : "") + "\n" : "") + (right ? "正解の弾！" : K.hp[k] <= floor && floor > 0 ? `${d}じゃない…\nあとは正解の弾で！` : `${d}じゃない…`);
+  pop(q, label, J.perfect ? "perfect" : right ? "ok" : "ng");
+  buzz(J.perfect ? "perfect" : right ? "ok" : "hit");
+  if (K.hp[k] <= 0) breakQ(k);
+}
+function breakQ(k) {
+  const q = qEl(k); K.open[k] = true; q.classList.add("open");
+  const r = q.getBoundingClientRect(), b = $("board").getBoundingClientRect();
+  for (let i = 0; i < 8; i++) {
+    const f = document.createElement("div"); f.className = "frag";
+    f.style.left = (r.left - b.left + r.width * (.2 + Math.random() * .6)) + "px"; f.style.top = (r.top - b.top + r.height * (.2 + Math.random() * .6)) + "px";
+    f.style.setProperty("--dx", (Math.random() * 160 - 80) + "px"); f.style.setProperty("--dy", (Math.random() * 120 + 20) + "px"); f.style.setProperty("--r", (Math.random() * 360) + "deg");
+    $("board").append(f); setTimeout(() => f.remove(), 800);
+  }
+  setTimeout(() => buzz("break"), 60);
+  setMsg(`${["左上", "右上", "左下", "右下"][k]}は <b>${K.c4[k]}</b>！`);
+  if (K.open.every(Boolean)) win();
+}
+function win() {
+  K.done = true;
+  const pts = 50 + K.st * 5 + K.perfects * 20 + Math.round(escT * 2) + Math.max(0, 8 - K.balls) * 5;
+  score += pts; store.set("dnScore", String(score));
+  got[K.ch] = (got[K.ch] || 0) + 1; store.set("dnCards", JSON.stringify(got)); toZukan(K.ch);
+  banner(`${K.ch} ゲット！`); setMsg(`<b>${K.ch}</b> ＝ ${K.c4}　ずかんに入れたヨ　+${pts}点（弾 ${K.balls}こ・ぴったり ${K.perfects}回）`);
+  setTimeout(() => buzz("get"), 200);
+  renderTop(); setTimeout(newKanji, 1800);
+}
+function escape() {
+  K.done = true; combo = 0;
+  K.open.forEach((o, k) => { if (!o) { K.open[k] = true; qEl(k).classList.add("open"); } });
+  banner(`${K.ch} に逃げられた…`, "esc"); setMsg(`<b>${K.ch}</b> は ${K.c4} だったヨ`);
+  $("board").classList.remove("shake"); void $("board").offsetWidth; $("board").classList.add("shake");
+  setTimeout(newKanji, 2200);
+}
+function banner(t, cls = "") { const d = document.createElement("div"); d.className = "banner"; d.innerHTML = `<b class="${cls}">${t}</b>`; $("board").append(d); setTimeout(() => d.remove(), 1500); }
+function pop(q, t, cls) { const d = document.createElement("div"); d.className = "pop " + cls; d.textContent = t; q.append(d); setTimeout(() => d.remove(), 950); }
+function flyBall(d, q, done) {
+  const from = $("curBall").getBoundingClientRect(), to = q.querySelector(".tgt").getBoundingClientRect();
+  const b = document.createElement("div"); b.className = "flyball"; b.innerHTML = ballEl(d);
+  const sz = 48; b.firstElementChild.style.cssText = `width:${sz}px;height:${sz}px;font-size:21px`;
+  b.style.left = (from.left + from.width / 2 - sz / 2) + "px"; b.style.top = (from.top + from.height / 2 - sz / 2) + "px";
+  document.body.append(b);
+  requestAnimationFrame(() => { b.style.transform = `translate(${to.left + to.width / 2 - from.left - from.width / 2}px, ${to.top + to.height / 2 - from.top - from.height / 2}px) scale(.8)`; });
+  setTimeout(() => { b.remove(); done(); }, 230);
+}
+
+// ---- 入力：隅をタップ → もう一回タップで投げる ----
+document.addEventListener("pointerdown", e => {
+  if (!$("setM").hidden || e.target.closest(".tray, .top")) return;
+  if (aim) { e.preventDefault(); throwAt(aim.k, ringScale(performance.now())); return; }
+  const q = e.target.closest(".q"); if (q) { e.preventDefault(); startAim(+q.dataset.k); }
+}, { passive: false });
+
+// ---- ループ ----
+function loop(now) {
+  const dt = lastT ? Math.min(.1, (now - lastT) / 1000) : 0; lastT = now;
+  if (K && !K.done && $("setM").hidden) {
+    escT -= dt;
+    if (escT <= 0) { escT = 0; escape(); }
+  }
+  if (K) {
+    const f = Math.max(0, escT / escMax); $("escBar").style.transform = `scaleX(${f})`;
+    $("esc").classList.toggle("low", f < .25); $("escInfo").textContent = K.done ? "" : Math.ceil(escT) + "秒";
+  }
+  if (aim) {
+    const s = ringScale(now), q = qEl(aim.k);
+    if (q) { q.querySelector(".ring").style.transform = `scale(${s})`; q.querySelector(".tgt").classList.toggle("sweet", s <= 1.15 && s >= .9); }
+    if (now - aim.t0 >= ringDur()) throwAt(aim.k, RING_TO); // 最後まで投げなかったら自動で弱く当たる
+  }
+  requestAnimationFrame(loop);
+}
+
+// ---- 上の表示・設定 ----
+function renderTop() {
+  $("score").innerHTML = `${score.toLocaleString()}<small>点</small>`;
+  const n = Object.keys(got).length; $("gotN").textContent = n ? `${n}字` : "";
+}
+function segSet(id, v) { $(id).querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === String(v)))); }
+function openSet() {
+  segSet("lvSeg", LV); segSet("spSeg", SPEED); segSet("vbSeg", VIB ? "1" : "0");
+  const ks = Object.keys(got); $("gotN2").textContent = ks.length; $("gotList").textContent = ks.join("") || "まだないヨ";
+  $("vbNote").textContent = canVib ? "この端末は ブルブル できるヨ" : "iPhone は「コツッ」で代わりにためしてる（iOS 18 より前や、設定で触覚がオフだと鳴らない）。ためしボタンで確かめてネ";
+  $("setM").hidden = false;
+}
+$("setOpen").addEventListener("click", openSet);
+$("setX").addEventListener("click", () => { $("setM").hidden = true; });
+$("setM").addEventListener("click", e => { if (e.target === $("setM")) $("setM").hidden = true; });
+$("lvSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; LV = +b.dataset.v; store.set("dnLv", String(LV)); segSet("lvSeg", LV); });
+$("spSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; SPEED = b.dataset.v; store.set("dnSpeed", SPEED); segSet("spSeg", SPEED); });
+$("vbSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; VIB = b.dataset.v === "1"; store.set("dnVib", VIB ? "1" : "0"); segSet("vbSeg", VIB ? "1" : "0"); if (VIB) buzz("hit"); });
+document.querySelectorAll("[data-hz]").forEach(b => b.addEventListener("click", () => buzz(b.dataset.hz)));
+let wipeArm = 0;
+$("wipe").addEventListener("click", () => {
+  if (Date.now() - wipeArm > 3000) { wipeArm = Date.now(); $("wipe").textContent = "もう一回押すと消える"; return; }
+  got = {}; score = 0; store.set("dnCards", "{}"); store.set("dnScore", "0"); renderTop(); $("wipe").textContent = "この一覧と点を消す（ずかんのカードは消えない）"; openSet();
+});
+
+renderTop(); newKanji(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>
