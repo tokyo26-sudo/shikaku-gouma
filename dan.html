@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#2c5d73">
-<title>弾当て v0.04</title>
+<title>弾当て v0.06</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;800&family=Zen+Kaku+Gothic+New:wght@400;700&family=Martian+Mono:wght@400;600&family=Klee+One:wght@600&family=Yuji+Syuku&display=swap">
@@ -33,7 +33,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: non
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 [hidden] { display: none !important; }
 button { font: inherit; color: inherit; }
-.app { height: 100dvh; max-width: 480px; margin: 0 auto; display: grid; grid-template-rows: auto auto 1fr auto auto; padding: max(8px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom)); gap: 8px; }
+.app { height: 100dvh; max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr auto auto; padding: max(8px, env(safe-area-inset-top)) 14px max(10px, env(safe-area-inset-bottom)); gap: 8px; }
 
 /* 上：タイトル・点・設定 */
 .top { display: flex; align-items: center; gap: 10px; }
@@ -52,7 +52,10 @@ button { font: inherit; color: inherit; }
 .esc .bar { flex: 1; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .esc .bar i { display: block; height: 100%; width: 100%; background: var(--accent); border-radius: 4px; transform-origin: left; }
 .esc.low .bar i { background: var(--hit); }
+.esc { position: relative; }
 .esc .info { font-family: var(--f-mono); min-width: 5.5em; text-align: right; }
+.esc-add { position: absolute; right: 0; top: -14px; font-family: var(--f-mono); font-size: 13px; font-weight: 600; color: var(--ok); animation: escAdd 1.2s ease-out forwards; pointer-events: none; }
+@keyframes escAdd { 0% { opacity: 0; transform: translateY(6px); } 20% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-10px); } }
 
 /* 盤：漢字と四隅の殻 */
 .stagewrap { display: grid; place-items: center; min-height: 0; position: relative; container-type: size; }
@@ -110,14 +113,26 @@ button { font: inherit; color: inherit; }
 /* 下：お知らせ・弾 */
 .msg { text-align: center; font-size: 13px; color: var(--muted); min-height: 1.4em; }
 .msg b { color: var(--ink); }
-.tray { display: grid; grid-template-columns: 1fr auto auto 1fr; grid-template-areas: ". cur nx ." "keep keep keep keep"; gap: 8px 14px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+.tray { display: grid; grid-template-columns: 1fr auto auto auto auto 1fr; grid-template-areas: ". pad cur nx rr ." "keep keep keep keep keep keep"; gap: 8px 14px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
 .keep { grid-area: keep; display: grid; gap: 4px; justify-items: center; }
-.cur { grid-area: cur; } .nx { grid-area: nx; }
-.keep .lb, .nx .lb, .cur .lb { font-size: 10px; color: var(--muted); text-align: center; }
+.padw { grid-area: pad; display: grid; gap: 4px; justify-items: center; }
+.padw .lb { font-size: 10px; color: var(--muted); white-space: nowrap; }
+.pad { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.pb { position: relative; width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); font-size: 11px; font-weight: 700; padding: 0; cursor: pointer; overflow: hidden; display: grid; place-items: center; touch-action: none; }
+.pb .hpb { position: absolute; left: 4px; right: 4px; bottom: 3px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.12); }
+.pb .hpb i { display: block; height: 100%; background: var(--gold); border-radius: 2px; }
+.pb.aim { border-color: var(--hit); background: color-mix(in srgb, var(--hit) 18%, var(--bg)); }
+.pb.sweet { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 30%, var(--bg)); }
+.pb.open { border-color: var(--ok); background: var(--ok); color: #fff; font-family: var(--f-mono); font-size: 20px; cursor: default; }
+.pb:disabled { cursor: default; }
+.cur { grid-area: cur; } .nx { grid-area: nx; } .rr { grid-area: rr; display: grid; gap: 4px; justify-items: center; }
+.keep .lb, .nx .lb, .cur .lb, .rr .lb { font-size: 10px; color: var(--muted); text-align: center; white-space: nowrap; }
 .keep .slots { display: flex; gap: 8px; }
 .keephd { display: flex; align-items: center; gap: 10px; }
-.reroll { white-space: nowrap; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; }
-.reroll:active { transform: scale(.94); }
+.reroll { display: grid; justify-items: center; gap: 2px; width: 64px; height: 64px; line-height: 1.15; font-size: 11px; font-weight: 700; padding: 4px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; }
+.reroll span { font-size: 20px; line-height: 1; }
+.reroll:active { transform: scale(.94); background: var(--accent-soft); }
+@media (max-width: 400px) { .tray { column-gap: 8px; padding: 10px 8px; } .cur .ball { width: 66px; height: 66px; font-size: 30px; } .nx .ball { width: 40px; height: 40px; font-size: 18px; } .reroll { width: 54px; height: 60px; font-size: 10px; } .pb { width: 38px; height: 38px; } .tray { column-gap: 6px; } .cur .lb, .rr .lb { white-space: normal; max-width: 72px; line-height: 1.2; } }
 @media (max-width: 360px) { .keep .slots { gap: 5px; } .slot { width: 44px; height: 44px; } .slot .ball { width: 38px; height: 38px; font-size: 16px; } }
 .slot { width: 48px; height: 48px; border-radius: 10px; border: 2px dashed var(--line); background: var(--bg); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .cur, .nx { display: grid; gap: 4px; justify-items: center; }
@@ -147,6 +162,10 @@ button { font: inherit; color: inherit; }
 .gotlist { font-family: var(--f-kanji); font-size: 24px; line-height: 1.4; word-break: break-all; }
 .credit { font-size: 11px; color: var(--muted); line-height: 1.6; }
 .credit a { color: var(--accent); }
+.pausecard { text-align: center; justify-items: stretch; width: min(320px, 100%); }
+.pausecard h2 { font-family: var(--f-display); font-size: 24px; }
+.btn.big { display: block; font-size: 16px; padding: 14px 12px; text-align: center; text-decoration: none; color: var(--ink); }
+.btn.big.pri { color: var(--panel); }
 .rot { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: none; place-items: center; text-align: center; padding: 20px; font-size: 16px; }
 @media (orientation: landscape) and (max-height: 500px) { .rot { display: grid; } }
 </style>
@@ -155,9 +174,10 @@ button { font: inherit; color: inherit; }
 <div class="app">
   <div class="top">
     <a class="back" href="index.html" aria-label="じびきへもどる">← じびき</a>
-    <h1>弾当て<span class="ver">v0.04</span></h1>
+    <h1>弾当て<span class="ver">v0.06</span></h1>
     <span class="sc" id="score">0<small>点</small></span>
     <span class="got" id="gotN"></span>
+    <button type="button" class="ib" id="pauseBtn" aria-label="一時停止">⏸</button>
     <button type="button" class="ib" id="setOpen" aria-label="設定">⚙</button>
   </div>
   <div class="esc" id="esc"><span>逃げるまで</span><div class="bar"><i id="escBar"></i></div><span class="info" id="escInfo"></span></div>
@@ -167,11 +187,13 @@ button { font: inherit; color: inherit; }
       <div class="cross"></div>
     </div>
   </div>
-  <div class="msg" id="msg">隅をタップ → 縮む枠が点線にぴったり重なったら、もう一回タップ！</div>
+  <div class="msg" id="msg">下の「ねらう隅」か漢字の隅をタップ → 枠が点線にぴったり重なって金色になったら、もう一回タップ！</div>
   <div class="tray" id="tray">
+    <div class="padw"><div class="lb">ねらう隅</div><div class="pad" id="pad"></div></div>
     <div class="cur"><div class="lb">いまの弾（押すと次へ）</div><div id="curBall" role="button" aria-label="いまの弾を次の弾に変える"></div></div>
     <div class="nx"><div class="lb">次</div><div id="nextBall"></div></div>
-    <div class="keep"><div class="keephd"><span class="lb">キープ（押すと入れかえ）</span><button type="button" class="reroll" id="keepRoll" aria-label="キープの弾を入れかえる">🔄 入れかえ</button></div><div class="slots" id="slots"></div></div>
+    <div class="rr"><div class="lb">キープを</div><button type="button" class="reroll" id="keepRoll" aria-label="キープの弾をまとめて入れかえる"><span>🔄</span>ぜんぶ<br>入れかえ</button></div>
+    <div class="keep"><div class="lb">キープ（押すと いまの弾と入れかえ）</div><div class="slots" id="slots"></div></div>
   </div>
 </div>
 
@@ -186,8 +208,17 @@ button { font: inherit; color: inherit; }
       <p class="note" id="vbNote"></p></div>
     <div><h3>弾当てでとった漢字（<span id="gotN2">0</span>字）</h3><p class="note" style="margin-bottom:6px">とった漢字は じびきの「ずかん」にもカードとしてたまるヨ</p><div class="gotlist" id="gotList"></div>
       <div class="row" style="margin-top:8px"><button type="button" class="btn" id="wipe">この一覧と点を消す（ずかんのカードは消えない）</button></div></div>
-    <div><h3>あそびかた</h3><p class="note">見えている漢字の四隅は、それぞれ四角号碼の数字。隅をタップすると、十字の照準つきの赤い枠が縮んでくる。点線にぴったり重なって金色になった瞬間にもう一回タップ（画面のどこでもいい）で弾を投げる。<br>・正解の数字の弾は殻を8割けずる（2発で割れる）。ぴったりなら1発！<br>・ちがう数字の弾も少しけずれるけど、殻は1割のこる。<b>開けるのは正解の弾だけ</b>。ちがった数字は隅に ×3 のように残る<br>・枠が大きすぎるうちに投げると外れることがある。小さくなりすぎると弱い<br>・<b>いまの弾を押すと、すぐ次の弾に変わる</b>（何回でも）。ほしい数字が出るまで変えられる<br>・キープ枠（5つ）を押すと、いまの弾と入れかえ。あとで使える。「🔄 入れかえ」でキープの弾をまとめて新しくできる（何回でも）<br>・4隅ぜんぶ割れたら、その漢字をゲット。逃げるまでのゲージがなくなると逃げられる</p></div>
+    <div><h3>あそびかた</h3><p class="note">見えている漢字の四隅は、それぞれ四角号碼の数字。漢字の隅か、下の「ねらう隅」ボタン（田の字。漢字の隅と同じ並び）を押すと、十字の照準つきの赤い枠が縮んでくる。点線にぴったり重なって金色になった瞬間にもう一回タップ（画面のどこでもいい）で弾を投げる。<br>・正解の数字の弾は殻を8割けずる（2発で割れる）。ぴったりなら1発！<br>・ちがう数字の弾も少しけずれるけど、殻は1割のこる。<b>開けるのは正解の弾だけ</b>。ちがった数字は隅に ×3 のように残る<br>・枠が大きすぎるうちに投げると外れることがある。小さくなりすぎると弱い<br>・<b>いまの弾を押すと、すぐ次の弾に変わる</b>（何回でも）。ほしい数字が出るまで変えられる<br>・キープ枠（5つ）を押すと、いまの弾と入れかえ。あとで使える。「🔄 ぜんぶ入れかえ」でキープの弾をまとめて新しくできる（何回でも）<br>・⏸ で一時停止。設定を開いている間や、ほかのアプリに切りかえたときも時間は止まる<br>・4隅ぜんぶ割れたら、その漢字をゲット。逃げるまでのゲージがなくなると逃げられる。画数が少ない字ほど早く逃げる（20秒＋画数×3秒）。隅を1つ割るたびに 8秒もどる（最初の時間まで）</p></div>
     <p class="credit">号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。画数：<a href="https://www.edrdg.org/wiki/index.php/KANJIDIC_Project" target="_blank" rel="noopener">KANJIDIC2</a>（© EDRDG、CC BY-SA 4.0）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a></p>
+  </div>
+</div>
+<div class="modal" id="pauseM" hidden>
+  <div class="card pausecard" role="dialog" aria-modal="true" aria-label="一時停止">
+    <h2>一時停止中</h2>
+    <p class="note">時間は止まってるヨ。逃げるまでのゲージも、縮む枠も止まってる</p>
+    <button type="button" class="btn pri big" id="resumeBtn">▶ つづける</button>
+    <button type="button" class="btn big" id="pauseSet">⚙ 設定</button>
+    <a class="btn big" href="index.html">← じびきへもどる</a>
   </div>
 </div>
 <div class="rot">📱 たてにして遊んでネ</div>
@@ -253,8 +284,8 @@ $("slots").addEventListener("click", e => {
   renderBalls(); const c = $("curBall").firstElementChild; if (c) c.classList.add("bump"); buzz("throw");
 });
 // キープの弾を入れかえる（入っている弾だけ。何回でも）
-$("keepRoll").addEventListener("pointerdown", e => {
-  e.preventDefault(); if (!keep.some(d => d !== null)) return;
+$("keepRoll").addEventListener("click", () => {
+  if (!keep.some(d => d !== null)) return;
   keep = keep.map(d => d === null ? null : draw()); renderBalls();
 });
 // いまの弾を押すと、待ち時間なしで次の弾へ（何回でも。今の弾は捨てる）
@@ -266,7 +297,8 @@ $("curBall").addEventListener("pointerdown", e => {
 // ---- 漢字（体力は隅ごと。画数で決まる）----
 let K = null, escT = 0, escMax = 0, lastT = 0, combo = 0;
 const hpMax = st => 30 + st * 3;          // 1画 33 〜 20画 90
-const WRONG = 10;                          // ちがう数字の弾のダメージ
+const WRONG = 10;
+const RECOVER = 8;                         // 隅が開いたときに回復する秒数                          // ちがう数字の弾のダメージ
 function pickKanji() {
   const pool = POOL.filter(p => p.lv <= LV); let p;
   for (let t = 0; t < 20; t++) { p = pool[Math.floor(Math.random() * pool.length)]; if (!K || p.ch !== K.ch) break; }
@@ -275,7 +307,8 @@ function pickKanji() {
 function newKanji() {
   const p = pickKanji(); const m = hpMax(p.st);
   K = { ...p, max: m, hp: [m, m, m, m], open: [false, false, false, false], wrong: [[], [], [], []], balls: 0, perfects: 0, done: false };
-  escMax = (40 + p.st * 1.5) * (SPEED === "s" ? 1.5 : 1); escT = escMax;
+  // 画数が少ない字は体力が少ないかわりに早く逃げる：20秒＋画数×3秒（上限90秒）
+  escMax = Math.min(90, 20 + p.st * 3) * (SPEED === "s" ? 1.5 : 1); escT = escMax;
   $("kj").textContent = p.ch;
   const b = $("board"); b.querySelectorAll(".q, .banner, .frag, .pop").forEach(e => e.remove());
   for (let k = 0; k < 4; k++) {
@@ -284,7 +317,7 @@ function newKanji() {
     b.append(q);
   }
   if (cur === null) { cur = draw(); nxt = draw(); }
-  renderBalls(); setMsg(`<b>${p.ch}</b>（${p.st}画）が あらわれた！`);
+  renderBalls(); updPad(); setMsg(`<b>${p.ch}</b>（${p.st}画）が あらわれた！`);
 }
 function crackPaths(k) {
   const R = (a, b) => (a + Math.random() * (b - a)).toFixed(1);
@@ -303,6 +336,22 @@ function updQ(k) {
   const lost = 1 - f; if (lost > 0) sh.classList.add(lost > .66 ? "c3" : lost > .33 ? "c2" : "c1");
 }
 
+// ---- 下の「ねらう隅」ボタン（田の字。漢字の隅と同じ並び）----
+const POSN = ["左上", "右上", "左下", "右下"];
+function updPad() {
+  if (!K) return;
+  $("pad").innerHTML = [0, 1, 2, 3].map(k => {
+    if (K.open[k]) return `<button type="button" class="pb open" disabled aria-label="${POSN[k]}は${K.c4[k]}">${K.done && !K.won ? K.c4[k] : K.c4[k]}</button>`;
+    const f = Math.max(0, K.hp[k] / K.max) * 100;
+    return `<button type="button" class="pb${aim && aim.k === k ? " aim" : ""}" data-k="${k}" aria-label="${POSN[k]}をねらう">${POSN[k]}<span class="hpb"><i style="width:${f}%"></i></span></button>`;
+  }).join("");
+}
+$("pad").addEventListener("pointerdown", e => {
+  e.stopPropagation(); const b = e.target.closest(".pb[data-k]"); if (!b || halted) return; e.preventDefault();
+  if (aim) { throwAt(aim.k, ringScale(performance.now())); return; }   // ねらっている最中なら、どのボタンでも投げる
+  startAim(+b.dataset.k);
+});
+
 // ---- ねらう：縮む標的の枠 ----
 let aim = null; // { k, t0 }
 const RING_FROM = 2.0, RING_TO = .3;
@@ -310,7 +359,7 @@ const ringDur = () => SPEED === "s" ? 2600 : 1800;
 function startAim(k) {
   if (!K || K.done || K.open[k] || aim || cur === null) return;
   if (SPEED === "0") { throwAt(k, 1.0, true); return; }
-  aim = { k, t0: performance.now() }; qEl(k).classList.add("aim"); buzz("throw");
+  aim = { k, t0: performance.now() }; qEl(k).classList.add("aim"); buzz("throw"); updPad();
 }
 function ringScale(now) { const t = Math.min(1, (now - aim.t0) / ringDur()); return RING_FROM + (RING_TO - RING_FROM) * t; }
 function judge(s) {
@@ -326,7 +375,7 @@ function throwAt(k, s, noTiming) {
   const d = cur; cur = nxt; nxt = draw(); K.balls++;
   const J = noTiming ? { m: 1.0, tag: "", cls: "ok" } : judge(s);
   flyBall(d, q, () => resolve(k, d, J));
-  renderBalls();
+  renderBalls(); updPad();
 }
 function resolve(k, d, J) {
   if (!K || K.done) return;
@@ -342,7 +391,7 @@ function resolve(k, d, J) {
   const label = (J.tag ? J.tag + (combo > 1 && J.perfect ? ` ${combo}連続` : "") + "\n" : "") + (right ? "正解の弾！" : K.hp[k] <= floor && floor > 0 ? `${d}じゃない…\nあとは正解の弾で！` : `${d}じゃない…`);
   pop(q, label, J.perfect ? "perfect" : right ? "ok" : "ng");
   buzz(J.perfect ? "perfect" : right ? "ok" : "hit");
-  if (K.hp[k] <= 0) breakQ(k);
+  if (K.hp[k] <= 0) breakQ(k); else updPad();
 }
 function breakQ(k) {
   const q = qEl(k); K.open[k] = true; q.classList.add("open");
@@ -355,6 +404,10 @@ function breakQ(k) {
   }
   setTimeout(() => buzz("break"), 60);
   setMsg(`${["左上", "右上", "左下", "右下"][k]}は <b>${K.c4[k]}</b>！`);
+  // 隅が開いたら逃げるまでの時間が少し回復（最初の時間が上限）
+  const add = Math.min(RECOVER, escMax - escT);
+  if (add > .5 && !K.open.every(Boolean)) { escT += add; const d = document.createElement("span"); d.className = "esc-add"; d.textContent = `+${Math.round(add)}秒`; $("esc").append(d); setTimeout(() => d.remove(), 1200); }
+  updPad();
   if (K.open.every(Boolean)) win();
 }
 function win() {
@@ -368,7 +421,7 @@ function win() {
 }
 function escape() {
   K.done = true; combo = 0;
-  K.open.forEach((o, k) => { if (!o) { K.open[k] = true; qEl(k).classList.add("open"); } });
+  K.open.forEach((o, k) => { if (!o) { K.open[k] = true; qEl(k).classList.add("open"); } }); updPad();
   banner(`${K.ch} に逃げられた…`, "esc"); setMsg(`<b>${K.ch}</b> は ${K.c4} だったヨ`);
   $("board").classList.remove("shake"); void $("board").offsetWidth; $("board").classList.add("shake");
   setTimeout(newKanji, 2200);
@@ -385,9 +438,24 @@ function flyBall(d, q, done) {
   setTimeout(() => { b.remove(); done(); }, 230);
 }
 
+// ---- 一時停止：⏸・設定を開いている間・別のアプリに切りかえたとき は時間を止める ----
+let halted = false, haltAt = 0;
+function syncHalt() {
+  const want = !$("pauseM").hidden || !$("setM").hidden;
+  const now = performance.now();
+  if (want && !halted) { halted = true; haltAt = now; }
+  else if (!want && halted) { halted = false; if (aim) aim.t0 += now - haltAt; lastT = 0; }
+}
+function pauseGame() { $("pauseM").hidden = false; syncHalt(); }
+function resumeGame() { $("pauseM").hidden = true; syncHalt(); }
+$("pauseBtn").addEventListener("click", pauseGame);
+$("resumeBtn").addEventListener("click", resumeGame);
+$("pauseSet").addEventListener("click", () => { $("pauseM").hidden = true; openSet(); });
+document.addEventListener("visibilitychange", () => { if (document.hidden && K && !K.done) pauseGame(); });
+
 // ---- 入力：隅をタップ → もう一回タップで投げる ----
 document.addEventListener("pointerdown", e => {
-  if (!$("setM").hidden || e.target.closest(".tray, .top")) return;
+  if (halted || !e.target.isConnected || e.target.closest(".tray, .top, .modal")) return;
   if (aim) { e.preventDefault(); throwAt(aim.k, ringScale(performance.now())); return; }
   const q = e.target.closest(".q"); if (q) { e.preventDefault(); startAim(+q.dataset.k); }
 }, { passive: false });
@@ -395,7 +463,8 @@ document.addEventListener("pointerdown", e => {
 // ---- ループ ----
 function loop(now) {
   const dt = lastT ? Math.min(.1, (now - lastT) / 1000) : 0; lastT = now;
-  if (K && !K.done && $("setM").hidden) {
+  if (halted) { requestAnimationFrame(loop); return; }
+  if (K && !K.done) {
     escT -= dt;
     if (escT <= 0) { escT = 0; escape(); }
   }
@@ -405,7 +474,7 @@ function loop(now) {
   }
   if (aim) {
     const s = ringScale(now), q = qEl(aim.k);
-    if (q) { q.querySelector(".ring").style.transform = `scale(${s})`; q.querySelector(".tgt").classList.toggle("sweet", s <= 1.15 && s >= .9); }
+    if (q) { const sw = s <= 1.15 && s >= .9; q.querySelector(".ring").style.transform = `scale(${s})`; q.querySelector(".tgt").classList.toggle("sweet", sw); const pb = $("pad").querySelector(`.pb[data-k="${aim.k}"]`); if (pb) pb.classList.toggle("sweet", sw); }
     if (now - aim.t0 >= ringDur()) throwAt(aim.k, RING_TO); // 最後まで投げなかったら自動で弱く当たる
   }
   requestAnimationFrame(loop);
@@ -421,11 +490,11 @@ function openSet() {
   segSet("lvSeg", LV); segSet("spSeg", SPEED); segSet("vbSeg", VIB ? "1" : "0");
   const ks = Object.keys(got); $("gotN2").textContent = ks.length; $("gotList").textContent = ks.join("") || "まだないヨ";
   $("vbNote").textContent = canVib ? "この端末は ブルブル できるヨ" : "iPhone は「コツッ」で代わりにためしてる（iOS 18 より前や、設定で触覚がオフだと鳴らない）。ためしボタンで確かめてネ";
-  $("setM").hidden = false;
+  $("setM").hidden = false; syncHalt();
 }
 $("setOpen").addEventListener("click", openSet);
-$("setX").addEventListener("click", () => { $("setM").hidden = true; });
-$("setM").addEventListener("click", e => { if (e.target === $("setM")) $("setM").hidden = true; });
+$("setX").addEventListener("click", () => { $("setM").hidden = true; syncHalt(); });
+$("setM").addEventListener("click", e => { if (e.target === $("setM")) { $("setM").hidden = true; syncHalt(); } });
 $("lvSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; LV = +b.dataset.v; store.set("dnLv", String(LV)); segSet("lvSeg", LV); });
 $("spSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; SPEED = b.dataset.v; store.set("dnSpeed", SPEED); segSet("spSeg", SPEED); });
 $("vbSeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; VIB = b.dataset.v === "1"; store.set("dnVib", VIB ? "1" : "0"); segSet("vbSeg", VIB ? "1" : "0"); if (VIB) buzz("hit"); });
