@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>強さダイヤル</title>
+<title>強さダイヤル v0.07</title>
 <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAFLUlEQVR4nOybC0wURxjH/7N3VlAQFawnATWkIDkOKEG0mGhoadMHbdpK1aBgojGaNG3SHukj6UO0iWmj0Bibpg+jSUFKWtJgTa2taSFqaiiK8jrEgGlAyAGKHO/nTWfOgBy7B0vuFo7b+yV7t/vNN5ed/85j75sZLWSg32VMJgQvgZANhNJg9r2SmRfDvegFpa2UkBYClNJR+ltNfk7xdJmIw5SkLK0htHsfpfiEFT4Y8xB27y0UOGS6638KJVkjUj5iAbKyhKgGy3ZQ4TAreDg8AAp6mwnxsSk3p9B2OQHNZGd9yPptAnCaPKzmHgEBCWRPOiUoJrGqvfJqnX3aBAwZmVuZPD8zowAPhJXNSilJM+Ud+2nMNi5A5K53o7WElLIOzheeDKX9Vqtmkyn/6E1++fBJs3avIUKBxxeew8ooaKy5vMz80vZhaOjezzo8PdSDgZeZnxD9tjf9BB+fO+x0BdRF2/ACzRNa+Pi8ocLCcx7XDI+kCoSSJKgUgeIpgRC6FmqFIFLLxsW1hMjzfy4hGsnxBgQF+MMduWfpxl/Xq3GxrEpeBkp0WhCqm+ovwRivbUnAwT2pcHee3xiLQ6cKUXT5mhx3ncBeExfK8dwcsw7zhc2xkfIcCQK0kEnA4kWYL8zkXmUL4Kk4JUB33wBuN7ZM6bNudTD8FvnY2XpYvrpJ+eT6TSaC5fOflG8mOCUAL/y+L76b0ufkB/sRHxlmZ6uTyCfXT87vzwRvE4DK8QoAleMVACrHKwBUjuIC+Po8JrL1DAzCXVBcgJXLAkS2tg4L3AVFBdAIApYv8RPZWx+oRABDWAgLw4uDLW0PuuAuKCpAcny0pL21oxPugqICPJtgENmGhkdQdacJ7oJiAvAY4qrAZSL7xWtV6B8cEtk7e/tEttW6ICiNIgLoApfi/Z2vSKadu3Jd0t5ovieyrVi6BL8f+xDN7R1wBA+kOIMiAnx+IA2+C8Xjf3tnF0pN9ZJ5GtvuS9q5mPxQCpeuA9AtD8D3LEITG75GMv3ID0UO85aUm9DV14/ZxmUCvL5lA345kon1DsJThcWlKLlhcpi/s6cXJwovYLZxSRPY+3IS3k59wWF6/V0zjv54DtPBRerpG0RmWsqszT65RICUxDiHaYNs2DOeyLUNf3K4UHqT1ZQabDJEIDxUh4jQVVPG+aWiyTPBJQI0NLchLFi8por33u99fQZNDjo4RwwMDePv8hrbMR3ORoVd0gecPl+CkVGrne2Pfyux49PjqP2vGe6MS2oAL+RH3xbgnR0vwnzfgrNsYvLsFVmTk3OOy94D/iyrtB3zDacE4NNSvA3OJRFz+SbI5+Sc6YDcAW9MECrHKwCcQM76AKVxen0ABR2Us07IIhGwKKutR+ZXeZhLst9KxzPx9pEnqXuVhMIigBKzHN/LlXViW8UtzDVO3pdZCwIuwJrpPIsulaG3f4DF+aIxyl57i9l7uuz1eAri1H0RaiaGdOM3LHZ9ACrESnFcsIIWQaVQSgtssxZRGcZy1hHGQUWwwlfU5OU8afs7bKXkMFSGFSSLf4/PW6mpFow9fX7+KCBCsYdvKIKnw8o4SmnG2OW4AEyRCtYUdsODobaaT9JvnflyfJy02zjZXnXVFBSTeINN6L7KWscCeBLsyRMIW6vzsn+daJbcKKDfbYwjFGyIIBHwAPjWWfaxndfyyWlTbp7Wh3TvZQ4H5/PmaXbvn1U3+Z+Uv3lagqidxqeJhqSwNrTR7bfPs2g8O//HaiXna/OzL02X6X8AAAD//7m9mAoAAAAGSURBVAMAunvUtLVRNa8AAAAASUVORK5CYII=">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%232c5d73%22/%3E%3Cg fill=%22none%22 stroke=%22%23fbfcfb%22 stroke-width=%225.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M13 15 V50 M13 15 H51 V50 M13 47 H51%22/%3E%3Cpath d=%22M27 16 V27 Q27 36 20 40%22/%3E%3Cpath d=%22M37 16 V33 Q37 37 41 37 H50%22/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,6 +153,47 @@ table.st td.n { font-family: var(--f-mono); text-align: right; }
 .kl button { font-family: var(--f-display); font-size: 20px; line-height: 1.2; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; cursor: pointer; color: var(--ink); display: inline-flex; align-items: baseline; gap: 3px; }
 .kl button small { font-family: var(--f-mono); font-size: 10px; color: var(--muted); }
 .kl button:hover { border-color: var(--accent); }
+
+/* v0.07 弾当て開発コーナー */
+.dn-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 760px) { .dn-grid { grid-template-columns: 1fr; } }
+.dn-t input { width: 4.2em; font: inherit; font-family: var(--f-mono); font-size: 12px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 2px 4px; text-align: right; }
+.dn-t td.rk { font-family: var(--f-display); font-weight: 800; font-size: 18px; }
+.dn-t td.ex { font-family: var(--f-display); font-size: 15px; white-space: nowrap; }
+.dn-t td.n b { color: var(--hit); }
+.dn input[type="number"] { width: 4.5em; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+.dn input[type="datetime-local"] { font: inherit; font-size: 13px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; }
+.dn-sim { margin-top: 8px; display: grid; gap: 6px; }
+.dn-sim .sb { display: flex; height: 22px; border-radius: 6px; overflow: hidden; font-family: var(--f-mono); font-size: 11px; color: #fff; }
+.dn-sim .sb i { display: grid; place-items: center; font-style: normal; min-width: 0; overflow: hidden; }
+.dn-sim .ks { font-family: var(--f-display); font-size: 16px; line-height: 1.5; word-break: break-all; }
+.dn-sim .ks b { color: var(--hit); }
+.dn-kl { max-height: 220px; overflow: auto; margin-top: 6px; }
+.dn-kl button { font-size: 17px; }
+.rk-S { background: #b4492b; } .rk-A { background: #b07a2a; } .rk-B { background: #3c8a4f; } .rk-C { background: #2c6f8f; } .rk-D { background: #6a7a80; }
+.mn-now { display: flex; gap: 14px; align-items: center; }
+.mn-icon { width: 110px; height: 110px; flex: none; }
+.mn-icon .dark { fill: #2b3438; } .mn-icon .lit { fill: #f3e7b5; } .mn-icon .rim { fill: none; stroke: #d9b54a; stroke-width: 4; }
+.mn-big { font-family: var(--f-display); font-weight: 800; font-size: 22px; }
+.mn-info { font-size: 13px; display: grid; gap: 2px; font-variant-numeric: tabular-nums; }
+.mn-info b { font-family: var(--f-mono); font-weight: 600; }
+.mn-info .on { color: #b07a2a; font-weight: 700; }
+.mn-tlwrap { overflow-x: auto; margin-top: 6px; }
+.mn-tl { display: block; width: 100%; min-width: 520px; }
+.mn-tl .up { fill: var(--accent-soft); } .mn-tl .rare { fill: #e0b23c; } .mn-tl .tr { fill: var(--ink); }
+.mn-tl .gl { stroke: var(--line); stroke-width: 1; } .mn-tl .now { stroke: var(--hit); stroke-width: 2; }
+.mn-tl text { font-family: var(--f-mono); font-size: 10px; fill: var(--muted); }
+.mn-tl .dk { fill: #2b3438; } .mn-tl .lt { fill: #f3e7b5; }
+.mn-tl .sel rect.bg { fill: color-mix(in srgb, var(--accent) 12%, transparent); }
+.dn-grid > div { min-width: 0; }
+.dn-tw { overflow-x: auto; }
+.dn-t { min-width: 640px; }
+.dn .row { min-width: 0; }
+#mnPlace { max-width: 100%; }
+#mnMode { max-width: 100%; font-size: 12px; }
+#dnDev .dn-grid { grid-template-columns: 1fr; }
+#dnDev .dn-t { min-width: 760px; }
+
 footer { font-size: 12px; color: var(--muted); }
 footer a { color: var(--accent); }
 </style>
@@ -160,7 +201,7 @@ footer a { color: var(--accent); }
 <body>
 <div class="wrap">
   <header>
-    <h1>強さダイヤル <span class="ver">v0.06</span></h1>
+    <h1>強さダイヤル <span class="ver">v0.07</span></h1>
     <p class="sub">開発者用：四隅の記号で 攻撃・守備・素早さ・体力 を決める実験</p>
     <a class="back" href="index.html">← じびきへ</a>
   </header>
@@ -232,6 +273,62 @@ footer a { color: var(--accent); }
       </section>
     </div>
   </div>
+
+
+  <!-- v0.07：弾当て用の開発コーナー（レアランク・レア字タイム） -->
+  <section class="dn" id="dnDev">
+    <div class="row" style="margin-bottom:6px"><h2 style="margin:0">弾当て：レアランクと出現率</h2><span class="note">常用 2,027字を「よく見る」（Wiki＋青空文庫の回数）の少ない順に並べて S〜D に分ける</span></div>
+    <div class="dn-grid">
+      <div>
+        <div class="dn-tw"><table class="st dn-t" id="rrTable"></table></div>
+        <div class="row" style="margin-top:10px">
+          <label class="lbl">遊ぶ時間 <input type="number" id="rrMin" min="1" max="600" step="1"> 分</label>
+          <label class="lbl">1字 <input type="number" id="rrSec" min="5" max="300" step="5"> 秒</label>
+          <button type="button" class="btn" id="rrReset">はじめの値に戻す</button>
+        </div>
+        <p class="note" id="rrSum"></p>
+        <p class="note">段の字数・重さ（出やすさ）・レア字タイムの倍率は、表の中の数字を直すとすぐ計算しなおす。S が一番あまり見かけない字。「1字あたり」は、その段の1つの字が1回で出る確率。「会うまで」は、その段の決まった1字に出会うまで平均何字かかるか。<br>ここで直した値は このブラウザに保存（dnRareCfg）。あとで弾当てが同じ値を読むようにする予定。</p>
+      </div>
+      <div>
+        <div class="row"><span class="lbl">ためしに引く</span>
+          <button type="button" class="btn" data-sim="100,0">ふだん 100字</button>
+          <button type="button" class="btn" data-sim="100,1">レア字タイム 100字</button>
+          <button type="button" class="btn" data-sim="1000,0">ふだん 1000字</button>
+        </div>
+        <div id="rrSim" class="dn-sim"></div>
+        <div class="lbl" style="margin-top:12px">段ごとの字（押すと「見る字」に足す）</div>
+        <div class="chips sm" id="rrTabs"></div>
+        <div class="kl dn-kl" id="rrList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dn" id="moonDev">
+    <div class="row" style="margin-bottom:6px"><h2 style="margin:0">弾当て：レア字タイム（月）</h2><span class="note">月が真南に来る時刻（南中）を中心に、新月は前後2時間、満月は月の出から月の入りまで</span></div>
+    <div class="dn-grid">
+      <div class="mn-now">
+        <svg id="mnIcon" class="mn-icon" viewBox="0 0 100 100" role="img" aria-label="いまの月の形"></svg>
+        <div>
+          <div class="mn-big" id="mnAge"></div>
+          <div id="mnInfo" class="mn-info"></div>
+        </div>
+      </div>
+      <div class="ctl" style="gap:8px">
+        <div class="row"><span class="lbl">日時</span><input type="datetime-local" id="mnWhen"><button type="button" class="btn" id="mnNow">いま</button>
+          <button type="button" class="btn" data-jump="-1">◀ 1日</button><button type="button" class="btn" data-jump="1">1日 ▶</button><button type="button" class="btn" id="mnFull">次の満月</button><button type="button" class="btn" id="mnNew">次の新月</button></div>
+        <div class="row"><span class="lbl">場所</span><select id="mnPlace"></select><button type="button" class="btn" id="mnGeo">📍 いまの場所</button><span class="note" id="mnLL"></span></div>
+        <div class="row"><span class="lbl">長さの決め方</span><select id="mnMode">
+          <option value="smooth">A なめらか（光っている割合で 4時間→月の出〜月の入り）</option>
+          <option value="full1">B 満月の前後1日だけ 月の出〜月の入り、ほかは4時間</option>
+          <option value="cap">C なめらか＋いちばん長くても上限まで</option>
+        </select><label class="lbl" id="mnCapL">上限 <input type="number" id="mnCap" min="4" max="14" step="1"> 時間</label></div>
+      </div>
+    </div>
+    <div class="lbl" style="margin-top:14px">30日のようす（横＝0時〜24時。うすい帯＝月が出ている、金色＝レア字タイム、●＝南中、左は月の形）</div>
+    <div class="mn-tlwrap"><svg id="mnTL" class="mn-tl" role="img" aria-label="30日分の月とレア字タイム"></svg></div>
+    <p class="note" id="mnSum"></p>
+    <p class="note">月の位置は かんたんな式で計算（数分〜10分くらいずれることがある）。位置情報は このページの中で計算に使うだけで、どこにも送らない。iPhone は https のページ（GitHub Pages）でないと位置情報が取れない。月の形は北半球から見た向き（満ちていくときは右が光る）。</p>
+  </section>
 
   <footer>号碼：<a href="https://github.com/KeenS/SKK_JISYO.wiktionary" target="_blank" rel="noopener">SKK_JISYO.wiktionary</a>（κeen）の SKK-JISYO.shikakugoma（ウィクショナリー日本語版由来、<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 4.0</a>）。範囲：<a href="https://github.com/cjkvi/cjkvi-tables" target="_blank" rel="noopener">cjkvi-tables</a></footer>
 </div>
@@ -544,6 +641,274 @@ function renderAll() {
 }
 $("ringIn").value = st.ring; $("range").value = st.range; $("watchIn").value = st.watch;
 renderAll();
+</script>
+<script>
+const RR_CH = "年人日一大月出中見子行上時事分生来間手自者方二思国部女前会家彼後立地作何合三下私言気小物的山場代同目入長田名心十第道知発用文高通今社新主明東市内成動外書度世当実持川体理開話平身現屋全定関神野不力業無以郎意様対面取水車最多語口少性和村教金先連法男木公町初五御居考次表記相在海向正機画京四島線美天数近白県感然回信音死要風声等得設結空軍太式活演有置君形番北西曲八顔元選引位重夜民放品味士送色葉経馬治別切親足加勝号頭夫他直受特門組光期母情父役古員政義共楽解点説能駅達付着決集運朝議始食電王問吉都愛安眼利売帰落論歌常命起土参仕込井注際編進南区松六兵指路制務歩工僕好花科史台呼終続強可悪助種半由店過笑交院団若調青七存両伝藤版優題武想果師支造計広千保違産歴供州鉄打飛火氏早館登殺配城室止録脚改返隊頃九研宮岡病約万処英我谷昭念報任張判百座船急建黒究良寺乗反格必字橋住観江根深官残転賞権局影横降福遠側型草申待移右限状苦育程類料老構例収紙去如質総誰件読春姿族失友突佐態離細称非撃追基久渡系技芸属異寄統備客河容示首守係退巻与消装認難郡素階走府応洋球崎劇監余沢将歳振独試予星断角林図恐段博米投蔵器周派望清及争幸円識舞兄波越旅極確商貴息域従紀医告酒介故衆像典著津条徳各妻接精象末志雪森警秋評暗施項験掛絶辺魔破興職督尾差宿阪働堂婦資済里静談岩血茶察列満富協頼奥背級片銀夢害復覧毎丁陸宗庭護鳥速遊敷完管寝弟未案玉諸服査載訳個雨防視底響求量房負雄党述提証端怪折旧那留永答曜司増源似許境探抜押帯喜陽皇至岸概写展攻絵夏雑坂殿艦敵章専香価規浜買景並担裏詞敗照導婚了倉恋催俺胸庫吹織板秀雲途継詩散悲株羽児候帝皆養含浮競鳴密積般驚描低習準創刻竹甲鹿就短妙肉縁省仲給跡樹授囲割泉節宇夕奴窓忘委緒乱軽罪晩郷群闘戻農倒休疑献布冷矢腹隠奈薬企衣率仏抱港聖泣暮亡徒困池毛枚遺豊己央飲席願賀検盛廃温善附祭健誌除舎仰因弁礼航筆臣普訪弾昔植卒宝推句骨併快刀略黄幕伴築翌奇伸財瀬模輪往痛宅薄焼停姉承祖弱革易傷補犬床腕黙捕露煙秘激延華微髪唯刑功材滅致忠刊魚隣危腰儀固仮荒純飯策霊週嫌妹順換値被標算壁籍脱湯浦坊束環辞枝課整閉層毒眠険裁減昨染康効柄丈超釈障績聴午冬救犯勇怒奏替踏迎盤暴採晴浅逆払僧剣藩哲適互寒圧肩惑眺伯紅鼻筋涙徴依灯否援扱費狂則恵納遣是震額尊襲塚複勤皮兼熊吸麻幼姫寸砲玄療捨抗駆欲沈牛怖批柳練獲奉触鏡沿包荷既鬼杉砂到虫操芝騒殊仙壊梅箱陣駄竜杯迷頂銭締律油詰宣刺忍敬混販爆傍穴鮮傾宙鶴俳浪旦益希昇借庁軒昼巨伏陰札奪閣貨燃避測盟災尋湖迫威撮洗婆責巡躍充孫仁範欠占漢姓菊飾討童漫契邦魂爵繰誘茂貧輸盗揮弥禁斎歯趣拡簡濃却憶免墓酔輝俗審棒詳厚紹緑丘袋須泊塩慶珍請幅屈沖麗咲牧丹誤凡沼甚闇唱乳隆潜旗況酸呂稲瞬尚羅幹堀随畑偵猫叔誠看懐慮握封副遂輩俊臨掲銃騎縄遅季潮侍孝舟尽湾招悟踊較亜針岐哀隅氷膝署没貫裕捜塔拝宜亭暫繁慣帳損召豪嬢症浴釣韓勘摩崩税縮獄卓携憲倍序揚干寛狭泥唐貞埋斬添扉柱紫垣械嫁疲憎駒菜涯豆届慢彩甘努祝汽距戯謝廊畳辛惜掘虚維烈寂沙欧郵雷尺稿柔堪幻抵鑑帽訓患棄吐偶岳透紋徹翼椅炎賢垂譲誕冠巧尻液汚舌搭袖貸葬乾愚裂粉遇恩寧票炭澄塗秒還敏亀揺顧索癖滝荘匠幽均漁謀網猿抑脇桃齢穂駐滑霧机賊洞勉縦架渋虎征泰絡灰祈侵億堅乏鎮壇鎌芳鋭脈唇塁蛇妖鉢枕陥隔銅潟渉拾誇淡融券肥摘冒偉択臭斜奮戒孔鎖骸賛暦診冊孤梨緊唄曹排挨拶胞枠汗磨逸乞翻筒顕飼浄帆暇拭枯朗侯棚礎耐舗愉圏尉卑涼挑麦臓彫艇暖核慰眉斉笛匹裸剛慈析覆託暑縛酷預旨埼珠膳稽壮腐肌乙朱劣紛拓拘賃衰悔拳鉱菓琴匂鼓蓋雇凝僅啓贈隙掃廷掌刷貢嘆貝傘鐘控漸箇軌僚蒸狩佳勧惨凄陳募胆狙悦罰促削焦晶呪拒歓綿鍵閑翁貌絹恨魅覇喫忙墨泳謎憤煮棟窮撤拙据紳疾径峠瓶悠拍閲塞葛頻剤銘戴殖湧鶏阜尼粒粋慎盾嵐享括崖履窟譜潔徐軸抽披棋崇逐稼滞弦励稚溶跳撲芽敢蹴羊旋恒耕扇睡克粗旬硬菌喉誓勲脅畜遍陶曇縫襟鬱忌堤爪飽叙醜償斗裾皿符碑盆噴宛某頑溝猶牲茨宴辱倫彰謡盲挿穏喚謙郊緯轄遭冗潤宵犠浸怨艶陵漂蜂汁墳隻捉緩凍釜祥遷胴硝餅矛痴伺肝脂糖醒隷慕膚錦宰貯磁頓塀鍋幣伐渓昧股瞳傑蔑囚虐楼漠汰潰逮痩絞欄恭妨秩霜煩偏但粧摂鋼妃后湿該債刈奨苗暁璃巾坪慌砕滋曽疎栃瑠蓄痕欺寮薫賭鈍措諦吟詣且擁怠訂顎挟錯藍篤鉛赴癒祉厄貿培鍛媒豚濁罵麓殻嘲渦懇詠肯咽碁軟塊漏蚊吏喪詮峡褒椎需膜遮呈零妬栽弄阻班擦腸嫉滴糧簿奔貼穀墜臆把践賜酌洪曖粛紺藻伎泡胃侮媛堕扶飢朴凶雰郭妄漬諭薦瞭虹髄庶玩勅膨兆芋婿蛮愁蔽懲畿餓俵采桁腫斑朽廉戚慄箸慨肖棺蜜勃憧訟諾侶酬錠循苛虜坑繊殴嗅剖淫肢冥搬炊擬妊岬赦茎儒禍沸粘騰升庸刹疫羨溺尿薪畔唆畏胎脊屯韻漆嗣燥唾爽雌硫冶酵鯨臼舶倣謹准渇喝剰桟錬缶褐迅睦濯捻柵抄妥詐閥娠鋳弊卸抹枢憾勾舷淑醸匿逝槽堆腎拐串貪穫繕帥嫡凹諧娯肘煎傲羞陛濫罷梗租挫遜萎寡礁賦汎窒賠紡遡悼壌殉窯酢肪嚇旺賄拉綻毀窃拷搾壱踪賓俸姻惰弔耗腺泌凸璧詔厘瘍栓弐緻嘱墾丙痘矯辣畝衷謁芯憬虞痢彙哺斤酎倹氾丼款陪繭諮捗頒逓沃訃遵箋賂摯恣酪塑朕迭謄劾璽楷錮剝頰";
+const RR_WS = [1939583,1474170,1357664,1312665,1010858,923624,923353,765372,759372,701320,680351,655790,654337,605909,605345,587667,557488,552518,535124,534604,494751,491480,472157,469980,457135,449031,448490,443784,440346,432124,430376,430176,429345,425748,424913,423332,419089,419042,417112,413772,412713,401385,400314,399089,393401,385700,381494,363413,362623,358503,355171,352617,346908,341065,328137,327201,325052,324474,317457,313727,310367,309232,300809,297443,292360,291093,290912,287428,280229,279563,277870,277190,277010,276853,275176,270122,268358,267099,264453,259311,257896,255736,250627,249266,247155,247042,244817,244696,241165,240141,236723,235942,234285,233726,233590,231690,230466,229075,227039,223330,223262,222918,219317,218245,217425,216264,213145,212529,212486,212382,211614,211398,206128,204570,203938,202538,202484,201145,200445,200188,199574,199384,198640,196719,196626,195791,195698,195154,193524,189932,189625,180886,180641,180519,180010,179709,179080,177828,176226,175306,175085,174836,173000,172444,171449,171388,171374,170937,169634,169354,167463,166250,162663,162447,161280,160334,160226,158268,158184,157840,157309,156349,156169,155873,154241,154042,153264,153111,152512,152215,152135,152063,151232,151014,150476,150436,149894,149561,148891,147595,147129,146298,145875,145817,145496,145408,145062,144249,143871,143389,143301,143201,142721,142214,142072,141380,141305,140980,140066,138196,137501,137445,137373,136855,136440,136095,135027,134993,134899,134483,134112,134080,133737,132938,132470,132422,131654,130543,130457,130111,129572,129556,129043,127688,127647,127430,126822,126706,126502,126495,125403,124452,124332,124173,123574,123560,123280,122449,122052,122015,121959,121837,121451,121394,120717,120542,120372,119855,119315,119231,118638,118104,117759,117072,117026,116803,115241,115101,114938,114518,114388,114216,114194,113755,113515,113207,112993,112637,112368,112259,111447,111334,111119,110895,110832,110455,109096,108606,107499,107384,106752,105571,105428,104873,104032,103755,103706,103692,103659,103383,103372,103327,103002,102971,102575,101701,101597,101117,101098,100901,100699,99571,99197,99039,99029,98922,98912,98662,96544,96269,95903,95598,95592,95537,95221,95039,94862,94485,94480,94138,94129,93747,93523,93477,93313,93278,93116,92646,91379,91312,90794,90762,90702,89944,89573,89400,89165,88828,88375,88256,87794,87736,87435,87322,87195,87160,86974,86566,86424,86354,86291,86289,86160,85827,85415,85296,85050,85022,84741,84617,84193,84135,83829,83566,83421,83004,82779,82659,82609,82549,82280,82137,82105,81769,81228,80970,80781,80687,80175,79737,79468,78374,78047,77808,76491,76350,76031,75783,75702,75696,75423,75337,75292,75192,75129,75078,74830,74736,74455,74391,74247,74201,73806,73580,73532,73337,72971,72960,72891,72841,72626,72626,72330,72263,71576,71552,71540,71182,71175,70711,70549,70469,70408,70217,69994,69916,69811,69774,69148,69091,68634,68598,68499,68199,67835,67718,67432,67333,67255,67225,66855,66854,66813,66508,66290,66274,65234,65095,65062,64992,64911,64699,64491,64489,64367,64302,64263,64110,63955,63751,63502,63378,63028,63000,62698,62531,62446,62290,62100,61956,61778,61643,61554,61350,61196,61173,61053,60839,60773,60646,59936,59866,59737,59683,59483,59388,59375,59243,59108,58862,58780,58701,58527,58465,58295,58269,58168,58121,58079,57883,57815,57791,57747,57523,57407,57387,57281,57169,57109,56686,56533,56389,56332,56100,55850,55571,55533,55444,55341,55159,55130,55093,55092,54889,54861,54758,54708,54508,54374,54049,53981,53834,53397,53379,53161,53032,52939,52936,52732,52726,52622,52579,52520,52390,52331,52313,52279,52203,52125,51813,51726,51721,51523,51504,51396,51253,51163,51152,51021,51009,50936,50860,50851,50728,50722,50553,50471,50429,50255,50165,50056,50042,49702,49635,49520,49415,49385,49351,49260,49234,49160,49133,49041,48772,48771,48731,48699,48641,48634,48479,48450,48231,48125,48091,47792,47754,47581,47450,47442,47343,47275,47153,46943,46931,46624,46581,46536,46495,46408,46104,46065,45894,45869,45777,45692,45616,45585,45533,45438,45353,45251,45236,45217,44758,44740,44704,44458,44389,44371,44107,44006,43948,43945,43924,43724,43689,43653,43628,43620,43586,43545,43309,43271,43239,43178,43167,43152,43119,43079,42955,42804,42721,42699,42569,42466,42432,42200,42135,42108,42085,42053,41949,41945,41913,41818,41656,41649,41634,41576,41298,41283,41233,41205,41153,41132,41129,41052,40943,40889,40716,40698,40679,40619,40538,40489,40009,39997,39958,39952,39948,39884,39856,39750,39746,39699,39626,39577,39533,39428,39143,39140,39006,38981,38974,38939,38930,38919,38897,38837,38759,38544,38486,38461,38405,38315,38283,38125,38042,37916,37834,37800,37800,37561,37506,37409,37383,37322,37283,37242,37125,37028,36971,36809,36768,36677,36657,36633,36575,36549,36508,36497,36490,36483,36441,36384,36296,36293,36269,36251,36132,36091,35993,35947,35939,35846,35792,35599,35388,35356,35353,35333,35192,35189,35174,34972,34961,34811,34745,34710,34653,34577,34576,34517,34464,34440,34409,34280,34227,34220,34041,34023,33894,33768,33721,33681,33576,33561,33480,33413,33375,33261,33245,33196,33160,33136,33007,32870,32862,32834,32763,32691,32644,32618,32531,32502,32311,32287,32285,32190,32186,32104,32086,32084,31949,31898,31856,31825,31825,31540,31266,31244,31102,31057,31034,30857,30762,30753,30740,30699,30464,30418,30400,30178,30160,30134,30090,29970,29940,29873,29854,29764,29695,29610,29582,29551,29545,29480,29455,29334,29325,29260,29153,29132,29074,29069,29069,29065,29017,28972,28964,28916,28887,28847,28755,28702,28658,28539,28503,28491,28457,28425,28323,27996,27873,27812,27759,27722,27702,27640,27570,27508,27472,27468,27342,27068,27028,26982,26898,26732,26694,26661,26638,26633,26548,26543,26267,26214,26056,26055,25986,25860,25815,25748,25699,25693,25669,25609,25599,25403,25360,25352,25339,25286,25277,25276,25149,25035,25012,25007,24974,24948,24922,24902,24889,24842,24839,24785,24761,24628,24613,24598,24549,24410,24350,24340,24338,24288,24284,24275,24193,24188,24171,24126,24093,24084,23998,23967,23952,23904,23882,23858,23853,23798,23788,23755,23533,23471,23406,23401,23358,23347,23300,23249,23239,23220,23177,23142,23133,23098,23077,23018,23011,22992,22973,22971,22949,22947,22935,22900,22886,22784,22752,22748,22636,22504,22448,22444,22365,22340,22334,22321,22256,22203,22163,22036,21984,21870,21841,21795,21651,21629,21557,21531,21506,21496,21489,21467,21460,21387,21380,21346,21301,21263,21220,21205,21159,21147,21140,21049,21046,20920,20753,20647,20622,20607,20592,20569,20523,20425,20406,20379,20373,20353,20333,20315,20293,20217,20157,20135,20086,20051,20023,19945,19884,19837,19828,19803,19800,19791,19679,19677,19676,19623,19618,19601,19454,19304,19300,19251,19224,19222,19210,19209,19177,19004,19004,18870,18862,18841,18828,18808,18772,18720,18712,18695,18663,18649,18645,18541,18506,18468,18461,18453,18428,18412,18374,18354,18311,18270,18266,18249,18237,18197,18128,18058,18042,17891,17884,17881,17853,17814,17811,17808,17802,17801,17800,17797,17782,17660,17632,17621,17598,17597,17556,17536,17509,17501,17398,17374,17310,17291,17266,17217,17162,17090,17077,17066,17026,17002,16964,16939,16892,16890,16888,16886,16854,16819,16749,16705,16703,16661,16655,16643,16569,16567,16551,16550,16473,16455,16387,16346,16345,16282,16254,16224,16167,16100,16076,16058,16046,15998,15997,15974,15951,15891,15872,15819,15814,15805,15757,15694,15685,15664,15607,15589,15575,15510,15498,15472,15427,15421,15379,15342,15315,15300,15298,15275,15201,15126,15060,15003,14986,14951,14915,14899,14889,14876,14859,14838,14823,14792,14726,14685,14653,14645,14611,14532,14525,14504,14494,14441,14438,14417,14410,14392,14370,14360,14353,14323,14307,14235,14227,14135,14130,14123,14071,14027,14007,13957,13872,13866,13831,13824,13799,13787,13761,13704,13670,13573,13564,13519,13490,13479,13477,13456,13358,13319,13276,13228,13205,13165,13162,13135,13111,13103,13094,13055,13024,12999,12978,12906,12899,12898,12891,12860,12844,12770,12740,12697,12680,12657,12613,12612,12602,12576,12565,12553,12520,12496,12480,12450,12444,12440,12407,12401,12367,12346,12328,12292,12255,12238,12210,12208,12138,12071,12057,12012,11966,11939,11915,11891,11876,11837,11796,11789,11684,11674,11645,11645,11637,11617,11614,11565,11553,11551,11531,11509,11459,11458,11451,11437,11373,11323,11316,11292,11278,11274,11261,11248,11239,11225,11197,11196,11195,11160,11148,11122,11106,11089,11078,11029,11020,11000,10990,10963,10934,10910,10866,10847,10763,10734,10697,10601,10599,10591,10584,10541,10505,10440,10372,10353,10333,10329,10321,10314,10311,10302,10255,10221,10206,10192,10183,10175,10169,10119,10114,10114,10067,10057,10026,10008,9993,9979,9973,9918,9902,9857,9849,9846,9813,9813,9811,9762,9760,9740,9739,9734,9721,9695,9691,9683,9652,9603,9565,9558,9536,9495,9491,9486,9473,9457,9376,9359,9358,9352,9348,9325,9315,9297,9293,9253,9245,9223,9217,9196,9182,9162,9155,9145,9101,9074,9072,9028,9018,9005,8997,8951,8946,8932,8930,8914,8908,8903,8901,8878,8861,8858,8837,8835,8823,8815,8763,8749,8667,8663,8656,8632,8593,8592,8575,8561,8531,8517,8511,8510,8507,8507,8476,8467,8441,8416,8416,8414,8413,8412,8404,8389,8387,8373,8342,8330,8247,8192,8187,8174,8165,8148,8143,8139,8069,8039,7967,7928,7914,7890,7888,7876,7867,7853,7833,7831,7807,7806,7802,7768,7762,7732,7709,7698,7693,7657,7642,7639,7606,7584,7583,7547,7539,7531,7527,7506,7478,7475,7428,7428,7426,7423,7422,7414,7409,7398,7365,7358,7352,7322,7314,7304,7299,7288,7285,7281,7268,7256,7242,7217,7209,7207,7173,7168,7150,7143,7137,7117,7113,7108,7103,7087,7073,7061,7044,7031,7016,7008,7007,6995,6973,6973,6965,6952,6920,6917,6904,6898,6884,6865,6849,6839,6839,6815,6781,6769,6745,6731,6682,6676,6673,6663,6630,6610,6599,6584,6573,6517,6517,6514,6512,6504,6494,6493,6479,6478,6471,6466,6458,6453,6449,6436,6409,6363,6355,6296,6247,6243,6237,6230,6220,6207,6202,6200,6182,6166,6129,6127,6126,6112,6078,6069,6049,6049,6017,6013,6000,6000,5982,5961,5937,5936,5928,5907,5899,5882,5872,5871,5871,5837,5828,5825,5824,5815,5808,5781,5775,5761,5754,5750,5715,5699,5696,5695,5674,5669,5658,5646,5637,5618,5613,5602,5591,5585,5569,5549,5548,5538,5531,5483,5448,5438,5409,5395,5380,5365,5361,5354,5352,5337,5331,5312,5279,5279,5263,5235,5225,5217,5206,5203,5202,5142,5141,5121,5116,5075,5044,5031,5006,5001,4988,4982,4927,4916,4901,4894,4867,4855,4849,4826,4820,4810,4805,4800,4744,4744,4742,4737,4736,4723,4721,4708,4704,4702,4688,4677,4667,4641,4600,4570,4542,4540,4534,4530,4526,4512,4512,4479,4469,4462,4454,4452,4418,4405,4391,4365,4350,4342,4339,4330,4321,4313,4285,4244,4239,4237,4233,4226,4221,4219,4210,4179,4168,4157,4156,4138,4134,4119,4101,4097,4066,4056,4050,4035,4027,4025,3999,3988,3985,3982,3973,3971,3949,3906,3878,3872,3869,3861,3859,3792,3777,3773,3767,3766,3760,3746,3728,3722,3721,3718,3715,3691,3683,3663,3662,3661,3648,3641,3636,3622,3621,3609,3584,3573,3566,3563,3562,3561,3557,3542,3539,3509,3504,3488,3486,3486,3483,3477,3477,3458,3451,3438,3417,3410,3388,3383,3345,3315,3298,3292,3279,3261,3254,3248,3226,3226,3222,3209,3191,3190,3176,3155,3143,3137,3130,3130,3126,3117,3110,3094,3081,3079,3060,3059,3043,3040,3027,3010,2990,2988,2955,2948,2938,2891,2863,2834,2812,2807,2796,2794,2791,2767,2767,2734,2717,2678,2655,2623,2623,2618,2617,2611,2607,2603,2585,2583,2576,2530,2516,2505,2491,2471,2471,2401,2395,2389,2377,2364,2345,2333,2275,2254,2252,2246,2223,2202,2172,2170,2167,2166,2151,2148,2137,2109,2092,2084,2077,2077,2065,2060,2045,2033,2022,2019,2017,2006,2000,1965,1940,1914,1912,1893,1877,1870,1864,1853,1835,1827,1803,1802,1768,1750,1747,1737,1733,1717,1712,1692,1682,1608,1607,1577,1522,1510,1504,1487,1467,1458,1433,1428,1407,1379,1362,1362,1361,1354,1324,1294,1285,1276,1255,1223,1133,1131,1126,1101,1063,1013,1002,999,962,951,918,907,900,900,876,869,847,831,824,792,755,754,752,739,709,651,635,576,563,537,455,440,429,424,381,341,288,285,31,10];
+const RR_LV = "10000000011010011101100101110021011000010101101000010000111100011110100111001101100111111101111111112111111010100111100111001112111111111111001110111111011110111110111111111111101111111010111111111111110101111010111010111111111111111111110012110111111101101122111111101111110210101111111110011111111111112111111111110121111111011111110112111211121111110111111111111111111001110111111112111111001101111111111111211211111112212121211121111111111111011121111111111112121212211111100211011001112110121121111111111112111112111111111001111221211211122112111111111101111122111111111111111112112111111121101112112121111221121111111111122111111211211112211121120111111112212221121121221111111221221111222111110221121211121111110121112111111221201211112212111211111110111111111111211211111211111121211111112111112112212111112111111111112222221112222211221112122112111212112121122212212111111121111111222211211111212222111112222212112222111222112212121222112211122121212221221212121222111122212112222211222211121121221122212212122112112122212111211121222121222112121222112222222211212121211222212222121212222122222222121222211221212222212212221122221222122222112122212222122212122222122221112222122222112221112122222222212212222121122211022122222222222121222222212222222222221212221212212222121211221222222222221122222222222122112222221221222222212222222212212221122222212222122122222222222222222122222122222222222112212222122222221221222222222222221222122222222222222122022222221222222222222222222122221222222122222222221222222222222222222222222222122222222222222212212212222222222222222222222222221222222222222222222222222222222222222222222222222222212222221122222222222222222222222222222212122222222222222222222222222222222222222222212222222222222222222222222222222222121222222122222222222221222222222222222222221222222221222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222221222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222";
+
+// ===== v0.07 弾当て開発コーナー =====
+(() => {
+const $$ = id => document.getElementById(id);
+const ls = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+const N = RR_CH.length;
+const CH = [...RR_CH];
+const RKS = ["S", "A", "B", "C", "D"];
+const DEF = { size: { S: 100, A: 400, B: 600, C: 600 }, w: { S: 1, A: 2, B: 3, C: 5, D: 10 }, m: { S: 5, A: 3, B: 1.5, C: 1, D: 1 }, min: 10, sec: 40 };
+let cfg = JSON.parse(JSON.stringify(DEF));
+try { const s = JSON.parse(ls.get("dnRareCfg", "null")); if (s && s.size && s.w && s.m) cfg = Object.assign(cfg, s); } catch (e) {}
+const saveCfg = () => ls.set("dnRareCfg", JSON.stringify(cfg));
+
+// 段わけ：よく見る順（0＝いちばんよく見る）。後ろから S・A・B・C、のこりが D
+function tiers() {
+  const out = {}; let end = N;
+  for (const r of ["S", "A", "B", "C"]) { const n = Math.max(0, Math.min(end, Math.round(cfg.size[r]) || 0)); out[r] = { from: end - n, to: end }; end -= n; }
+  out.D = { from: 0, to: end };
+  return out;
+}
+function probs(T, rare) {
+  const w = {}; let tot = 0;
+  RKS.forEach(r => { w[r] = Math.max(0, +cfg.w[r] || 0) * (rare ? Math.max(0, +cfg.m[r] || 0) : 1); tot += w[r] * (T[r].to - T[r].from); });
+  const p = {}; RKS.forEach(r => { const n = T[r].to - T[r].from; p[r] = { tier: tot ? w[r] * n / tot : 0, one: tot ? w[r] / tot : 0, n }; });
+  return p;
+}
+const pct = x => x >= .1 ? (x * 100).toFixed(1) + "%" : x >= .001 ? (x * 100).toFixed(2) + "%" : (x * 100).toFixed(3) + "%";
+const nf = x => x >= 100 ? Math.round(x).toLocaleString() : x >= 10 ? x.toFixed(0) : x.toFixed(1);
+function drawRR() {
+  const T = tiers(), P0 = probs(T, false), P1 = probs(T, true);
+  const play = Math.max(1, Math.round((cfg.min * 60) / Math.max(5, cfg.sec)));
+  let h = `<tr><th>段</th><th>順位</th><th>字数</th><th>重さ</th><th>レア字<br>タイム×</th><th>ふだん</th><th>レア字<br>タイム</th><th>${play}字で<br>（ふだん）</th><th>1字あたり<br>ふだん</th><th>会うまで<br>ふだん／レア</th><th>例</th></tr>`;
+  RKS.forEach(r => {
+    const t = T[r], n = t.to - t.from, a = P0[r], b = P1[r];
+    const ex = CH.slice(Math.max(t.from, t.to - 4), t.to).join("");
+    h += `<tr><td class="rk">${r}</td><td class="n">${n ? (t.from + 1).toLocaleString() + "〜" + t.to.toLocaleString() : "—"}</td>
+      <td>${r === "D" ? `<span class="n">${n}</span>` : `<input type="number" min="0" max="${N}" data-k="size" data-r="${r}" value="${cfg.size[r]}">`}</td>
+      <td><input type="number" min="0" step="0.5" data-k="w" data-r="${r}" value="${cfg.w[r]}"></td>
+      <td><input type="number" min="0" step="0.5" data-k="m" data-r="${r}" value="${cfg.m[r]}"></td>
+      <td class="n">${pct(a.tier)}</td><td class="n"><b>${pct(b.tier)}</b></td><td class="n">${(a.tier * play).toFixed(1)}字</td>
+      <td class="n">${pct(a.one)}</td><td class="n">${a.one ? nf(1 / a.one) : "—"}／${b.one ? nf(1 / b.one) : "—"}字</td><td class="ex">${ex}</td></tr>`;
+  });
+  $$("rrTable").innerHTML = h;
+  const minS = a => a ? Math.round(1 / a * cfg.sec / 60) : 0;
+  $$("rrSum").innerHTML = `${cfg.min}分（1字 ${cfg.sec}秒 → 約${play}字）遊ぶと、S は ふだん <b>${(P0.S.tier * play).toFixed(1)}字</b>、レア字タイムなら <b>${(P1.S.tier * play).toFixed(1)}字</b>。S のどれか1字に会うのは ふだん 約${minS(P0.S.tier)}分に1回、レア字タイム 約${minS(P1.S.tier)}分に1回。`;
+  drawTabs(T);
+}
+$$("rrTable").addEventListener("change", e => {
+  const i = e.target.closest("input[data-k]"); if (!i) return;
+  const v = parseFloat(i.value); if (!isFinite(v) || v < 0) { drawRR(); return; }
+  cfg[i.dataset.k][i.dataset.r] = i.dataset.k === "size" ? Math.round(v) : v; saveCfg(); drawRR();
+});
+$$("rrMin").value = cfg.min; $$("rrSec").value = cfg.sec;
+$$("rrMin").addEventListener("change", e => { const v = +e.target.value; if (v > 0) { cfg.min = v; saveCfg(); drawRR(); } });
+$$("rrSec").addEventListener("change", e => { const v = +e.target.value; if (v >= 5) { cfg.sec = v; saveCfg(); drawRR(); } });
+$$("rrReset").addEventListener("click", () => { cfg = JSON.parse(JSON.stringify(DEF)); saveCfg(); $$("rrMin").value = cfg.min; $$("rrSec").value = cfg.sec; drawRR(); $$("rrSim").innerHTML = ""; });
+
+// ためしに引く
+document.querySelectorAll("[data-sim]").forEach(b => b.addEventListener("click", () => {
+  const [n, rare] = b.dataset.sim.split(",").map(Number);
+  const T = tiers(), P = probs(T, !!rare);
+  const cnt = { S: 0, A: 0, B: 0, C: 0, D: 0 }, got = [];
+  for (let i = 0; i < n; i++) {
+    let x = Math.random(), r = "D";
+    for (const k of RKS) { if (x < P[k].tier) { r = k; break; } x -= P[k].tier; }
+    const t = T[r]; const ch = CH[t.from + Math.floor(Math.random() * (t.to - t.from))];
+    cnt[r]++; got.push([ch, r]);
+  }
+  const uniq = new Set(got.map(g => g[0])).size;
+  const bar = RKS.map(r => cnt[r] ? `<i class="rk-${r}" style="flex:${cnt[r]}">${r}${cnt[r]}</i>` : "").join("");
+  const show = got.slice(0, 100).map(([c, r]) => r === "S" ? `<b>${c}</b>` : c).join("");
+  $$("rrSim").innerHTML = `<div class="note">${rare ? "レア字タイム" : "ふだん"} ${n}字：ちがう字は ${uniq}字（ダブり ${n - uniq}字）。赤い字＝S</div><div class="sb">${bar}</div><div class="ks">${show}${n > 100 ? "…" : ""}</div>`;
+}));
+
+// 段ごとの字
+let tab = "S";
+function drawTabs(T) {
+  $$("rrTabs").innerHTML = RKS.map(r => `<button type="button" class="chip" data-t="${r}" aria-pressed="${r === tab}">${r}（${T[r].to - T[r].from}）</button>`).join("");
+  const t = T[tab]; const box = $$("rrList"); box.textContent = "";
+  for (let i = t.to - 1; i >= t.from; i--) {
+    const b = document.createElement("button"); b.type = "button"; b.title = `よく見る順 ${i + 1}位・${RR_WS[i].toLocaleString()}回`;
+    b.append(CH[i]); const sm = document.createElement("small"); sm.textContent = i + 1; b.append(sm);
+    b.addEventListener("click", () => { const w = $$("watchIn"); if (!w.value.includes(CH[i])) { w.value += CH[i]; w.dispatchEvent(new Event("input")); } });
+    box.append(b);
+  }
+}
+$$("rrTabs").addEventListener("click", e => { const b = e.target.closest("[data-t]"); if (!b) return; tab = b.dataset.t; drawTabs(tiers()); });
+drawRR();
+
+// ===== 月の計算（かんたんな式：Astronomy Answers の近似式） =====
+const RAD = Math.PI / 180, DAY = 864e5, J1970 = 2440588, J2000 = 2451545, E = RAD * 23.4397;
+const toDays = ms => ms / DAY - .5 + J1970 - J2000;
+const raOf = (l, b) => Math.atan2(Math.sin(l) * Math.cos(E) - Math.tan(b) * Math.sin(E), Math.cos(l));
+const decOf = (l, b) => Math.asin(Math.sin(b) * Math.cos(E) + Math.cos(b) * Math.sin(E) * Math.sin(l));
+function moonC(d) {
+  const L = RAD * (218.316 + 13.176396 * d), M = RAD * (134.963 + 13.064993 * d), F = RAD * (93.272 + 13.229350 * d);
+  const l = L + RAD * 6.289 * Math.sin(M), b = RAD * 5.128 * Math.sin(F), dist = 385001 - 20905 * Math.cos(M);
+  return { ra: raOf(l, b), dec: decOf(l, b), dist };
+}
+function sunC(d) {
+  const M = RAD * (357.5291 + .98560028 * d);
+  const C = RAD * (1.9148 * Math.sin(M) + .02 * Math.sin(2 * M) + .0003 * Math.sin(3 * M));
+  const L = M + C + RAD * 102.9372 + Math.PI;
+  return { ra: raOf(L, 0), dec: decOf(L, 0) };
+}
+function moonAlt(ms, lat, lng) {
+  const d = toDays(ms), c = moonC(d), phi = RAD * lat;
+  const H = RAD * (280.16 + 360.9856235 * d) + RAD * lng - c.ra;
+  let h = Math.asin(Math.sin(phi) * Math.sin(c.dec) + Math.cos(phi) * Math.cos(c.dec) * Math.cos(H));
+  return h / RAD - .95 * Math.cos(h); // 視差（地平付近で約1度）をざっくり引く
+}
+function illum(ms) {
+  const d = toDays(ms), s = sunC(d), m = moonC(d), sd = 149598000;
+  const phi = Math.acos(Math.sin(s.dec) * Math.sin(m.dec) + Math.cos(s.dec) * Math.cos(m.dec) * Math.cos(s.ra - m.ra));
+  const inc = Math.atan2(sd * Math.sin(phi), m.dist - sd * Math.cos(phi));
+  const ang = Math.atan2(Math.cos(s.dec) * Math.sin(s.ra - m.ra), Math.sin(s.dec) * Math.cos(m.dec) - Math.cos(s.dec) * Math.sin(m.dec) * Math.cos(s.ra - m.ra));
+  const frac = (1 + Math.cos(inc)) / 2, phase = .5 + .5 * inc * (ang < 0 ? -1 : 1) / Math.PI;
+  return { frac, phase, age: phase * 29.530589 };
+}
+const H0 = .125; // 月の出・月の入りの高さ（度）
+// [a, b] の間の 南中・月の出・月の入り を探す（5分ごとに調べてから細かく）
+function events(a, b, lat, lng) {
+  const st = 5 * 6e4, ev = [];
+  let t0 = a, h0 = moonAlt(t0, lat, lng), t1 = t0 + st, h1 = moonAlt(t1, lat, lng);
+  for (let t2 = t1 + st; t2 <= b; t2 += st) {
+    const h2 = moonAlt(t2, lat, lng);
+    if ((h1 - H0) * (h2 - H0) <= 0 && h1 !== h2) { const t = t1 + (H0 - h1) / (h2 - h1) * st; ev.push({ t, k: h2 > h1 ? "rise" : "set" }); }
+    if (h1 > h0 && h1 >= h2) { // 山の上 → 3点の放物線で頂上の時刻
+      const den = h0 - 2 * h1 + h2; const off = den ? .5 * (h0 - h2) / den : 0; const t = t1 + off * st;
+      ev.push({ t, k: "transit", h: moonAlt(t, lat, lng) });
+    }
+    t0 = t1; h0 = h1; t1 = t2; h1 = h2;
+  }
+  return ev.sort((x, y) => x.t - y.t);
+}
+// 南中ごとのレア字タイム
+function windows(a, b, lat, lng, mode, capH) {
+  const ev = events(a - 20 * 36e5, b + 20 * 36e5, lat, lng), out = [];
+  ev.forEach((e, i) => {
+    if (e.k !== "transit") return;
+    let rise = null, set = null;
+    for (let j = i - 1; j >= 0; j--) if (ev[j].k === "rise") { rise = ev[j].t; break; } else if (ev[j].k === "transit") break;
+    for (let j = i + 1; j < ev.length; j++) if (ev[j].k === "set") { set = ev[j].t; break; } else if (ev[j].k === "transit") break;
+    if (e.h < H0 || rise === null || set === null) return; // 地平線の下の南中（まれ）は飛ばす
+    const I = illum(e.t); let k;
+    if (mode === "full1") k = Math.abs(I.age - 14.765) <= 1 ? 1 : 0;
+    else k = I.frac;
+    const h2 = 2 * 36e5, bL = Math.max(h2, e.t - rise), bR = Math.max(h2, set - e.t);
+    let s = e.t - (h2 + k * (bL - h2)), en = e.t + (h2 + k * (bR - h2));
+    if (mode === "cap") { const c = Math.max(4, capH) * 36e5; const len = en - s; if (len > c) { const f = c / len; s = e.t - (e.t - s) * f; en = e.t + (en - e.t) * f; } }
+    out.push({ T: e.t, s, e: en, rise, set, frac: I.frac, age: I.age });
+  });
+  return out.filter(w => w.e > a && w.s < b);
+}
+
+// ---- 画面 ----
+const PLACES = [["札幌", 43.062, 141.354], ["仙台", 38.268, 140.872], ["東京", 35.681, 139.767], ["名古屋", 35.170, 136.882], ["大阪", 34.702, 135.496], ["広島", 34.397, 132.475], ["福岡", 33.590, 130.401], ["鹿児島", 31.596, 130.557], ["那覇", 26.212, 127.681]];
+let mst = { place: "東京", lat: 35.681, lng: 139.767, mode: "smooth", cap: 8, when: null };
+try { const s = JSON.parse(ls.get("dnMoonDev", "null")); if (s) mst = Object.assign(mst, s); } catch (e) {}
+const saveM = () => ls.set("dnMoonDev", JSON.stringify(mst));
+$$("mnPlace").innerHTML = PLACES.map(p => `<option>${p[0]}</option>`).join("") + `<option value="geo">いまの場所</option>`;
+$$("mnPlace").value = mst.place === "geo" ? "geo" : mst.place;
+$$("mnMode").value = mst.mode; $$("mnCap").value = mst.cap;
+const pad = n => String(n).padStart(2, "0");
+const toLocalInput = ms => { const d = new Date(ms); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const hm = ms => { const d = new Date(ms); return `${d.getHours()}:${pad(d.getMinutes())}`; };
+const md = ms => { const d = new Date(ms); return `${d.getMonth() + 1}/${d.getDate()}`; };
+const dur = ms => { const m = Math.round(ms / 6e4); return `${Math.floor(m / 60)}時間${pad(m % 60)}分`; };
+let when = Date.now();
+$$("mnWhen").value = toLocalInput(when);
+
+function moonPath(cx, cy, r, I) {
+  const f = I.frac, wax = I.phase < .5, rx = r * Math.abs(2 * f - 1);
+  const top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`;
+  if (f < .005) return "";
+  const s1 = wax ? 1 : 0; // 光る側の半円
+  const s2 = wax ? (f < .5 ? 0 : 1) : (f < .5 ? 1 : 0);
+  return `M${top} A${r} ${r} 0 0 ${s1} ${bot} A${rx} ${r} 0 0 ${s2} ${top}Z`;
+}
+const phaseName = a => a < 1.5 || a > 28 ? "新月" : a < 6.4 ? "三日月のころ" : a < 8.4 ? "上弦" : a < 13.8 ? "十日夜〜十三夜" : a < 15.8 ? "満月" : a < 21.1 ? "居待月〜更待月" : a < 23.1 ? "下弦" : "有明月";
+
+function drawMoon() {
+  const lat = mst.lat, lng = mst.lng, I = illum(when);
+  const icon = $$("mnIcon");
+  const ws = windows(when - 30 * 36e5, when + 30 * 36e5, lat, lng, mst.mode, mst.cap);
+  const inW = ws.find(w => when >= w.s && when < w.e), nextW = ws.find(w => w.s > when);
+  icon.innerHTML = `<circle class="dark" cx="50" cy="50" r="44"/><path class="lit" d="${moonPath(50, 50, 44, I)}"/>${inW ? '<circle class="rim" cx="50" cy="50" r="46"/>' : ""}`;
+  $$("mnAge").textContent = `月齢 ${I.age.toFixed(1)}（${phaseName(I.age)}）`;
+  const up = moonAlt(when, lat, lng) > H0;
+  const w = inW || nextW; // いま、または次の レア字タイムの月（出→南中→入り）
+  const ri = w && { t: w.rise }, tr = w && { t: w.T }, se = w && { t: w.set };
+  $$("mnInfo").innerHTML = `
+    <div>光っている割合 <b>${Math.round(I.frac * 100)}%</b>　いま月は${up ? "<b>空に出ている</b>" : "地平線の下"}</div>
+    <div>${inW ? "いまの" : "次の"}月　月の出 <b>${ri ? md(ri.t) + " " + hm(ri.t) : "—"}</b>　南中 <b>${tr ? md(tr.t) + " " + hm(tr.t) : "—"}</b>　月の入り <b>${se ? md(se.t) + " " + hm(se.t) : "—"}</b></div>
+    <div>${inW ? `<span class="on">🌙 いまレア字タイム</span> ${hm(inW.s)}〜${hm(inW.e)}（あと${dur(inW.e - when)}）` : nextW ? `次のレア字タイム <b>${md(nextW.s)} ${hm(nextW.s)}〜${hm(nextW.e)}</b>（あと${dur(nextW.s - when)}）` : "—"}</div>
+    <div class="note">${w ? `このレア字タイムの長さ ${dur(w.e - w.s)}（月の出〜月の入り ${dur(w.set - w.rise)}）` : ""}　場所：${mst.place === "geo" ? "いまの場所" : mst.place}</div>`;
+  $$("mnLL").textContent = `北緯${lat.toFixed(2)}° 東経${lng.toFixed(2)}°`;
+  $$("mnCapL").hidden = mst.mode !== "cap";
+  drawTL();
+}
+
+function drawTL() {
+  const lat = mst.lat, lng = mst.lng, svg = $$("mnTL");
+  const d0 = new Date(when); d0.setHours(0, 0, 0, 0); const day0 = d0.getTime();
+  const days = 30, rowH = 18, left = 74, W = 720, top = 16, H = top + days * rowH + 4;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const x = ms => left + (ms / DAY) * (W - left - 6);
+  const a = day0, b = day0 + days * DAY;
+  const ev = events(a - 20 * 36e5, b + 20 * 36e5, lat, lng);
+  const ws = windows(a, b, lat, lng, mst.mode, mst.cap);
+  // 月が出ている区間
+  const ups = []; let r0 = moonAlt(a - 20 * 36e5, lat, lng) > H0 ? a - 20 * 36e5 : null;
+  ev.forEach(e => { if (e.k === "rise") r0 = e.t; else if (e.k === "set" && r0 !== null) { ups.push([r0, e.t]); r0 = null; } });
+  if (r0 !== null) ups.push([r0, b + 20 * 36e5]);
+  let s = "";
+  for (let h = 0; h <= 24; h += 3) { const xx = x(h * 36e5); s += `<line class="gl" x1="${xx}" y1="${top - 2}" x2="${xx}" y2="${H - 4}"/><text x="${xx}" y="11" text-anchor="middle">${h}</text>`; }
+  let totRare = 0;
+  for (let i = 0; i < days; i++) {
+    const ds = day0 + i * DAY, de = ds + DAY, y = top + i * rowH; // 夏時間がない前提（日本）
+    const clip = (p, q) => [Math.max(p, ds), Math.min(q, de)];
+    const I = illum(ds + DAY / 2), cy = y + rowH / 2;
+    s += `<g${i === 0 ? ' class="sel"' : ""}>${i === 0 ? `<rect class="bg" x="0" y="${y}" width="${W}" height="${rowH}"/>` : ""}<text x="2" y="${cy + 3}">${md(ds)}</text>`;
+    s += `<circle class="dk" cx="${left - 12}" cy="${cy}" r="6"/><path class="lt" d="${moonPath(left - 12, cy, 6, I)}"/>`;
+    ups.forEach(([p, q]) => { const [u, v] = clip(p, q); if (v > u) s += `<rect class="up" x="${x(u - ds)}" y="${y + 3}" width="${x(v - ds) - x(u - ds)}" height="${rowH - 6}" rx="2"/>`; });
+    ws.forEach(w => { const [u, v] = clip(w.s, w.e); if (v > u) { totRare += v - u; s += `<rect class="rare" x="${x(u - ds)}" y="${y + 5}" width="${x(v - ds) - x(u - ds)}" height="${rowH - 10}" rx="2"/>`; } });
+    ev.forEach(e => { if (e.k === "transit" && e.t >= ds && e.t < de) s += `<circle class="tr" cx="${x(e.t - ds)}" cy="${cy}" r="2.4"/>`; });
+    s += `</g>`;
+  }
+  if (when >= day0 && when < day0 + DAY) { const xx = x(when - day0); s += `<line class="now" x1="${xx}" y1="${top}" x2="${xx}" y2="${top + rowH}"/>`; }
+  svg.innerHTML = s;
+  const lens = ws.map(w => w.e - w.s);
+  $$("mnSum").textContent = `この30日のレア字タイム：1日平均 ${dur(totRare / days)}、1回の長さ ${dur(Math.min(...lens))}〜${dur(Math.max(...lens))}。`;
+}
+
+// 操作
+$$("mnWhen").addEventListener("change", e => { const t = new Date(e.target.value).getTime(); if (isFinite(t)) { when = t; drawMoon(); } });
+$$("mnNow").addEventListener("click", () => { when = Date.now(); $$("mnWhen").value = toLocalInput(when); drawMoon(); });
+document.querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => { when += +b.dataset.jump * DAY; $$("mnWhen").value = toLocalInput(when); drawMoon(); }));
+function seekPhase(target) { // 次に月齢が target（0＝新月、0.5＝満月）を通る時刻
+  let t = when + 36e5, p0 = illum(t).phase;
+  for (let i = 0; i < 24 * 31; i++) { const t2 = t + 36e5, p1 = illum(t2).phase; const crossed = target === 0 ? p1 < p0 : (p0 < .5 && p1 >= .5); if (crossed) return t2; t = t2; p0 = p1; }
+  return when;
+}
+$$("mnFull").addEventListener("click", () => { when = seekPhase(.5); $$("mnWhen").value = toLocalInput(when); drawMoon(); });
+$$("mnNew").addEventListener("click", () => { when = seekPhase(0); $$("mnWhen").value = toLocalInput(when); drawMoon(); });
+$$("mnPlace").addEventListener("change", e => {
+  const v = e.target.value;
+  if (v === "geo") { getGeo(); return; }
+  const p = PLACES.find(q => q[0] === v); mst.place = v; mst.lat = p[1]; mst.lng = p[2]; saveM(); drawMoon();
+});
+function getGeo() {
+  if (!navigator.geolocation) { $$("mnLL").textContent = "この画面では位置情報が使えない"; return; }
+  $$("mnLL").textContent = "位置をさがしています…";
+  navigator.geolocation.getCurrentPosition(pos => {
+    mst.place = "geo"; mst.lat = pos.coords.latitude; mst.lng = pos.coords.longitude; saveM(); $$("mnPlace").value = "geo"; drawMoon();
+  }, err => { $$("mnLL").textContent = "位置情報がとれなかった（" + (err.code === 1 ? "ことわられた" : "とれない") + "）。https のページで試してね"; $$("mnPlace").value = mst.place === "geo" ? "geo" : mst.place; }, { timeout: 15000, maximumAge: 6e5 });
+}
+$$("mnGeo").addEventListener("click", getGeo);
+$$("mnMode").addEventListener("change", e => { mst.mode = e.target.value; saveM(); drawMoon(); });
+$$("mnCap").addEventListener("change", e => { const v = +e.target.value; if (v >= 4) { mst.cap = v; saveM(); drawMoon(); } });
+drawMoon();
+setInterval(() => { if (Math.abs(when - Date.now()) < 9e4) { when = Date.now(); drawMoon(); } }, 6e4);
+})();
 </script>
 </body>
 </html>
